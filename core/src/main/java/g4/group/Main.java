@@ -17,7 +17,6 @@ public class Main extends ApplicationAdapter {
         startMenu.render(Gdx.graphics.getDeltaTime());
     }
 
-
     @Override
     public void dispose() {
         startMenu.dispose();
