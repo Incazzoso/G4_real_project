@@ -11,16 +11,16 @@ import com.badlogic.gdx.graphics.Texture;
 public class StartMenu implements Screen {
     private SpriteBatch batch;
     private Texture image;
-    private Music mainmus;
+    //private Music mainmus;
 
     @Override
     public void show() {
         batch = new SpriteBatch();
-        image = new Texture("menu_game_bg.png");
-        Music mainmus = Gdx.audio.newMusic(Gdx.files.internal("assets/music/mus1.mp3"));
-        mainmus.play();
-        mainmus.setVolume(0.75f);
-        mainmus.setLooping(true);
+        image = new Texture("menu_game_bg.jpg");
+        //Music mainmus = Gdx.audio.newMusic(Gdx.files.internal("assets/music/mus1.mp3"));
+        //mainmus.play();
+        //mainmus.setVolume(0.75f);
+        //mainmus.setLooping(true);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class StartMenu implements Screen {
     public void dispose() {
         batch.dispose();
         image.dispose();
-        mainmus.stop();
-        mainmus.dispose();
+        //mainmus.stop();
+        //mainmus.dispose();
     }
 }
 
