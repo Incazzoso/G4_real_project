@@ -16,7 +16,7 @@ public class StartMenu implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        image = new Texture("menu_game_bg.jpg");
+        image = new Texture("menu_game_bg.png");
         //Music mainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/music/mus1.mp3"));
         //mainMusic.play();
         //mainMusic.setVolume(0.75f);
