@@ -17,10 +17,10 @@ public class StartMenu implements Screen {
     public void show() {
         batch = new SpriteBatch();
         image = new Texture("menu_game_bg.jpg");
-        //Music mainmus = Gdx.audio.newMusic(Gdx.files.internal("assets/music/mus1.mp3"));
-        //mainmus.play();
-        //mainmus.setVolume(0.75f);
-        //mainmus.setLooping(true);
+        //Music mainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/music/mus1.mp3"));
+        //mainMusic.play();
+        //mainMusic.setVolume(0.75f);
+        //mainMusic.setLooping(true);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class StartMenu implements Screen {
     public void dispose() {
         batch.dispose();
         image.dispose();
-        //mainmus.stop();
-        //mainmus.dispose();
+        //mainMusic.stop();
+        //mainMusic.dispose();
     }
 }
 

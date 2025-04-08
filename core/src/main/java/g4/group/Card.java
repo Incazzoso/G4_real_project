@@ -1,5 +1,9 @@
 package g4.group;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
+import java.awt.*;
+
 public class Card {
 
     //variabili
@@ -8,7 +12,6 @@ public class Card {
     private int cost;               //il costo per schierarla
     private String name;            //il nome della carta
     private String description;     //una descrizione (opzionale)
-
 
     //costruttore (completo)
     Card(String name, int health, int damage, int cost, String description){
