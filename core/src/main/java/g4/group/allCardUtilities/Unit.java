@@ -1,6 +1,6 @@
-package g4.group;
+package g4.group.allCardUtilities;
 
-public class Unit extends Card{
+public class Unit extends Card {
 
     Unit(String name, int health, int damage, int cost){
         super(name, health, damage, cost);
