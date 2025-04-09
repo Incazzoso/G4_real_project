@@ -51,7 +51,6 @@ public class Card {
         return description;
     }
 
-
     //setter
     public void setHealth(int health) {
         this.health = health;
