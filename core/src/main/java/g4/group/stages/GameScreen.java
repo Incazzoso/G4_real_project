@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class StartGameScreen implements Screen {
+public class GameScreen implements Screen {
 
     private Batch batch;
     private Texture image;
@@ -19,7 +19,7 @@ public class StartGameScreen implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        image = new Texture("menu_game_bg.png");
+        image = new Texture("sprite/grey_soft_menu.png");
         stage = new Stage();
     }
 
