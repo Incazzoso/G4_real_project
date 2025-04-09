@@ -53,4 +53,9 @@ public class DatabaseCard {
             System.out.println("file inesistente, spostato o rimosso");
         }
     }
+    public void showCards(){
+        for(int i = 0; i < cards.size(); i++){
+            System.out.println(i +": "+ cards.get(i).getName());
+        }
+    }
 }
