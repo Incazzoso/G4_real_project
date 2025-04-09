@@ -1,6 +1,7 @@
 
 package g4.group;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -22,6 +23,12 @@ public class StartMenu implements Screen {
     private Texture image;
     //private Music mainmus;
 
+    private final Game game;
+
+    public  StartMenu(Game game){
+        this.game = game;
+    }
+
     //MENU PRINCIPALE
     private Stage stage;
     private Table table;
@@ -30,14 +37,16 @@ public class StartMenu implements Screen {
 
     private int selectIndex = 0;
 
+
     @Override
     public void show() {
-        batch = new SpriteBatch();
-        image = new Texture("menu_game_bg.png");
         //Music mainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/music/mus1.mp3"));
         //mainMusic.play();
         //mainMusic.setVolume(0.75f);
         //mainMusic.setLooping(true);
+
+        batch = new SpriteBatch();
+        image = new Texture("Menu_game_bg.png");
 
         //INIZIO SCHERMATA D' INIZIO
         stage = new Stage();
@@ -116,6 +125,32 @@ public class StartMenu implements Screen {
         selectIndex = index;
         for(int i = 0; i < buttons.length; i++){
             buttons[i].setScale(i == selectIndex ? 1.2f : 1.0f);
+        }
+
+
+
+        //INIZIA PARTITA
+
+        if(index == 0){
+            //Change into StartGameScreen
+            game.setScreen(new StartGameScreen());
+        }
+
+        /*
+        //EDITA IL DECK
+        if(index == 1){
+            game.setScreen(new StartEditScreen());
+        }
+
+        //APRI LE OPZIONI
+        if(index == 2){
+            game.setScreen(new StartSettingScreen());
+        }
+        */
+
+        //USCITA DAL PROGRAMMA
+        if(index == 3){
+            Gdx.app.exit();
         }
     }
 }
