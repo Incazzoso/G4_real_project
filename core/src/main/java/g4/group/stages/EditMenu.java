@@ -1,18 +1,27 @@
 package g4.group.stages;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class StartSettingScreen implements Screen {
+public class EditMenu implements Screen {
+
+    private Game game;
+
+    public EditMenu(Game game) {
+        this.game = game;
+    }
 
     private Batch batch;
     private Texture image;
@@ -25,8 +34,7 @@ public class StartSettingScreen implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        image = new Texture("menu_game_bg.png");
-
+        image = new Texture("sprite/Menu_game_bg.png");
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -38,6 +46,12 @@ public class StartSettingScreen implements Screen {
         button = new TextButton("Return", texture);
         table.add(button);
 
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                handleSelection();
+            }
+        });
     }
 
     @Override
@@ -69,5 +83,9 @@ public class StartSettingScreen implements Screen {
         batch.dispose();
         image.dispose();
         stage.dispose();
+    }
+
+    public void handleSelection() {
+        game.setScreen(new StartMenu(game));
     }
 }

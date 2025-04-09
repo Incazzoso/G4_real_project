@@ -44,7 +44,7 @@ public class StartMenu implements Screen {
         //mainMusic.setLooping(true);
 
         batch = new SpriteBatch();
-        image = new Texture("Menu_game_bg.png");
+        image = new Texture("sprite/Menu_game_bg.png");
 
         //INIZIO SCHERMATA D' INIZIO
         stage = new Stage();
@@ -130,19 +130,19 @@ public class StartMenu implements Screen {
         //INIZIA PARTITA
 
         if(index == 0){
-            //Change into StartGameScreen
-            game.setScreen(new StartGameScreen());
+            //Change into GameScreen
+            game.setScreen(new GameScreen());
         }
 
 
         //EDITA IL DECK
         if(index == 1){
-            game.setScreen(new StartEditScreen());
+            game.setScreen(new EditMenu(game));
         }
 
         //APRI LE OPZIONI
         if(index == 2){
-            game.setScreen(new StartSettingScreen());
+            game.setScreen(new SettingMenu(game));
         }
 
 
