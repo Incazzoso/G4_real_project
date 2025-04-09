@@ -114,7 +114,9 @@ public class StartMenu implements Screen {
     //FUNZIONI MENU PRINCIPALE
     public void handleSelection(int index){
         selectIndex = index;
-        buttons[index].setScale(1.2f , 1.0f);
+        for(int i = 0; i < buttons.length; i++){
+            buttons[i].setScale(i == selectIndex ? 1.2f : 1.0f);
+        }
     }
 }
 
