@@ -134,7 +134,7 @@ public class StartMenu implements Screen {
             game.setScreen(new StartGameScreen());
         }
 
-        /*
+
         //EDITA IL DECK
         if(index == 1){
             game.setScreen(new StartEditScreen());
@@ -144,7 +144,7 @@ public class StartMenu implements Screen {
         if(index == 2){
             game.setScreen(new StartSettingScreen());
         }
-        */
+
 
         //USCITA DAL PROGRAMMA
         if(index == 3){

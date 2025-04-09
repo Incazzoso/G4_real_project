@@ -7,20 +7,37 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class StartEditScreen implements Screen {
+public class StartSettingScreen implements Screen {
 
     private Batch batch;
     private Texture image;
 
     private  Stage stage;
+    private  Skin texture;
+    private  Table table;
+    TextButton button;
 
     @Override
     public void show() {
         batch = new SpriteBatch();
         image = new Texture("menu_game_bg.png");
+
+
         stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        texture = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
+        button = new TextButton("Return", texture);
+        table.add(button);
+
     }
 
     @Override
