@@ -1,4 +1,4 @@
-package g4.group;
+package g4.group.allCardUtilities;
 
 public class Player {
     private String name;
