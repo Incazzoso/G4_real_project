@@ -2,6 +2,7 @@ package g4.group;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
+import g4.group.stages.StartMenu;
 
 public class Main extends Game {
     StartMenu startMenu;

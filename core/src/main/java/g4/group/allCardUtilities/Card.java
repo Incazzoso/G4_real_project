@@ -1,8 +1,4 @@
-package g4.group;
-
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
-import java.awt.*;
+package g4.group.allCardUtilities;
 
 public class Card {
 

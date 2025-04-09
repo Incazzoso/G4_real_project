@@ -1,4 +1,4 @@
-package g4.group;
+package g4.group.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
