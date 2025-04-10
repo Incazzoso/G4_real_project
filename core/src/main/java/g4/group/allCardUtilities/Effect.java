@@ -2,8 +2,8 @@ package g4.group.allCardUtilities;
 
 public class Effect {
     private boolean onFire;
-    private boolean penetrated;
-    private boolean chaiFire;
+    private boolean piercing;
+    private boolean chainFire;
     private boolean multiTarget;
     private boolean reinforced;
     private boolean vengence;
@@ -12,16 +12,13 @@ public class Effect {
     private boolean interference;
     private boolean airAttack;
     private boolean isOnFire = false;
-    private boolean isPenetrated = false;
-    private boolean isReinforced = false;
-    private boolean isVengence = false;
     private boolean isSinkeing = false;
     private boolean isInterference = false;
 
-    public Effect(boolean onFire, boolean penetrated, boolean chaiFire, boolean multiTarget, boolean reinforced, boolean vengence, boolean sinkeing, boolean advanceManouver, boolean interference, boolean airAttack) {
+    public Effect(boolean onFire, boolean piercing, boolean chainFire, boolean multiTarget, boolean reinforced, boolean vengence, boolean sinkeing, boolean advanceManouver, boolean interference, boolean airAttack) {
         this.onFire = onFire;
-        this.penetrated = penetrated;
-        this.chaiFire = chaiFire;
+        this.piercing = piercing;
+        this.chainFire = chainFire;
         this.multiTarget = multiTarget;
         this.reinforced = reinforced;
         this.vengence = vengence;
@@ -40,19 +37,19 @@ public class Effect {
     }
 
     public boolean isPenetrated() {
-        return penetrated;
+        return piercing;
     }
 
     public void setPenetrated(boolean penetrated) {
-        this.penetrated = penetrated;
+        this.piercing = penetrated;
     }
 
-    public boolean isChaiFire() {
-        return chaiFire;
+    public boolean isChainFire() {
+        return chainFire;
     }
 
-    public void setChaiFire(boolean chaiFire) {
-        this.chaiFire = chaiFire;
+    public void setChainFire(boolean chainFire) {
+        this.chainFire = chainFire;
     }
 
     public boolean isMultiTarget() {
@@ -115,46 +112,22 @@ public class Effect {
     }
 
     public void setIsOnFire(boolean isOnFire) {
-        this.isOnFire = isOnFire;
-    }
-
-    public boolean isisPenetrated() {
-        return isPenetrated;
-    }
-
-    public void setisPenetrated(boolean isPenetrated) {
-        this.isPenetrated = isPenetrated;
-    }
-
-    public boolean isisReinforced() {
-        return isReinforced;
-    }
-
-    public void setIsReinforced(boolean isReinforced) {
-        this.isReinforced = isReinforced;
-    }
-
-    public boolean isisVengence() {
-        return isVengence;
-    }
-
-    public void setisVengence(boolean isVengence) {
-        this.isVengence = isVengence;
+        this.isOnFire=isOnFire;
     }
 
     public boolean isisSinkeing() {
         return isSinkeing;
     }
 
-    public void setisSinkeing(boolean onFire) {
-        this.isSinkeing = isSinkeing;
+    public void setisSinkeing(boolean isSinkeing) {
+        this.isSinkeing=isSinkeing;
     }
 
     public boolean isisInterference() {
         return isInterference;
     }
 
-    public void setisInterference(boolean onFire) {
-        this.isInterference = isInterference;
+    public void setisInterference(boolean isInterference) {
+        this.isInterference=isInterference;
     }
 }
