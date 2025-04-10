@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 public class Hand {
     private ArrayList<Card> hand;
+    private Effect ef;
 
-    Hand(){
-        hand = new ArrayList<Card>();
+    public Hand(ArrayList<Card> hand, Effect ef) {
+        this.hand = hand;
+        this.ef = ef;
     }
 
     public void addCard(Card card){
@@ -14,5 +16,16 @@ public class Hand {
     }
     public boolean removeCard(Card card){
         return hand.remove(card);
+    }
+
+    public Effect getEf() {
+        return ef;
+    }
+    public String getEff() {
+        return ef.toString();
+    }
+
+    public void setEf(Effect ef) {
+        this.ef = ef;
     }
 }

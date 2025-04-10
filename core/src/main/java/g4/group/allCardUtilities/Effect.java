@@ -130,4 +130,23 @@ public class Effect {
     public void setisInterference(boolean isInterference) {
         this.isInterference=isInterference;
     }
+
+    @Override
+    public String toString() {
+        return "Effect{" +
+            "onFire=" + onFire +
+            ", piercing=" + piercing +
+            ", chainFire=" + chainFire +
+            ", multiTarget=" + multiTarget +
+            ", reinforced=" + reinforced +
+            ", vengence=" + vengence +
+            ", sinkeing=" + sinkeing +
+            ", advanceManouver=" + advanceManouver +
+            ", interference=" + interference +
+            ", airAttack=" + airAttack +
+            ", isOnFire=" + isOnFire +
+            ", isSinkeing=" + isSinkeing +
+            ", isInterference=" + isInterference +
+            '}';
+    }
 }
