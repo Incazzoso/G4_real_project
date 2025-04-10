@@ -9,11 +9,9 @@ public class Effect {
     private boolean vengence;
     private boolean sinkeing;
     private boolean advanceManouver;
-    private boolean interference;
     private boolean airAttack;
     private boolean isOnFire = false;
     private boolean isSinkeing = false;
-    private boolean isInterference = false;
 
     public Effect(boolean onFire, boolean piercing, boolean chainFire, boolean multiTarget, boolean reinforced, boolean vengence, boolean sinkeing, boolean advanceManouver, boolean interference, boolean airAttack) {
         this.onFire = onFire;
@@ -24,7 +22,6 @@ public class Effect {
         this.vengence = vengence;
         this.sinkeing = sinkeing;
         this.advanceManouver = advanceManouver;
-        this.interference = interference;
         this.airAttack = airAttack;
     }
 
@@ -92,14 +89,6 @@ public class Effect {
         this.advanceManouver = advanceManouver;
     }
 
-    public boolean isInterference() {
-        return interference;
-    }
-
-    public void setInterference(boolean interference) {
-        this.interference = interference;
-    }
-
     public boolean isAirAttack() {
         return airAttack;
     }
@@ -123,14 +112,6 @@ public class Effect {
         this.isSinkeing=isSinkeing;
     }
 
-    public boolean isisInterference() {
-        return isInterference;
-    }
-
-    public void setisInterference(boolean isInterference) {
-        this.isInterference=isInterference;
-    }
-
     @Override
     public String toString() {
         return "Effect{" +
@@ -142,11 +123,9 @@ public class Effect {
             ", vengence=" + vengence +
             ", sinkeing=" + sinkeing +
             ", advanceManouver=" + advanceManouver +
-            ", interference=" + interference +
             ", airAttack=" + airAttack +
             ", isOnFire=" + isOnFire +
             ", isSinkeing=" + isSinkeing +
-            ", isInterference=" + isInterference +
             '}';
     }
 }
