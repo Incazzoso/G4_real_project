@@ -139,12 +139,13 @@ public class StartMenu implements Screen {
         if(index == 1){
             game.setScreen(new EditMenu());
         }
-
+        */
         //APRI LE OPZIONI
         if(index == 2){
-            game.setScreen(new SettingMenu());
+            new SettingsMenu().show();
+            this.pause();
         }
-        */
+
 
         //USCITA DAL PROGRAMMA
         if(index == 3){
