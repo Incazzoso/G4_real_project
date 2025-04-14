@@ -134,16 +134,15 @@ public class StartMenu implements Screen {
             game.setScreen(new GameScreen());
         }
 
-        /*
+
         //EDITA IL DECK
         if(index == 1){
-            game.setScreen(new EditMenu());
+            game.setScreen(new EditMenu(game));
         }
-        */
+
         //APRI LE OPZIONI
         if(index == 2){
-            new SettingsMenu().show();
-            this.pause();
+            game.setScreen(new SettingMenu(game));
         }
 
 

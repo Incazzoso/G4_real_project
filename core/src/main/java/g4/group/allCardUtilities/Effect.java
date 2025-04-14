@@ -1,8 +1,8 @@
 package g4.group.allCardUtilities;
 
 public class Effect {
-    private boolean burn;
-    private boolean pierce;
+    private boolean onFire;
+    private boolean penetrated;
     private boolean chaiFire;
     private boolean multiTarget;
     private boolean reinforced;
@@ -11,7 +11,6 @@ public class Effect {
     private boolean advanceManouver;
     private boolean interference;
     private boolean airAttack;
-
     private boolean isOnFire = false;
     private boolean isPenetrated = false;
     private boolean isReinforced = false;
@@ -19,21 +18,9 @@ public class Effect {
     private boolean isSinkeing = false;
     private boolean isInterference = false;
 
-    public Effect(){
-        burn = false;
-        pierce = false;
-        chaiFire = false;
-        multiTarget = false;
-        reinforced = false;
-        vengence = false;
-        sinkeing = false;
-        advanceManouver = false;
-        interference = false;
-        airAttack = false;
-    }
-    public Effect(boolean burn, boolean pierce, boolean chaiFire, boolean multiTarget, boolean reinforced, boolean vengence, boolean sinkeing, boolean advanceManouver, boolean interference, boolean airAttack) {
-        this.burn = burn;
-        this.pierce = pierce;
+    public Effect(boolean onFire, boolean penetrated, boolean chaiFire, boolean multiTarget, boolean reinforced, boolean vengence, boolean sinkeing, boolean advanceManouver, boolean interference, boolean airAttack) {
+        this.onFire = onFire;
+        this.penetrated = penetrated;
         this.chaiFire = chaiFire;
         this.multiTarget = multiTarget;
         this.reinforced = reinforced;
@@ -44,20 +31,20 @@ public class Effect {
         this.airAttack = airAttack;
     }
 
-    public boolean burn() {
-        return burn;
+    public boolean isOnFire() {
+        return onFire;
     }
 
     public void setOnFire(boolean onFire) {
-        this.burn = burn;
+        this.onFire = onFire;
     }
 
     public boolean isPenetrated() {
-        return pierce;
+        return penetrated;
     }
 
     public void setPenetrated(boolean penetrated) {
-        this.pierce = penetrated;
+        this.penetrated = penetrated;
     }
 
     public boolean isChaiFire() {
