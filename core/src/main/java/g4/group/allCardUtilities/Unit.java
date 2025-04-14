@@ -1,7 +1,12 @@
 package g4.group.allCardUtilities;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 public class Unit extends Card {
     private Effect effect;
+    private Texture texture;
+    private Image image;
 
     //costruttori:
 

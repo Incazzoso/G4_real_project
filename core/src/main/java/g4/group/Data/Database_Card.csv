@@ -1,2 +1,9 @@
-name	health	damage	cost	description
-gino	1	2	3	ciaone
+name;health;damage;cost;description;canBurn;canPiercing
+Bismarck;8;4;6;the pride of a nation a beast made of steel, the flagship of hitler's navy itself, the terror of the seas. Bismarck in motion;false;true
+tirpiz;4;4;3;the second of the two ship of the bismarck-class compared to is older sister it as less resistant armor but it as the same gun;true;false
+Lützow;5;3;3;originaly named Deutschland it was the last heavy cruisers to be sink in battle in the april of 1945;false;false
+Prinz Eugen;3;3;3;the prinz eugen is the only heavy cruisers to have on board both HE an AP shell;true;true
+Leipzig & Nürnberg;6;2;4;all of the Leipzig-class ship the leipzig have HE shell and the Nürnberg have AP shell;true;true
+U-47;1;5;3;U-Boot comandato da Günther Prien, noto per il suo affondamento della corazzata britannica HMS Royal Oak nel 1939;false;true
+wolfpack;3;4;4;a formidable formation of 5 U-boot capable of hunting and sinking al ship if it wasn't for turin;false;false
+Z-30 & Z-52;4;2;3;Cacciatorpedinieri della classe 1936A, parteciparono a numerosi combattimenti nel Mare del Nord

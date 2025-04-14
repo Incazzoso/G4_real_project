@@ -31,7 +31,7 @@ public class DatabaseCard {
 
                 //leggi finchè c'è da leggere
                 while(line != null){
-                    String[] token = line.split("\t");      //il csv usa il \t per separare i campi
+                    String[] token = line.split(";");      //il csv usa il \t per separare i campi
                     if(token.length == 7){
 
                         //dati per la classe "Card"
