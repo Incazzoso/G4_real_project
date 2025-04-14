@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class DatabaseCard {
     private BufferedReader reader;
     private File database;              //il luogo da dove vengono raccolte le carte
-    private ArrayList<Card> cards;      //tutte le carte caricate per l'utilizzo
+    private ArrayList<Unit> cards;      //tutte le carte caricate per l'utilizzo
     DatabaseCard(){
 
         //controllo se esiste il file
@@ -32,13 +32,23 @@ public class DatabaseCard {
                 //leggi finchè c'è da leggere
                 while(line != null){
                     String[] token = line.split("\t");      //il csv usa il \t per separare i campi
-                    if(token.length == 5){
+                    if(token.length == 7){
+
+                        //dati per la classe "Card"
                         String name = token[0];
                         int health = Integer.parseInt(token[1]);
                         int damage= Integer.parseInt(token[2]);
                         int cost = Integer.parseInt(token[3]);
                         String description = token[4];
-                        cards.add(new Card(name, health, damage, cost, description));       //aggiunta al database
+                        Card card = new Card(name, health,damage,cost,description);
+
+                        //dati per la classe "Effect"
+                        boolean canBurn = Boolean.parseBoolean(token[5]);
+                        boolean canPiercing = Boolean.parseBoolean(token[6]);
+                        Effect effect = new Effect(canBurn, canPiercing);
+
+
+                        cards.add(new Unit(card, effect));       //aggiunta al database
                     }else{
                         System.err.println("riga formata in modo errato");
                     }
