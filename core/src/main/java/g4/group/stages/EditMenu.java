@@ -42,8 +42,8 @@ public class EditMenu implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        image = new Texture("assets/sprite/tavolo_build_deck.png");
         imageExt= new Texture("assets/sprite/tavolo_build_deck2.png");
+        deckimg= new Texture("assets/sprite/card.png");
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         table = new Table();
@@ -66,12 +66,13 @@ public class EditMenu implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
         batch.begin();
-        batch.draw(image, 0, 270);
-        batch.draw(image, 361, 270);
-        batch.draw(image, (361+361), 270);
+        batch.draw(imageExt, 0, 400);
+        batch.draw(imageExt, 361, 400);
+        batch.draw(imageExt, (361+361), 400);
         batch.draw(imageExt, 0, 0);
         batch.draw(imageExt, 361, 0);
         batch.draw(imageExt, (361+361), 0);
+        batch.draw(deckimg, 0, 0);
         batch.end();
 
         Gdx.gl.glClearColor(0,0,0,1);
