@@ -72,7 +72,7 @@ public class EditMenu implements Screen {
         batch.draw(imageExt, 0, 0);
         batch.draw(imageExt, 361, 0);
         batch.draw(imageExt, (361+361), 0);
-        batch.draw(deckimg, 0, 0);
+        batch.draw(deckimg, 450,752 );
         batch.end();
 
         Gdx.gl.glClearColor(0,0,0,1);
