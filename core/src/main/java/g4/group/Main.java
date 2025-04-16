@@ -1,22 +1,22 @@
 package g4.group;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Main extends ApplicationAdapter {
+import com.badlogic.gdx.Game;
+import g4.group.stages.StartMenu;
+
+public class Main extends Game {
     StartMenu startMenu;
 
     @Override
     public void create() {
-        startMenu = new StartMenu();
-        startMenu.show();
+        startMenu = new StartMenu(this);
+        setScreen(startMenu);
     }
 
     @Override
     public void render() {
-        startMenu.render(Gdx.graphics.getDeltaTime());
+        super.render();
     }
-
 
     @Override
     public void dispose() {
