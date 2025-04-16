@@ -9,10 +9,15 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class EditMenu implements Screen {
@@ -25,7 +30,7 @@ public class EditMenu implements Screen {
 
     private Batch batch;
     private Texture image;
-
+    private Texture deckimg;
     private  Stage stage;
     private  Skin texture;
     private  Table table;
@@ -34,8 +39,7 @@ public class EditMenu implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        image = new Texture("sprite/Menu_game_bg.png");
-
+        image = new Texture("assets/sprite/tavolo_build_deck.png");
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         table = new Table();
@@ -58,7 +62,9 @@ public class EditMenu implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
         batch.begin();
-        batch.draw(image, 0, 0);
+        batch.draw(image, 0, -290);
+        batch.draw(image, 361, -290);
+
         batch.end();
 
         Gdx.gl.glClearColor(0,0,0,1);
