@@ -10,11 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -38,6 +36,9 @@ public class EditMenu implements Screen {
     private  Skin texture;
     private  Table table;
     TextButton button;
+    private Image actor= new Image(new Texture("assets/sprite/stageactorcontainerprova.png"));
+
+
 
     @Override
     public void show() {
@@ -49,10 +50,15 @@ public class EditMenu implements Screen {
         table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-
         texture = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
         button = new TextButton("Return", texture);
         table.add(button);
+        stage.addActor(actor);
+        actor.addListener(new DragListener() {
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                actor.moveBy(x - actor.getWidth() / 2, y - actor.getHeight() / 2);
+            }
+        });
 
         button.addListener(new ClickListener() {
             @Override
@@ -66,19 +72,16 @@ public class EditMenu implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
         batch.begin();
-        batch.draw(imageExt, 0, 400);
-        batch.draw(imageExt, 361, 400);
-        batch.draw(imageExt, (361+361), 400);
         batch.draw(imageExt, 0, 0);
-        batch.draw(imageExt, 361, 0);
-        batch.draw(imageExt, (361+361), 0);
         batch.draw(deckimg, 450,752 );
         batch.end();
 
         Gdx.gl.glClearColor(0,0,0,1);
         stage.act(delta);
         stage.draw();
+        actor.setPosition(50,50);
     }
+
 
     @Override
     public void resize(int width, int height) {}
