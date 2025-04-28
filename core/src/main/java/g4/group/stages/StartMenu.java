@@ -64,7 +64,8 @@ public class StartMenu implements Screen {
         buttons[3] = new TextButton("Exit", texture);
 
         for (int i = 0; i < buttons.length; i++) {
-            table.add(buttons[i]).pad(10).row();
+            buttons[i].setSize(200, 50); // Larghezza 200, altezza 50
+            table.add(buttons[i]).pad(10).size(200, 50).row();
             final int index = i;
 
             buttons[i].addListener(new ClickListener() {
