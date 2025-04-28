@@ -14,7 +14,6 @@ public class IAControl {
 
     private int energy;
 
-    //GAMESTATE
     GameState gameState;
 
     private Random rand;
@@ -44,6 +43,7 @@ public class IAControl {
         this.energy++;
     }
 
+    //FASI DI GIOCO
     public void IATurn() {
         switch(gameState.getCurrentPhase()){
             //DRAW
