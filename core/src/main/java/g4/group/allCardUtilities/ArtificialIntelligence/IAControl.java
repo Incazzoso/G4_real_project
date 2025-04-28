@@ -10,8 +10,10 @@ import java.util.Random;
 
 public class IAControl {
     private String name;
-    private int energy;
     private Hand iaHand;
+
+    private int energy;
+    //public int maxEnergy;
 
     //GAMESTATE
     GameState gameState;
@@ -25,8 +27,10 @@ public class IAControl {
         this.iaHand = iaHand;
         this.gameState = gameState;
         rand = new Random();
+        this.energy = 3;
     }
 
+    //ENERGIA
     public String getName() {
         return name;
     }
@@ -39,9 +43,12 @@ public class IAControl {
         this.energy = energy;
     }
 
-    //TODO: prende dati dalla classe di gioco e usando lo switch case si fa in modo che l'ia si muove nelle fasi di gioco
+    public void incrementEnergy(){
+        this.energy++;
+    }
+
     public void IATurn() {
-        switch(int phase){
+        switch(gameState.getCurrentPhase()){
             //DRAW
             case 1:
                 drawCard();
@@ -124,7 +131,6 @@ public class IAControl {
     public void randomAttack(List<Unit> aiUnits, List<Unit> playerUnits){
         for(Unit attacker : aiUnits){
             if(playerUnits.isEmpty()){
-                //TODO: richiede funzioni della partita per continuare
                 gameState.directAttackEnemy(attacker.getDamage());
             }else{
                 Unit target = playerUnits.get(rand.nextInt(playerUnits.size()));
@@ -138,6 +144,6 @@ public class IAControl {
 
     //FINE TURNO
     public void endPhase(){
-        //AGGIUNGERE ENERGIA O NO
+        incrementEnergy();
     }
 }
