@@ -13,17 +13,14 @@ public class IAControl {
     private Hand iaHand;
 
     private int energy;
-    //public int maxEnergy;
 
     //GAMESTATE
     GameState gameState;
 
     private Random rand;
 
-    //TODO: aggiungere collegamento alla classe di gioco
-
     public IAControl(Hand iaHand, GameState gameState) {
-        name = "Pippo";
+        name = "NavIgor";
         this.iaHand = iaHand;
         this.gameState = gameState;
         rand = new Random();
