@@ -5,27 +5,29 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Unit extends Card {
     private Effect effect;
-    private Texture texture;
     private Image image;
 
     //costruttori:
 
     //costruttore normal
-    Unit(String name, int health, int damage, int cost, Effect effect){
+    Unit(String name, int health, int damage, int cost, Effect effect,String imgPath){
         super(name, health, damage, cost);
         this.effect = effect;
+        this.image=new Image(new Texture(imgPath));
     }
 
     //costruttore esteso
-    Unit(String name, int health, int damage, int cost, Effect effect, String description) {
+    Unit(String name, int health, int damage, int cost, Effect effect, String description,String imgPath) {
         super(name, health, damage, cost, description);
         this.effect = effect;
+        this.image=new Image(new Texture(imgPath));
     }
 
     //costruttore compresso
-    Unit(Card card, Effect effect){
+    Unit(Card card, Effect effect,String imgPath){
         super(card.getName(), card.getHealth(), card.getDamage(), card.getCost(), card.getDescription());
         this.effect = effect;
+        this.image=new Image(new Texture(imgPath));
     }
 
 

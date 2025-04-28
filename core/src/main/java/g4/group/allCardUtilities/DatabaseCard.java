@@ -32,7 +32,7 @@ public class DatabaseCard {
                 //leggi finchè c'è da leggere
                 while(line != null){
                     String[] token = line.split(";");      //il csv usa il \t per separare i campi
-                    if(token.length == 7){
+                    if(token.length == 8){
 
                         //dati per la classe "Card"
                         String name = token[0];
@@ -45,10 +45,13 @@ public class DatabaseCard {
                         //dati per la classe "Effect"
                         boolean canBurn = Boolean.parseBoolean(token[5]);
                         boolean canPiercing = Boolean.parseBoolean(token[6]);
+
+                        //dati per l'immagine
+                        String imgPath = token[7];
                         Effect effect = new Effect(canBurn, canPiercing);
 
 
-                        cards.add(new Unit(card, effect));       //aggiunta al database
+                        cards.add(new Unit(card, effect, imgPath));       //aggiunta al database
                     }else{
                         System.err.println("riga formata in modo errato");
                     }

@@ -13,12 +13,16 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.ScreenUtils;
+import g4.group.allCardUtilities.Card;
+
+import java.util.ArrayList;
 
 public class EditMenu implements Screen {
 
@@ -28,6 +32,7 @@ public class EditMenu implements Screen {
         this.game = game;
     }
 
+    private ArrayList<Card>  allCards = new ArrayList<Card>();
     private Batch batch;
     private Texture image;
     private Texture imageExt;
@@ -54,9 +59,25 @@ public class EditMenu implements Screen {
         button = new TextButton("Return", texture);
         table.add(button);
         stage.addActor(actor);
-        actor.addListener(new DragListener() {
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                actor.moveBy(x - actor.getWidth() / 2, y - actor.getHeight() / 2);
+
+        final DragAndDrop dragAndDrop = new DragAndDrop();
+        dragAndDrop.addSource(new DragAndDrop.Source(actor) {
+            @Override
+            public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                payload.setDragActor(actor); // Setting the actor to be dragged
+                dragAndDrop.setDragActorPosition(x,y-190);
+                return payload;
+            }
+
+            public void dragStop(InputEvent event, float x, float y, int pointer, DragAndDrop.Target target) {
+                float newX = Math.max(0, Math.min(event.getStageX() - actor.getWidth() / 2, stage.getWidth() - actor.getWidth()));
+                float newY = Math.max(0, Math.min(event.getStageY() - actor.getHeight() / 2, stage.getHeight() - actor.getHeight()));
+                actor.setPosition(newX, newY);
+
+                if (actor.getStage() == null) {
+                    stage.addActor(actor);
+                }
             }
         });
 
@@ -79,7 +100,6 @@ public class EditMenu implements Screen {
         Gdx.gl.glClearColor(0,0,0,1);
         stage.act(delta);
         stage.draw();
-        actor.setPosition(50,50);
     }
 
 
