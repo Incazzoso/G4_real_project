@@ -13,9 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
@@ -41,12 +39,18 @@ public class EditMenu implements Screen {
     private  Skin texture;
     private  Table table;
     TextButton button;
-    private Image actor= new Image(new Texture("assets/sprite/stageactorcontainerprova.png"));
-
-
+    private int x=30;
+    private int y=350;
+    private Image actor= new Image(new Texture("assets/sprite/imgCardo/iloveimg-resized/Bismark.png"));
+    private Image actor2= new Image(new Texture("assets/sprite/imgCardo/iloveimg-resized/Leipzig & Nürnberg.png"));
+    private Image actor3= new Image(new Texture("assets/sprite/imgCardo/iloveimg-resized/Lützow.png"));
+    private Image actor4= new Image(new Texture("assets/sprite/imgCardo/iloveimg-resized/Prinz Eugen.png"));
+    private ArrayList<Image> test =new ArrayList<Image>();
+    private ArrayList<DragAndDrop> testdrg =new ArrayList<DragAndDrop>();
 
     @Override
     public void show() {
+        int cont;
         batch = new SpriteBatch();
         imageExt= new Texture("assets/sprite/tavolo_build_deck2.png");
         deckimg= new Texture("assets/sprite/card.png");
@@ -57,29 +61,48 @@ public class EditMenu implements Screen {
         stage.addActor(table);
         texture = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
         button = new TextButton("Return", texture);
-        table.add(button);
-        stage.addActor(actor);
-
-        final DragAndDrop dragAndDrop = new DragAndDrop();
-        dragAndDrop.addSource(new DragAndDrop.Source(actor) {
-            @Override
-            public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
-                DragAndDrop.Payload payload = new DragAndDrop.Payload();
-                payload.setDragActor(actor); // Setting the actor to be dragged
-                dragAndDrop.setDragActorPosition(x,y-190);
-                return payload;
-            }
-
-            public void dragStop(InputEvent event, float x, float y, int pointer, DragAndDrop.Target target) {
-                float newX = Math.max(0, Math.min(event.getStageX() - actor.getWidth() / 2, stage.getWidth() - actor.getWidth()));
-                float newY = Math.max(0, Math.min(event.getStageY() - actor.getHeight() / 2, stage.getHeight() - actor.getHeight()));
-                actor.setPosition(newX, newY);
-
-                if (actor.getStage() == null) {
-                    stage.addActor(actor);
+        table.add(button).padTop(-715).padLeft(-625).align(Align.center);
+        test.add(actor);
+        test.add(actor2);
+        test.add(actor3);
+        test.add(actor4);
+        DragAndDrop dragAndDrop;
+        cont=0;
+        for (Image I : test) {
+            dragAndDrop = new DragAndDrop();
+            DragAndDrop finalDragAndDrop = dragAndDrop;
+            dragAndDrop.addSource(new DragAndDrop.Source(I) {
+                @Override
+                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                    payload.setDragActor(I);
+                    finalDragAndDrop.setDragActorPosition(x,y-400);
+                    return payload;
                 }
+
+                public void dragStop(InputEvent event, float x, float y, int pointer, DragAndDrop.Target target) {
+                    float newX = Math.max(0, Math.min(event.getStageX() - I.getWidth() / 2, stage.getWidth() - I.getWidth()));
+                    float newY = Math.max(0, Math.min(event.getStageY() - I.getHeight() / 2, stage.getHeight() - I.getHeight()));
+                    actor.setPosition(newX, newY);
+
+                    if (actor.getStage() == null) {
+                        stage.addActor(I);
+                    }
+                }
+            });
+            I.setPosition(x,y);
+            stage.addActor(I);
+            testdrg.add(dragAndDrop);
+            if(cont == 2){
+                cont=0;
+                x=30;
+                y=y-350;
+            }else{
+                cont++;
+                x=x+340;
             }
-        });
+
+        }
 
         button.addListener(new ClickListener() {
             @Override
@@ -96,7 +119,6 @@ public class EditMenu implements Screen {
         batch.draw(imageExt, 0, 0);
         batch.draw(deckimg, 450,752 );
         batch.end();
-
         Gdx.gl.glClearColor(0,0,0,1);
         stage.act(delta);
         stage.draw();
