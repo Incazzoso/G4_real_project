@@ -44,7 +44,7 @@ public class Unit extends Card {
     public int attack(Unit enemy){
 
         //controllo effetti primari
-        if(effect.canPiercing()){
+        if(effect.canPiercing()==false){
             enemy.setHealth(enemy.getHealth() - this.getDamage());
         }else {
             enemy.setHealth(enemy.getHealth() - this.getDamage() * 2);
