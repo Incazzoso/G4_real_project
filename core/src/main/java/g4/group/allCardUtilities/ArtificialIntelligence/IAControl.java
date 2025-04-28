@@ -2,6 +2,7 @@ package g4.group.allCardUtilities.ArtificialIntelligence;
 
 import g4.group.allCardUtilities.Hand;
 import g4.group.allCardUtilities.Unit;
+import g4.group.stages.State.GameState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +11,19 @@ import java.util.Random;
 public class IAControl {
     private String name;
     private int energy;
-
     private Hand iaHand;
+
+    //GAMESTATE
+    GameState gameState;
 
     private Random rand;
 
     //TODO: aggiungere collegamento alla classe di gioco
 
-    public IAControl(Hand iaHand) {
+    public IAControl(Hand iaHand, GameState gameState) {
         name = "Pippo";
         this.iaHand = iaHand;
+        this.gameState = gameState;
         rand = new Random();
     }
 
@@ -37,7 +41,7 @@ public class IAControl {
 
     //TODO: prende dati dalla classe di gioco e usando lo switch case si fa in modo che l'ia si muove nelle fasi di gioco
     public void IATurn() {
-        switch(){
+        switch(int phase){
             //DRAW
             case 1:
                 drawCard();
@@ -59,13 +63,12 @@ public class IAControl {
 
     //PESCA
     public void drawCard() {
-        //TODO: richiede funzioni della partita per continuare
-        /*if (gameState != null && gameState.getAIDeckSize() > 0) {
-            Unit drawnCard = gameState.drawAIcard();
+        if (gameState != null && gameState.getEnemyDeckSize() > 0) {
+            Unit drawnCard = gameState.drawEnemycard();
             if (drawnCard != null) {
                 iaHand.addCard(drawnCard);
             }
-        }*/
+        }
     }
 
     //GIOCA
@@ -94,37 +97,35 @@ public class IAControl {
         return playable;
     }
 
-    public void selectCard(List<Unit> card){
-        return card.get(rand.nextInt(card.size()));
+    public void selectCard(List<Unit> playableCard){
+        return playableCard.get(rand.nextInt(playableCard.size()));
     }
 
     public void playCard(Unit card){
         if(card != null && card.getCost() <= energy){
             energy -= card.getCost();
             iaHand.removeCard(card);
-            //TODO: richiede funzioni della partita per continuare
-
+            gameState.addEnemyOnField(card);
         }
     }
 
     //ATTACCA
     public void battlePhase() {
-        //TODO: richiede funzioni della partita per continuare
-        /*List<Unit> aiUnits = gameState.getAIUnitsOnField();
-        List<Unit> playerUnits = gameState.getPlayerUnitsOnField();*/
+        List<Unit> aiUnits = gameState.getEnemyField();
+        List<Unit> playerUnits = gameState.getPlayerUnitsOnField();
 
-        //if (aiUnits.isEmpty()){
-        // return
-        // };
+        if (aiUnits.isEmpty()){
+         return;
+        };
 
-        randomAttack(/*aiUnits, playerUnits*/);
+        randomAttack(aiUnits, playerUnits);
     }
 
     public void randomAttack(List<Unit> aiUnits, List<Unit> playerUnits){
         for(Unit attacker : aiUnits){
             if(playerUnits.isEmpty()){
                 //TODO: richiede funzioni della partita per continuare
-                //gameState.directAttack(attacker.getDamage());
+                gameState.directAttackEnemy(attacker.getDamage());
             }else{
                 Unit target = playerUnits.get(rand.nextInt(playerUnits.size()));
                 attacker.attack(target);
