@@ -87,7 +87,7 @@ public class IAControl {
     }
 
     //AGGIUNTA CARTA ALLA LISTA
-    private List<Unit> getPlayableCard() {
+    public List<Unit> getPlayableCard() {
         List<Unit> playable = new ArrayList<>();
         for(Unit unit : iaHand.getCards()){
             if(unit.getCost() <= energy){
@@ -97,7 +97,7 @@ public class IAControl {
         return playable;
     }
 
-    public void selectCard(List<Unit> playableCard){
+    public Unit selectCard(List<Unit> playableCard){
         return playableCard.get(rand.nextInt(playableCard.size()));
     }
 
