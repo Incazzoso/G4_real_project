@@ -10,7 +10,7 @@ public class DatabaseCard {
     private BufferedReader reader;
     private File database;              //il luogo da dove vengono raccolte le carte
     private ArrayList<Unit> cards;      //tutte le carte caricate per l'utilizzo
-    DatabaseCard(){
+    public DatabaseCard(){
 
         //controllo se esiste il file
         database = new File("Database_Card.csv");
@@ -70,5 +70,13 @@ public class DatabaseCard {
         for(int i = 0; i < cards.size(); i++){
             System.out.println(i +": "+ cards.get(i).getName());
         }
+    }
+
+    public ArrayList<Unit> getCards() {
+        return cards;
+    }
+
+    public void setCards(ArrayList<Unit> cards) {
+        this.cards = cards;
     }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Unit extends Card {
     private Effect effect;
+    private String path;
     private Image image;
 
     //costruttori:
@@ -13,6 +14,7 @@ public class Unit extends Card {
     Unit(String name, int health, int damage, int cost, Effect effect,String imgPath){
         super(name, health, damage, cost);
         this.effect = effect;
+        this.path=imgPath;
         this.image=new Image(new Texture(imgPath));
     }
 
@@ -20,6 +22,7 @@ public class Unit extends Card {
     Unit(String name, int health, int damage, int cost, Effect effect, String description,String imgPath) {
         super(name, health, damage, cost, description);
         this.effect = effect;
+        this.path=imgPath;
         this.image=new Image(new Texture(imgPath));
     }
 
@@ -27,11 +30,25 @@ public class Unit extends Card {
     Unit(Card card, Effect effect,String imgPath){
         super(card.getName(), card.getHealth(), card.getDamage(), card.getCost(), card.getDescription());
         this.effect = effect;
+        this.path=imgPath;
         this.image=new Image(new Texture(imgPath));
     }
 
+    public String getPath() {
+        return path;
+    }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
 
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
 
     public Effect getEffect() {
         return effect;
