@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -30,6 +28,15 @@ public class SettingMenu implements Screen {
     private  Table table;
     TextButton button;
 
+    //VOLUME of MUSIC & EFFECT
+    private float volMusic = 0.75f;
+    private Slider volMSlider;
+    private Label volMname;
+
+    private float volEffect = 0.75f;
+    private  Slider volESlider;
+    private Label volEname;
+
     @Override
     public void show() {
         batch = new SpriteBatch();
@@ -43,7 +50,44 @@ public class SettingMenu implements Screen {
         stage.addActor(table);
 
         texture = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
+
+        //MUSIC
+        volMname = new Label("Music Volume: " + volMusic, texture);
+        volMSlider = new Slider(0, 100, 1f, false, texture);
+        volMSlider.setValue(volMusic);
+
+        table.add(volMname).pad(10).row();
+        table.add(volMSlider).pad(10).row();
+
+        volMSlider.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                volMusic = volMSlider.getValue();
+                volMname.setText("Music Volume: " + volMusic);
+            }
+        });
+
+        //EFFECT
+        volEname = new Label("Effect Volume: " + volEffect, texture);
+        volESlider = new Slider(0, 100, 1f, false, texture);
+        volESlider.setValue(volEffect);
+
+        table.add(volEname).pad(10).row();
+        table.add(volESlider).pad(10).row();
+
+        volESlider.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                volEffect = volESlider.getValue();
+                volEname.setText("Effect Volume: " + volEffect);
+            }
+        });
+
+        //RETURN BUTTON
         button = new TextButton("Return", texture);
+
         table.add(button);
 
         button.addListener(new ClickListener() {

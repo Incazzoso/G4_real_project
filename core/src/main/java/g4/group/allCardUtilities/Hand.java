@@ -15,4 +15,8 @@ public class Hand {
         return hand.remove(card);
     }
 
+    //GETTER
+    public ArrayList<Unit> getCards() {
+        return hand;
+    }
 }
