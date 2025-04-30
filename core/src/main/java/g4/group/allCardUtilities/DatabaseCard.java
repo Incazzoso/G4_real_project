@@ -15,7 +15,7 @@ public class DatabaseCard {
         //controllo se esiste il file
         database = new File("Database_Card.csv");
         if(database.exists()){
-
+            cards = new ArrayList<Unit>();
             //try catch per il reader
             try {
                 reader = new BufferedReader(new FileReader(database));

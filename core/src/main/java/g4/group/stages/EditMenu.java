@@ -35,7 +35,6 @@ public class EditMenu implements Screen {
     }
 
     private DatabaseCard dbcard;
-    private ArrayList<Image>  allCards = new ArrayList<Image>();
     private Batch batch;
     private Texture image;
     private Texture imageExt;
@@ -46,19 +45,16 @@ public class EditMenu implements Screen {
     TextButton button;
     private int x=30;
     private int y=350;
+    int cont = 0;
     private ArrayList<DragAndDrop> dad =new ArrayList<DragAndDrop>();
     Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/in-the-soul-of-night.mp3"));
 
     @Override
     public void show() {
-        int cont;
         music.setVolume(0.5f);                 // sets the volume to half the maximum volume
         music.setLooping(true);
         music.play();
         dbcard=new DatabaseCard();
-        for (Unit I : dbcard.getCards()) {
-            allCards.add(I.getImage());
-        }
         batch = new SpriteBatch();
         imageExt= new Texture("assets/sprite/tavolo_build_deck2.png");
         deckimg= new Texture("assets/sprite/card.png");
@@ -72,30 +68,30 @@ public class EditMenu implements Screen {
         table.add(button).padTop(-715).padLeft(-625).align(Align.center);
         DragAndDrop dragAndDrop;
         cont=0;
-        for (Image I : allCards) {
+        for (Unit I : dbcard.getCards()) {
             dragAndDrop = new DragAndDrop();
             DragAndDrop finalDragAndDrop = dragAndDrop;
-            dragAndDrop.addSource(new DragAndDrop.Source(I) {
+            dragAndDrop.addSource(new DragAndDrop.Source(I.getImage()) {
                 @Override
                 public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
                     DragAndDrop.Payload payload = new DragAndDrop.Payload();
-                    payload.setDragActor(I);
+                    payload.setDragActor(I.getImage());
                     finalDragAndDrop.setDragActorPosition(x,y-400);
                     return payload;
                 }
 
                 public void dragStop(InputEvent event, float x, float y, int pointer, DragAndDrop.Target target) {
-                    float newX = Math.max(0, Math.min(event.getStageX() - I.getWidth() / 2, stage.getWidth() - I.getWidth()));
-                    float newY = Math.max(0, Math.min(event.getStageY() - I.getHeight() / 2, stage.getHeight() - I.getHeight()));
-                    I.setPosition(newX, newY);
+                    float newX = Math.max(0, Math.min(event.getStageX() - I.getImage().getWidth() / 2, stage.getWidth() - I.getImage().getWidth()));
+                    float newY = Math.max(0, Math.min(event.getStageY() - I.getImage().getHeight() / 2, stage.getHeight() - I.getImage().getHeight()));
+                    I.getImage().setPosition(newX, newY);
 
-                    if (I.getStage() == null) {
-                        stage.addActor(I);
+                    if (I.getImage().getStage() == null) {
+                        stage.addActor(I.getImage());
                     }
                 }
             });
-            I.setPosition(x,y);
-            stage.addActor(I);
+            I.getImage().setPosition(x,y);
+            stage.addActor(I.getImage());
             dad.add(dragAndDrop);
             if(cont == 2){
                 cont=0;
