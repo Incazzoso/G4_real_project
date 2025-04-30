@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import g4.group.allCardUtilities.Card;
 import g4.group.allCardUtilities.DatabaseCard;
 import g4.group.allCardUtilities.Unit;
@@ -59,7 +60,7 @@ public class EditMenu implements Screen {
         batch = new SpriteBatch();
         imageExt= new Texture("assets/sprite/tavolo_build_deck2.png");
         deckimg= new Texture("assets/sprite/card.png");
-        stage = new Stage();
+        stage = new Stage(new FitViewport(1024, 980));
         Gdx.input.setInputProcessor(stage);
         table = new Table();
         table.setFillParent(true);
@@ -121,13 +122,16 @@ public class EditMenu implements Screen {
         batch.draw(deckimg, 450,752 );
         batch.end();
         Gdx.gl.glClearColor(0,0,0,1);
+        stage.getViewport().apply();
         stage.act(delta);
         stage.draw();
     }
 
 
     @Override
-    public void resize(int width, int height) {}
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
 
     @Override
     public void pause() {}

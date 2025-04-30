@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class SettingMenu implements Screen {
     private Game game;
@@ -42,8 +47,7 @@ public class SettingMenu implements Screen {
         batch = new SpriteBatch();
         image = new Texture("sprite/Menu_game_bg.png");
 
-
-        stage = new Stage();
+        stage = new Stage(new FitViewport(1024, 980));
         Gdx.input.setInputProcessor(stage);
         table = new Table();
         table.setFillParent(true);
@@ -106,12 +110,15 @@ public class SettingMenu implements Screen {
         batch.end();
 
         Gdx.gl.glClearColor(0,0,0,1);
+        stage.getViewport().apply();
         stage.act(delta);
         stage.draw();
     }
 
     @Override
-    public void resize(int width, int height) {}
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
 
     @Override
     public void pause() {}

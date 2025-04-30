@@ -47,7 +47,7 @@ public class StartMenu implements Screen {
         image = new Texture("sprite/Menu_game_bg.png");
 
         //INIZIO SCHERMATA D' INIZIO
-        stage = new Stage();
+        stage = new Stage(new FitViewport(1024, 980));
         Gdx.input.setInputProcessor(stage);
 
         table = new Table();
@@ -85,13 +85,14 @@ public class StartMenu implements Screen {
         batch.end();
 
         Gdx.gl.glClearColor(0,0,0,1);
+        stage.getViewport().apply();
         stage.act(delta);
         stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
