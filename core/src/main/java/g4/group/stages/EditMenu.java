@@ -35,7 +35,7 @@ public class EditMenu implements Screen {
     }
 
     private DatabaseCard dbcard;
-    private ArrayList<Unit>  allCards = new ArrayList<Unit>();
+    private ArrayList<Image>  allCards = new ArrayList<Image>();
     private Batch batch;
     private Texture image;
     private Texture imageExt;
@@ -56,7 +56,9 @@ public class EditMenu implements Screen {
         music.setLooping(true);
         music.play();
         dbcard=new DatabaseCard();
-        //allCards=dbcard.getCards();
+        for (Unit I : dbcard.getCards()) {
+            allCards.add(I.getImage());
+        }
         batch = new SpriteBatch();
         imageExt= new Texture("assets/sprite/tavolo_build_deck2.png");
         deckimg= new Texture("assets/sprite/card.png");
@@ -70,30 +72,30 @@ public class EditMenu implements Screen {
         table.add(button).padTop(-715).padLeft(-625).align(Align.center);
         DragAndDrop dragAndDrop;
         cont=0;
-        for (Unit I : dbcard.getCards()) {
+        for (Image I : allCards) {
             dragAndDrop = new DragAndDrop();
             DragAndDrop finalDragAndDrop = dragAndDrop;
-            dragAndDrop.addSource(new DragAndDrop.Source(I.getImage()) {
+            dragAndDrop.addSource(new DragAndDrop.Source(I) {
                 @Override
                 public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
                     DragAndDrop.Payload payload = new DragAndDrop.Payload();
-                    payload.setDragActor(I.getImage());
+                    payload.setDragActor(I);
                     finalDragAndDrop.setDragActorPosition(x,y-400);
                     return payload;
                 }
 
                 public void dragStop(InputEvent event, float x, float y, int pointer, DragAndDrop.Target target) {
-                    float newX = Math.max(0, Math.min(event.getStageX() - I.getImage().getWidth() / 2, stage.getWidth() - I.getImage().getWidth()));
-                    float newY = Math.max(0, Math.min(event.getStageY() - I.getImage().getHeight() / 2, stage.getHeight() - I.getImage().getHeight()));
-                    I.getImage().setPosition(newX, newY);
+                    float newX = Math.max(0, Math.min(event.getStageX() - I.getWidth() / 2, stage.getWidth() - I.getWidth()));
+                    float newY = Math.max(0, Math.min(event.getStageY() - I.getHeight() / 2, stage.getHeight() - I.getHeight()));
+                    I.setPosition(newX, newY);
 
-                    if (I.getImage().getStage() == null) {
-                        stage.addActor(I.getImage());
+                    if (I.getStage() == null) {
+                        stage.addActor(I);
                     }
                 }
             });
-            I.getImage().setPosition(x,y);
-            stage.addActor(I.getImage());
+            I.setPosition(x,y);
+            stage.addActor(I);
             dad.add(dragAndDrop);
             if(cont == 2){
                 cont=0;
