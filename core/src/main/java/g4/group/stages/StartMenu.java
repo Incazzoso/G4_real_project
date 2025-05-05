@@ -6,8 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -16,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import java.awt.*;
 
 public class StartMenu implements Screen {
     private SpriteBatch batch;
@@ -57,6 +61,10 @@ public class StartMenu implements Screen {
 
         //TODO: sistemare la texture prima di avviare
         Skin texture = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
+        Label lab= new Label("Not so battleship",texture);
+        lab.setFontScale(2);
+        lab.setAlignment(Align.center);
+        table.add(lab).pad(10).size(200, 50).row();
         buttons = new TextButton[4];
 
         buttons[0] = new TextButton("Play", texture);
