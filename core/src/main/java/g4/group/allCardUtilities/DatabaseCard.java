@@ -9,13 +9,13 @@ import java.util.ArrayList;
 public class DatabaseCard {
     private BufferedReader reader;
     private File database;              //il luogo da dove vengono raccolte le carte
-    private ArrayList<Unit> cards;      //tutte le carte caricate per l'utilizzo
+    private ArrayList<Unit> cards = new ArrayList<Unit>();;      //tutte le carte caricate per l'utilizzo
     public DatabaseCard(){
 
         //controllo se esiste il file
         database = new File("Database_Card.csv");
         if(database.exists()){
-            cards = new ArrayList<Unit>();
+
             //try catch per il reader
             try {
                 reader = new BufferedReader(new FileReader(database));
