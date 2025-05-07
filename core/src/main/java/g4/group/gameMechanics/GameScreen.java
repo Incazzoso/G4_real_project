@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -49,7 +50,14 @@ public class GameScreen implements Screen {
 
         // Creazione campo di battaglia
         battleField = new Group();
-        battleField.setPosition(100, 300); // Posizione sopra la mano
+        battleField.setSize(150,200);
+        Texture borderTexture = new Texture("assets/sprite/simple_border.png");
+        Image borderImage = new Image(borderTexture);
+
+        borderImage.setSize(battleField.getWidth(), battleField.getHeight());
+        battleField.addActor(borderImage);
+
+        battleField.setPosition(Gdx.graphics.getWidth() / 4.0f, Gdx.graphics.getHeight() / 4.0f); // Posizione sopra la mano
         stage.addActor(battleField);
 
         // Configura drag and drop
