@@ -1,3 +1,5 @@
+package g4.group.gameMechanics;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -11,15 +13,18 @@ import g4.group.allCardUtilities.Hand;
 import g4.group.allCardUtilities.MyProfile;
 import g4.group.allCardUtilities.Player;
 
+//gestisce il game mechanics
 public class GameManager {
 
+    //i player e che esegue il turno
     private Player player1, player2, currentPlayer;
     private Stage stage;
 
     public GameManager(Stage stage) {
         this.stage = stage;
         player1 = new MyProfile().getMyself();
-        player2 = new Player("Giocatore 2", new Hand());
+        //player2 = new Player("Giocatore 2", new Hand());   TEMPORANEAMENTE USERò UN ALTRO PROFILO FINO A QUANDO NON SI AGGIUNGERANNO I BOT
+        player2 = new MyProfile().getMyself();
         currentPlayer = player1; // Il primo turno parte con il Player 1
     }
 

@@ -23,6 +23,7 @@ public class MyProfile {
         return myself;
     }
 
+    //salva il tuo deck
     public void saveProfile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(data))) {
             writer.write("name;health;damage;cost;description;canBurn;canPiercing;imagepath\n"); // Intestazione CSV
@@ -42,6 +43,7 @@ public class MyProfile {
         }
     }
 
+    //carica il tuo deck
     public void loadProfile() {
         try {
             data = new File("core/src/main/java/g4/group/Data/MyProfileData.csv");
