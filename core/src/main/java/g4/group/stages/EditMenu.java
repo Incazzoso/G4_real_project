@@ -59,7 +59,7 @@ public class EditMenu implements Screen {
         // Create a scrollable table
         Table scrollableTable = new Table();
         scrollableTable.top().left(); // Align properly for scrolling
-
+        int cont =1;
         // Add cards to the scrollable table
         for (Unit I : dbcard.getCards()) {
             DragAndDrop dragAndDrop = new DragAndDrop();
@@ -77,20 +77,26 @@ public class EditMenu implements Screen {
                 }
             });
 
-            scrollableTable.add(I.getImage()).size(100, 150).pad(10);
-            scrollableTable.row();
+            scrollableTable.add(I.getImage()).size(275, 375).pad(10);
+            if (cont>=3) {
+                scrollableTable.row();
+                cont=0;
+            }
+            cont++;
             dad.add(dragAndDrop);
         }
-
+        scrollableTable.row();
+        Image im=new Image(imageExt);
+        scrollableTable.add(im).size(160, 160).pad(10);
         // Wrap the table inside a scroll pane
         ScrollPane scrollPane = new ScrollPane(scrollableTable);
-        scrollPane.setScrollingDisabled(false, false); // Enable both horizontal & vertical scrolling
+        scrollPane.setScrollingDisabled(true, false); // Enable both horizontal & vertical scrolling
 
         // Main layout
         mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.add(scrollPane).expand().fill(); // Make the scrollable area fill the available space
-
+        mainTable.setPosition(55,-270);
         // Return button
         button = new TextButton("Return", texture);
         button.addListener(new ClickListener() {
