@@ -62,28 +62,18 @@ public class EditMenu implements Screen {
         int cont =1;
         // Add cards to the scrollable table
         for (Unit I : dbcard.getCards()) {
-            DragAndDrop dragAndDrop = new DragAndDrop();
-            dragAndDrop.addSource(new DragAndDrop.Source(I.getImage()) {
+            I.getImage().addListener(new ClickListener(){
                 @Override
-                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
-                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
-                    payload.setDragActor(I.getImage());
-                    return payload;
-                }
-                public void dragStop(InputEvent event, float x, float y, int pointer, DragAndDrop.Target target) {
-                    if (I.getImage().getStage() == null) {
-                        stage.addActor(I.getImage());
-                    }
+                public void clicked(InputEvent event, float x, float y) {
+                    System.out.println("You clicked an image..."+I.getPath());
                 }
             });
-
             scrollableTable.add(I.getImage()).size(275, 375).pad(10);
             if (cont>=3) {
                 scrollableTable.row();
                 cont=0;
             }
             cont++;
-            dad.add(dragAndDrop);
         }
         scrollableTable.row();
         Image im=new Image(imageExt);
