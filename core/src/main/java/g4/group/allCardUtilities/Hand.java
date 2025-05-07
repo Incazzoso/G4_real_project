@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Hand {
     private ArrayList<Unit> hand = new ArrayList<Unit>();
 
-    public Hand(ArrayList<Unit> hand, Effect ef) {
+    public Hand(ArrayList<Unit> hand) {
         this.hand = hand;
     }
     public void addCard(Unit card){

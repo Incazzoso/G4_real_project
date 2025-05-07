@@ -18,8 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
-import java.awt.*;
+import g4.group.gameMechanics.GameScreen;
 
 public class StartMenu implements Screen {
     private SpriteBatch batch;

@@ -8,7 +8,12 @@ public class Player {
 
     Player(String name, Hand hand){
         this.name = name;
-        this.hand = hand;
+        if(hand.getCards().size() < 10)
+            this.hand = hand;
+    }
+
+    public Hand getHand() {
+        return hand;
     }
 
     public String getName() {
