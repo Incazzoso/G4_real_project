@@ -79,4 +79,8 @@ public class MyProfile {
             System.err.println("Errore nel caricamento del profilo!");
         }
     }
+
+    public Hand getMyDeck() {
+        return myself.getHand();
+    }
 }
