@@ -13,7 +13,7 @@ public class DatabaseCard {
     public DatabaseCard(){
 
         //controllo se esiste il file
-        database = new File("Database_Card.csv");
+        database = new File("core/src/main/java/g4/group/Data/Database_Card.csv");
         if(database.exists()){
 
             //try catch per il reader

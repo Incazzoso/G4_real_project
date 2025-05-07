@@ -1,5 +1,6 @@
 package g4.group.allCardUtilities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -31,7 +32,12 @@ public class Unit extends Card {
         super(card.getName(), card.getHealth(), card.getDamage(), card.getCost(), card.getDescription());
         this.effect = effect;
         this.path=imgPath;
-        this.image=new Image(new Texture(imgPath));
+        try {
+            this.image = new Image(new Texture(Gdx.files.internal(imgPath)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Errore nel caricamento dell'immagine: " + imgPath);
+        }
     }
 
     public String getPath() {
