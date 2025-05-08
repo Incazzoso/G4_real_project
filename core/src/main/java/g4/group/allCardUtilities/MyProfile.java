@@ -9,7 +9,7 @@ public class MyProfile {
     private File data;              //il luogo da dove vengono raccolte le carte
 
 
-    MyProfile(Player dataOfThePlayer){
+    public MyProfile(Player dataOfThePlayer){
         myself = dataOfThePlayer;
         saveProfile();
     }

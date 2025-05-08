@@ -10,45 +10,37 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import g4.group.allCardUtilities.CardActor;
-import g4.group.allCardUtilities.DatabaseCard;
-import g4.group.allCardUtilities.Unit;
-import g4.group.allCardUtilities.MyProfile;
+import g4.group.allCardUtilities.*;
 
 import java.util.ArrayList;
 
 public class EditMenu implements Screen {
 
     private final Game game;
+    private MyProfile deck;
     private DatabaseCard dbcard;
     private Batch batch;
     private Texture imageExt;
+    private Texture deckimg;
     private Stage stage;
     private Skin texture;
     private Table mainTable;
-    private TextButton returnButton;
-    private DragAndDrop dragAndDrop;
-    private Group deckZone;
-    private Group saveZone;
-    private Label confirmationLabel;
-    private Music music;
-    private MyProfile profile;
+    private TextButton button;
+    private ArrayList<Unit> dad = new ArrayList<Unit>();
+    private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/in-the-soul-of-night.mp3"));
 
     public EditMenu(Game game) {
         this.game = game;
-        this.profile = new MyProfile(); // Inizializza il profilo del giocatore
     }
 
     @Override
     public void show() {
         // Setup background music
-        music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/in-the-soul-of-night.mp3"));
         music.setVolume(0.5f);
         music.setLooping(true);
         music.play();
@@ -57,118 +49,72 @@ public class EditMenu implements Screen {
         dbcard = new DatabaseCard();
         batch = new SpriteBatch();
         imageExt = new Texture("assets/sprite/tavolo_build_deck2.png");
+        deckimg = new Texture("assets/sprite/card.png");
 
-        // Setup stage & UI
+        // Setup stage & skin
         stage = new Stage(new FitViewport(1024, 980));
         Gdx.input.setInputProcessor(stage);
         texture = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
+        Label lab= new Label("number of cards in the deck:",texture);
+        lab.setPosition(650,840);
+        stage.addActor(lab);
 
-        // Creazione della tavola di carte
+        // Create a scrollable table
         Table scrollableTable = new Table();
-        scrollableTable.top().left();
-        dragAndDrop = new DragAndDrop();
-
-        int cont = 1;
-        for (Unit card : dbcard.getCards()) {
-            CardActor cardActor = new CardActor(card, dragAndDrop);
-
-            cardActor.addListener(new ClickListener() {
+        scrollableTable.top().left(); // Align properly for scrolling
+        int cont =1;
+        // Add cards to the scrollable table
+        for (Unit I : dbcard.getCards()) {
+            I.getImage().addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    System.out.println("Selezionata: " + card.getName());
+                    dad.add(I);
+                    scrollableTable.removeActor(I.getImage());
+                    lab.setText("number of cards in the deck: "+dad.size());
                 }
             });
-
-            scrollableTable.add(cardActor).size(200, 300).pad(10);
-            if (cont >= 3) {
+            scrollableTable.add(I.getImage()).size(275, 375).pad(10);
+            if (cont>=3) {
                 scrollableTable.row();
-                cont = 0;
+                cont=0;
             }
             cont++;
         }
-
-        // ScrollPane per le carte
+        scrollableTable.row();
+        Image im=new Image(imageExt);
+        scrollableTable.add(im).size(210, 210).pad(10);
+        // Wrap the table inside a scroll pane
         ScrollPane scrollPane = new ScrollPane(scrollableTable);
-        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setScrollingDisabled(true, false); // Enable both horizontal & vertical scrolling
 
-        // Creazione dell'area di costruzione del mazzo
-        deckZone = new Group();
-        deckZone.setPosition(100, 500);
-        stage.addActor(deckZone);
-
-        // Creazione della zona di salvataggio
-        saveZone = new Group();
-        saveZone.setPosition(800, 500);
-        stage.addActor(saveZone);
-
-        // Configura Drag and Drop per il mazzo
-        dragAndDrop.addTarget(new DragAndDrop.Target(deckZone) {
-            @Override
-            public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                return true;
-            }
-
-            @Override
-            public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                Unit card = (Unit) payload.getObject();
-                CardActor deckCard = new CardActor(card, dragAndDrop);
-                deckCard.setPosition(x, y);
-                deckZone.addActor(deckCard);
-                System.out.println("Carta aggiunta al mazzo temporaneo: " + card.getName());
-            }
-        });
-
-        // Configura Drag and Drop per salvare le carte
-        dragAndDrop.addTarget(new DragAndDrop.Target(saveZone) {
-            @Override
-            public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                return true;
-            }
-
-            @Override
-            public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                Unit card = (Unit) payload.getObject();
-                profile.getMyDeck().addCard(card);
-                confirmationLabel.setText("Carta salvata nel profilo: " + card.getName());
-                System.out.println("Carta salvata nel profilo!");
-            }
-        });
-
-        // Messaggio di conferma
-        confirmationLabel = new Label("", texture);
-        confirmationLabel.setPosition(820, 450);
-        stage.addActor(confirmationLabel);
-
-        // Layout principale
+        // Main layout
         mainTable = new Table();
         mainTable.setFillParent(true);
-        mainTable.add(scrollPane).expand().fill();
-        mainTable.setPosition(55, -270);
-
-        // Pulsante di ritorno
-        returnButton = new TextButton("Return", texture);
-        returnButton.addListener(new ClickListener() {
+        mainTable.add(scrollPane).expand().fill(); // Make the scrollable area fill the available space
+        mainTable.setPosition(55,-270);
+        // Return button
+        button = new TextButton("Return", texture);
+        button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 handleSelection();
             }
         });
-
-        mainTable.row();
-        mainTable.add(returnButton).padTop(20);
-
-        // Aggiunta elementi allo stage
+        button.setPosition(180,840);
+        stage.addActor(button);
+        // Add everything to the stage
         stage.addActor(mainTable);
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
-
         batch.begin();
         batch.draw(imageExt, 0, 0);
+        batch.draw(deckimg, 450, 752);
         batch.end();
-
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        stage.getViewport().apply();
         stage.act(delta);
         stage.draw();
     }
@@ -189,8 +135,10 @@ public class EditMenu implements Screen {
 
     @Override
     public void dispose() {
+        deck=new MyProfile(new Player("kilos",new Hand(dad)));
         batch.dispose();
         imageExt.dispose();
+        deckimg.dispose();
         stage.dispose();
         music.dispose();
     }

@@ -7,7 +7,7 @@ public class Player {
     private Hand hand;
     //private Deck deck;
 
-    Player(String name, Hand hand){
+    public Player(String name, Hand hand){
         this.name = name;
         MAX_energy = 1;
         energy = MAX_energy;
