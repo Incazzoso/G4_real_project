@@ -5,7 +5,7 @@ public class Effect {
     private boolean piercing;
     private boolean onFire;
 
-    Effect(boolean burnOther, boolean piercing){
+    public Effect(boolean burnOther, boolean piercing){
         this.burnOther = burnOther;
         this.piercing = piercing;
         onFire = false;

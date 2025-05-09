@@ -1,4 +1,4 @@
-package g4.group.stages.State;
+package g4.group.gameMechanics;
 
 import g4.group.allCardUtilities.Hand;
 import g4.group.allCardUtilities.Unit;

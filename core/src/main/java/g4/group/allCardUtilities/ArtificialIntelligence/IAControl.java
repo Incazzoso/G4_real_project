@@ -1,9 +1,14 @@
 package g4.group.allCardUtilities.ArtificialIntelligence;
 
+import g4.group.allCardUtilities.Effect;
 import g4.group.allCardUtilities.Hand;
 import g4.group.allCardUtilities.Unit;
-import g4.group.stages.State.GameState;
+import g4.group.gameMechanics.GameState;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -41,6 +46,43 @@ public class IAControl {
 
     public void incrementEnergy(){
         this.energy++;
+    }
+
+    //DEFAULT DECK READ A CSV CONTAINING THE IA CARDS
+    public void loadIAProfile() {
+        try {
+            File data = new File("core/src/main/java/g4/group/Data/IADeck.csv");
+            if (!data.exists()) {
+                System.err.println("Profilo non trovato! Creane uno nuovo.");
+                return;
+            }
+
+            BufferedReader reader = new BufferedReader(new FileReader(data));
+            String line = reader.readLine(); // Salta l'intestazione
+            while ((line = reader.readLine()) != null) {
+                String[] token = line.split(";");
+
+                if (token.length == 8) {
+                    String name = token[0];
+                    int health = Integer.parseInt(token[1]);
+                    int damage = Integer.parseInt(token[2]);
+                    int cost = Integer.parseInt(token[3]);
+                    String description = token[4];
+                    boolean canBurn = Boolean.parseBoolean(token[5]);
+                    boolean canPiercing = Boolean.parseBoolean(token[6]);
+                    String imgPath = token[7];
+
+                    Effect effect = new Effect(canBurn, canPiercing);
+                    Unit card = new Unit(name, health, damage, cost, effect, imgPath);
+                    iaHand.addCard(card); // Aggiunge la carta al deck del giocatore
+                } else {
+                    System.err.println("Errore nel formato della linea CSV: " + line);
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            System.err.println("Errore nel caricamento del profilo!");
+        }
     }
 
     //FASI DI GIOCO

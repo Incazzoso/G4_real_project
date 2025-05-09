@@ -12,7 +12,7 @@ public class Unit extends Card {
     //costruttori:
 
     //costruttore normal
-    Unit(String name, int health, int damage, int cost, Effect effect, String imgPath){
+    public Unit(String name, int health, int damage, int cost, Effect effect, String imgPath){
         super(name, health, damage, cost);
         this.effect = effect;
         this.path=imgPath;
