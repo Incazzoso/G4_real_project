@@ -23,12 +23,12 @@ public class IAControl {
 
     private Random rand;
 
-    public IAControl(Hand iaHand, GameState gameState) {
+    public IAControl() {
         name = "NavIgor";
-        this.iaHand = iaHand;
-        this.gameState = gameState;
         rand = new Random();
         this.energy = 3;
+
+        loadIAProfile(iaHand);
     }
 
     //ENERGIA
@@ -40,6 +40,10 @@ public class IAControl {
         return energy;
     }
 
+    public Hand getHand() {
+        return iaHand;
+    }
+
     public void setEnergy(int energy) {
         this.energy = energy;
     }
@@ -49,12 +53,13 @@ public class IAControl {
     }
 
     //DEFAULT DECK READ A CSV CONTAINING THE IA CARDS
-    public void loadIAProfile() {
+    public Hand loadIAProfile(Hand manoIa) {
+        Hand hand = new Hand(new ArrayList<>());
         try {
             File data = new File("core/src/main/java/g4/group/Data/IADeck.csv");
             if (!data.exists()) {
                 System.err.println("Profilo non trovato! Creane uno nuovo.");
-                return;
+                return hand;
             }
 
             BufferedReader reader = new BufferedReader(new FileReader(data));
@@ -74,7 +79,7 @@ public class IAControl {
 
                     Effect effect = new Effect(canBurn, canPiercing);
                     Unit card = new Unit(name, health, damage, cost, effect, imgPath);
-                    iaHand.addCard(card); // Aggiunge la carta al deck del giocatore
+                    hand.addCard(card); // Aggiunge la carta al deck del giocatore
                 } else {
                     System.err.println("Errore nel formato della linea CSV: " + line);
                 }
@@ -83,6 +88,7 @@ public class IAControl {
         } catch (IOException e) {
             System.err.println("Errore nel caricamento del profilo!");
         }
+        return hand;
     }
 
     //FASI DI GIOCO

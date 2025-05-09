@@ -43,6 +43,5 @@ public class Player {
     public void startTurn(){
         MAX_energy++;
         energy = getMAX_energy();
-
     }
 }

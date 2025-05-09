@@ -48,6 +48,9 @@ public class GameScreen implements Screen {
             stage.addActor(cardActor);
         }
 
+        //TODO: SISTEMARE IL METTERE LE CARTE del secondo giocatore
+
+
         // Creazione campo di battaglia
         battleField = new Group();
         battleField.setSize(150,200);
