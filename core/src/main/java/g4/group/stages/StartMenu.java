@@ -4,6 +4,7 @@ package g4.group.stages;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import g4.group.allCardUtilities.OptionManager;
 import g4.group.gameMechanics.GameScreen;
 
 public class StartMenu implements Screen {
@@ -38,14 +40,16 @@ public class StartMenu implements Screen {
     private TextButton[] buttons;
 
     private int selectIndex = 0;
-
+    private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/march-for-the-black-knight.mp3"));
+    OptionManager opt= new OptionManager();
 
     @Override
     public void show() {
-        //Music mainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/music/mus1.mp3"));
-        //mainMusic.play();
-        //mainMusic.setVolume(0.75f);
-        //mainMusic.setLooping(true);
+        opt.loadData();
+
+        music.setVolume(opt.getVm());
+        music.setLooping(true);
+        music.play();
 
         batch = new SpriteBatch();
         image = new Texture("sprite/Menu_game_bg.png");
@@ -122,9 +126,7 @@ public class StartMenu implements Screen {
     public void dispose() {
         batch.dispose();
         image.dispose();
-        //mainMusic.stop();
-        //mainMusic.dispose();
-
+        music.dispose();
         stage.dispose();
     }
 
@@ -141,23 +143,27 @@ public class StartMenu implements Screen {
 
         if(index == 0){
             //Change into GameScreen
+            music.dispose();
             game.setScreen(new GameScreen());
         }
 
 
         //EDITA IL DECK
         if(index == 1){
+            music.dispose();
             game.setScreen(new EditMenu(game));
         }
 
         //APRI LE OPZIONI
         if(index == 2){
+            music.dispose();
             game.setScreen(new SettingMenu(game));
         }
 
 
         //USCITA DAL PROGRAMMA
         if(index == 3){
+            music.dispose();
             Gdx.app.exit();
         }
     }

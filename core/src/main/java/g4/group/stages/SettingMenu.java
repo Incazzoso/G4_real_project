@@ -3,6 +3,7 @@ package g4.group.stages;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,11 +43,17 @@ public class SettingMenu implements Screen {
     private float volEffect;
     private  Slider volESlider;
     private Label volEname;
+    private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/a-link-to-the-earth.mp3"));
     OptionManager opt= new OptionManager();
 
     @Override
     public void show() {
         opt.loadData();
+
+        music.setVolume(opt.getVm());
+        music.setLooping(true);
+        music.play();
+
         batch = new SpriteBatch();
         image = new Texture("sprite/Menu_game_bg.png");
 
@@ -148,10 +155,12 @@ public class SettingMenu implements Screen {
         batch.dispose();
         image.dispose();
         stage.dispose();
+        music.dispose();
     }
 
     public void handleSelection() {
         opt.saveOpt(volMSlider.getValue(),volESlider.getValue());
+        music.dispose();
         game.setScreen(new StartMenu(game));
     }
 }
