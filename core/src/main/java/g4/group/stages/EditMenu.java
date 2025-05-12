@@ -33,6 +33,7 @@ public class EditMenu implements Screen {
     private TextButton button;
     private ArrayList<Unit> dad = new ArrayList<Unit>();
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/in-the-soul-of-night.mp3"));
+    private Music eff = Gdx.audio.newMusic(Gdx.files.internal("assets/music/effect/click-effect.mp3"));
     private OptionManager opt = new OptionManager();
 
     public EditMenu(Game game) {
@@ -73,6 +74,8 @@ public class EditMenu implements Screen {
                     dad.add(I);
                     scrollableTable.removeActor(I.getImage());
                     lab.setText("number of cards in the deck: "+dad.size());
+                    eff.play();
+                    eff.setVolume(opt.getVe());
                 }
             });
             scrollableTable.add(I.getImage()).size(275, 375).pad(10);
@@ -99,6 +102,8 @@ public class EditMenu implements Screen {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                eff.play();
+                eff.setVolume(opt.getVe());
                 handleSelection();
             }
         });

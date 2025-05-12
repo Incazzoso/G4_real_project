@@ -41,13 +41,14 @@ public class StartMenu implements Screen {
 
     private int selectIndex = 0;
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/march-for-the-black-knight.mp3"));
+    private Music eff = Gdx.audio.newMusic(Gdx.files.internal("assets/music/effect/click-effect.mp3"));
     OptionManager opt= new OptionManager();
 
     @Override
     public void show() {
         opt.loadData();
 
-        music.setVolume(opt.getVm());
+        music.setVolume(0/*opt.getVm()*/);
         music.setLooping(true);
         music.play();
 
@@ -137,13 +138,13 @@ public class StartMenu implements Screen {
             buttons[i].setScale(i == selectIndex ? 1.2f : 1.0f);
         }
 
-
-
         //INIZIA PARTITA
 
         if(index == 0){
             //Change into GameScreen
             music.dispose();
+            eff.play();
+            eff.setVolume(opt.getVe());
             game.setScreen(new GameScreen());
         }
 
@@ -151,12 +152,16 @@ public class StartMenu implements Screen {
         //EDITA IL DECK
         if(index == 1){
             music.dispose();
+            eff.play();
+            eff.setVolume(opt.getVe());
             game.setScreen(new EditMenu(game));
         }
 
         //APRI LE OPZIONI
         if(index == 2){
             music.dispose();
+            eff.play();
+            eff.setVolume(opt.getVe());
             game.setScreen(new SettingMenu(game));
         }
 
@@ -164,6 +169,8 @@ public class StartMenu implements Screen {
         //USCITA DAL PROGRAMMA
         if(index == 3){
             music.dispose();
+            eff.play();
+            eff.setVolume(opt.getVe());
             Gdx.app.exit();
         }
     }
