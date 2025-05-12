@@ -48,7 +48,7 @@ public class StartMenu implements Screen {
     public void show() {
         opt.loadData();
 
-        music.setVolume(0/*opt.getVm()*/);
+        music.setVolume(opt.getVm());
         music.setLooping(true);
         music.play();
 

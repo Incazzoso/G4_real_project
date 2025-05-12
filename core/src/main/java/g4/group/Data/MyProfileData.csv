@@ -1,1 +1,3 @@
 name;health;damage;cost;description;canBurn;canPiercing;imagepath
+tirpiz;6;4;4;the second of the two ship of the bismarck-class compared to is older sister it as less resistant armor but it as the same gun;true;true;assets/sprite/imgCardo/iloveimg-resized/tripiz.png
+Bismarck;8;4;6;the pride of a nation a beast made of steel, the flagship of hitler's navy itself, the terror of the seas. the Bismarck is in motion;false;false;assets/sprite/imgCardo/iloveimg-resized/Bismark.png

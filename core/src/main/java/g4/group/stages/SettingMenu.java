@@ -44,6 +44,7 @@ public class SettingMenu implements Screen {
     private  Slider volESlider;
     private Label volEname;
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/a-link-to-the-earth.mp3"));
+    private Music eff = Gdx.audio.newMusic(Gdx.files.internal("assets/music/effect/click-effect.mp3"));
     OptionManager opt= new OptionManager();
 
     @Override
@@ -82,6 +83,10 @@ public class SettingMenu implements Screen {
             }
         });
 
+        SelectBox<String> selectBox=new SelectBox<String>(texture);
+        selectBox.setItems("in the name of those who fallen","grace for the lost","pinocchio's last lies","che sia vita o morte");
+        table.add(selectBox).pad(10).row();
+
         //EFFECT
         volEname = new Label("Effect Volume: " + opt.getVe(), texture);
         volESlider = new Slider(0, 1, 0.05f, false, texture);
@@ -109,6 +114,8 @@ public class SettingMenu implements Screen {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                eff.play();
+                eff.setVolume(opt.getVe());
                 volMSlider.setValue(0.75f);
                 volESlider.setValue(0.75f);
                 volMname.setText("Music Volume: " + 0.75f);
@@ -118,6 +125,8 @@ public class SettingMenu implements Screen {
         button1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                eff.play();
+                eff.setVolume(opt.getVe());
                 handleSelection();
             }
         });
