@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import g4.group.allCardUtilities.OptionManager;
 
 public class SettingMenu implements Screen {
     private Game game;
@@ -34,16 +35,18 @@ public class SettingMenu implements Screen {
     TextButton button,button1;
 
     //VOLUME of MUSIC & EFFECT
-    private float volMusic = 0.75f;
+    private float volMusic;
     private Slider volMSlider;
     private Label volMname;
 
-    private float volEffect = 0.75f;
+    private float volEffect;
     private  Slider volESlider;
     private Label volEname;
+    OptionManager opt= new OptionManager();
 
     @Override
     public void show() {
+        opt.loadData();
         batch = new SpriteBatch();
         image = new Texture("sprite/Menu_game_bg.png");
 
@@ -56,9 +59,9 @@ public class SettingMenu implements Screen {
         texture = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
 
         //MUSIC
-        volMname = new Label("Music Volume: " + volMusic, texture);
+        volMname = new Label("Music Volume: " + opt.getVm(), texture);
         volMSlider = new Slider(0, 1, 0.05f, false, texture);
-        volMSlider.setValue(volMusic);
+        volMSlider.setValue(opt.getVm());
 
         table.add(volMname).pad(10).row();
         table.add(volMSlider).pad(10).row();
@@ -73,9 +76,9 @@ public class SettingMenu implements Screen {
         });
 
         //EFFECT
-        volEname = new Label("Effect Volume: " + volEffect, texture);
+        volEname = new Label("Effect Volume: " + opt.getVe(), texture);
         volESlider = new Slider(0, 1, 0.05f, false, texture);
-        volESlider.setValue(volEffect);
+        volESlider.setValue(opt.getVe());
 
         table.add(volEname).pad(10).row();
         table.add(volESlider).pad(10).row();
@@ -93,9 +96,8 @@ public class SettingMenu implements Screen {
         button = new TextButton("reset", texture);
         button1 = new TextButton("Return", texture);
 
-        table.add(button);
-        table.row();
-        table.add(button1).padTop(10);
+        table.add(button).row();
+        table.add(button1).pad(10);
 
         button.addListener(new ClickListener() {
             @Override
@@ -149,6 +151,7 @@ public class SettingMenu implements Screen {
     }
 
     public void handleSelection() {
+        opt.saveOpt(volMSlider.getValue(),volESlider.getValue());
         game.setScreen(new StartMenu(game));
     }
 }

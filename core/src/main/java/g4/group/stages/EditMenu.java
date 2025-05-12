@@ -33,6 +33,7 @@ public class EditMenu implements Screen {
     private TextButton button;
     private ArrayList<Unit> dad = new ArrayList<Unit>();
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/in-the-soul-of-night.mp3"));
+    private OptionManager opt = new OptionManager();
 
     public EditMenu(Game game) {
         this.game = game;
@@ -40,8 +41,9 @@ public class EditMenu implements Screen {
 
     @Override
     public void show() {
+        opt.loadData();
         // Setup background music
-        music.setVolume(0.5f);
+        music.setVolume(opt.getVm());
         music.setLooping(true);
         music.play();
 

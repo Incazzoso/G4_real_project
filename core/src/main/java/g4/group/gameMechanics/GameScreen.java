@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import g4.group.allCardUtilities.CardActor;
+import g4.group.allCardUtilities.OptionManager;
 import g4.group.allCardUtilities.Player;
 import g4.group.allCardUtilities.Unit;
 
@@ -26,9 +27,11 @@ public class GameScreen implements Screen {
     private GameManager gameManager;
     private DragAndDrop dragAndDrop;
     private Group battleField;
+    private OptionManager opt = new OptionManager();
 
     @Override
     public void show() {
+        opt.loadData();
         batch = new SpriteBatch();
         image = new Texture("assets/sprite/mogano_bg.png");
         stage = new Stage(new ScreenViewport());
@@ -93,7 +96,9 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {}
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
 
     @Override
     public void pause() {}
