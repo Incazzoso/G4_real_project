@@ -11,11 +11,13 @@ public class MyProfile {
 
     public MyProfile(Player dataOfThePlayer){
         myself = dataOfThePlayer;
+        data = new File("core/src/main/java/g4/group/Data/MyProfileData.csv");
         saveProfile();
     }
 
     public MyProfile(){
         myself = new Player("Default", new Hand(new ArrayList<Unit>()));
+        data = new File("core/src/main/java/g4/group/Data/MyProfileData.csv");
         loadProfile();
     }
 
@@ -26,6 +28,7 @@ public class MyProfile {
     //salva il tuo deck
     public void saveProfile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(data))) {
+            System.out.println("Salvataggio in corso...");
             writer.write("name;health;damage;cost;description;canBurn;canPiercing;imagepath\n"); // Intestazione CSV
 
             for (Unit card : myself.getHand().getCards()) {
@@ -41,6 +44,7 @@ public class MyProfile {
         } catch (IOException e) {
             System.err.println("Errore nel salvataggio del profilo!");
         }
+        System.out.println("Salvataggio completato");
     }
 
     //carica il tuo deck
@@ -51,7 +55,7 @@ public class MyProfile {
                 System.err.println("Profilo non trovato! Creane uno nuovo.");
                 return;
             }
-
+            System.out.println("caricamento profilo in corso...");
             reader = new BufferedReader(new FileReader(data));
             String line = reader.readLine(); // Salta l'intestazione
             while ((line = reader.readLine()) != null) {
@@ -78,6 +82,7 @@ public class MyProfile {
         } catch (IOException e) {
             System.err.println("Errore nel caricamento del profilo!");
         }
+        System.out.println("caricamento profilo fatto!");
     }
 
     public Hand getMyDeck() {

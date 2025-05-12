@@ -135,7 +135,6 @@ public class EditMenu implements Screen {
 
     @Override
     public void dispose() {
-        deck=new MyProfile(new Player("kilos",new Hand(dad)));
         batch.dispose();
         imageExt.dispose();
         deckimg.dispose();
@@ -144,6 +143,7 @@ public class EditMenu implements Screen {
     }
 
     public void handleSelection() {
+        deck=new MyProfile(new Player("kilos",new Hand(dad)));
         game.setScreen(new StartMenu(game));
     }
 }
