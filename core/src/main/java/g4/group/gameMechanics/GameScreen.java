@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -17,6 +18,7 @@ import g4.group.allCardUtilities.Player;
 import g4.group.allCardUtilities.Unit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GameScreen implements Screen {
 
@@ -25,7 +27,9 @@ public class GameScreen implements Screen {
     private Stage stage;
     private GameManager gameManager;
     private DragAndDrop dragAndDrop;
-    private Group battleField;
+    private Actor battleField;
+
+    private ArrayList<CardActor> handCardActors = new ArrayList<>();
 
     @Override
     public void show() {
@@ -41,18 +45,14 @@ public class GameScreen implements Screen {
         ArrayList<Unit> handCards = gameManager.getPlayer1().getHand().getCards();
         dragAndDrop = new DragAndDrop();
 
-        for (int i = 0; i < handCards.size(); i++) {
-            CardActor cardActor = new CardActor(handCards.get(i), dragAndDrop);
-            cardActor.setSize(150,200);
-            cardActor.setPosition(Gdx.graphics.getWidth() / 4.0f + (i * 50), 50); // Posiziona le carte in fila
-            stage.addActor(cardActor);
-        }
+        //call for sorting the deck at the start of the game
+        sortHandCards(gameManager.getPlayer1());
 
         //TODO: SISTEMARE IL METTERE LE CARTE del secondo giocatore
 
 
         // Creazione campo di battaglia
-        battleField = new Group();
+        battleField = new Actor();
         battleField.setSize(150,200);
         Texture borderTexture = new Texture("assets/sprite/simple_border.png");
         Image borderImage = new Image(borderTexture);
@@ -67,19 +67,52 @@ public class GameScreen implements Screen {
         dragAndDrop.addTarget(new DragAndDrop.Target(battleField) {
             @Override
             public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                return true; // Conferma che la carta può essere rilasciata qui
+                // Constrain position to battlefield bounds
+                float clampedX = Math.max(0, Math.min(x, battleField.getWidth() - 150));
+                float clampedY = Math.max(0, Math.min(y, battleField.getHeight() - 200));
+                payload.setDragActor(source.getActor());
+                payload.getDragActor().setPosition(clampedX, clampedY);
+                return true;
             }
 
             @Override
             public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                // Constrain final position
+                float clampedX = Math.max(0, Math.min(x, battleField.getWidth() - 150));
+                float clampedY = Math.max(0, Math.min(y, battleField.getHeight() - 200));
+
+                gameManager.getPlayer1().getHand().removeCard((Unit) payload.getObject());
                 Unit card = (Unit) payload.getObject();
                 CardActor battleCard = new CardActor(card, dragAndDrop);
-                battleCard.setPosition(x, y);
+                battleCard.setSize(150, 200);
+                battleCard.setPosition(clampedX, clampedY);
                 battleField.addActor(battleCard);
+                source.getActor().remove();
+                handCardActors.remove(source.getActor());
+                sortHandCards(gameManager.getPlayer1());
             }
         });
     }
 
+
+    private void sortHandCards(Player player){
+        ArrayList<Unit> handCards = player.getHand().getCards();
+
+        // Remove only hand cards from stage (not battlefield cards)
+        for (CardActor cardActor : new ArrayList<>(handCardActors)) {
+            cardActor.remove();
+        }
+        handCardActors.clear();
+
+        // Add each card to the stage
+        for (int i = 0; i < handCards.size(); i++) {
+            CardActor cardActor = new CardActor(handCards.get(i), dragAndDrop);
+            cardActor.setSize(150, 200);
+            cardActor.setPosition(Gdx.graphics.getWidth() / 4.0f + (i * 50), 50);
+            stage.addActor(cardActor);
+            handCardActors.add(cardActor);
+        }
+    }
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
