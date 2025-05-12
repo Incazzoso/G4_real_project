@@ -31,7 +31,7 @@ public class SettingMenu implements Screen {
     private  Stage stage;
     private  Skin texture;
     private  Table table;
-    TextButton button;
+    TextButton button,button1;
 
     //VOLUME of MUSIC & EFFECT
     private float volMusic = 0.75f;
@@ -57,7 +57,7 @@ public class SettingMenu implements Screen {
 
         //MUSIC
         volMname = new Label("Music Volume: " + volMusic, texture);
-        volMSlider = new Slider(0, 100, 1f, false, texture);
+        volMSlider = new Slider(0, 1, 0.05f, false, texture);
         volMSlider.setValue(volMusic);
 
         table.add(volMname).pad(10).row();
@@ -74,7 +74,7 @@ public class SettingMenu implements Screen {
 
         //EFFECT
         volEname = new Label("Effect Volume: " + volEffect, texture);
-        volESlider = new Slider(0, 100, 1f, false, texture);
+        volESlider = new Slider(0, 1, 0.05f, false, texture);
         volESlider.setValue(volEffect);
 
         table.add(volEname).pad(10).row();
@@ -90,11 +90,23 @@ public class SettingMenu implements Screen {
         });
 
         //RETURN BUTTON
-        button = new TextButton("Return", texture);
+        button = new TextButton("reset", texture);
+        button1 = new TextButton("Return", texture);
 
         table.add(button);
+        table.row();
+        table.add(button1).padTop(10);
 
         button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                volMSlider.setValue(0.75f);
+                volESlider.setValue(0.75f);
+                volMname.setText("Music Volume: " + 0.75f);
+                volEname.setText("Effect Volume: " + 0.75f);
+            }
+        });
+        button1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 handleSelection();
