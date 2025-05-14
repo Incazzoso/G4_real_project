@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
@@ -79,49 +80,92 @@ public class GameScreen implements Screen {
 
             @Override
             public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                // Constrain final position
-                float clampedX = Math.max(0, Math.min(x, battleField.getWidth() - 150));
-                float clampedY = Math.max(0, Math.min(y, battleField.getHeight() - 200));
+                try {
+                    // Constrain final position
+                    float clampedX = Math.max(0, Math.min(x, battleField.getWidth() - 150));
+                    float clampedY = Math.max(0, Math.min(y, battleField.getHeight() - 200));
 
-                // Check if there's already a card at this position
-                boolean positionOccupied = false;
-                for (Actor actor : battleField.getChildren()) {
-                    if (actor instanceof CardActor && actor != source.getActor()) {
-                        // Check if the new position overlaps with existing cards
-                        if (Math.abs(actor.getX() - clampedX) < 150 && Math.abs(actor.getY() - clampedY) < 200) {
-                            positionOccupied = true;
-                            break;
+                    // Calculate the dropped card's rectangle
+                    float droppedCardX = clampedX;
+                    float droppedCardY = clampedY;
+                    float droppedCardWidth = 150;  // Assuming card width is 150
+                    float droppedCardHeight = 200; // Assuming card height is 200
+
+                    // Check for overlap with existing cards
+                    boolean positionOccupied = false;
+                    for (Actor actor : battleField.getChildren()) {
+                        if (actor instanceof CardActor) {
+                            CardActor existingCard = (CardActor) actor;
+
+                            // Ensure existingCard has valid dimensions and position
+                            if (existingCard != null) {
+                                float existingCardX = existingCard.getX();
+                                float existingCardY = existingCard.getY();
+                                float existingCardWidth = existingCard.getWidth();
+                                float existingCardHeight = existingCard.getHeight();
+
+                                // Check for rectangle intersection with a small buffer
+                                float overlapBuffer = 10f; // Adjust as needed
+                                if (droppedCardX < existingCardX + existingCardWidth - overlapBuffer &&
+                                    droppedCardX + droppedCardWidth > existingCardX + overlapBuffer &&
+                                    droppedCardY < existingCardY + existingCardHeight - overlapBuffer &&
+                                    droppedCardY + droppedCardHeight > existingCardY + overlapBuffer) {
+                                    positionOccupied = true;
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
 
-                if (!positionOccupied) {
-                    // Remove card from hand
-                    gameManager.getPlayer1().getHand().removeCard((Unit) payload.getObject());
-                    Unit card = (Unit) payload.getObject();
+                    if (!positionOccupied) {
+                        // Safely get the card unit from the payload
+                        Unit card = null;
+                        if (payload != null && payload.getObject() != null) {
+                            card = (Unit) payload.getObject();
+                        }
+                        if (card == null) {
+                            Gdx.app.error("GameScreen", "Card is null in payload");
+                            return;
+                        }
 
-                    // Create new card actor for battlefield
-                    CardActor battleCard = new CardActor(card, dragAndDrop);
-                    battleCard.setSize(150, 200);
-                    battleCard.setPosition(clampedX, clampedY);
-                    battleField.addActor(battleCard);
+                        // Remove from hand first
+                        boolean removed = gameManager.getPlayer1().getHand().removeCard(card);
+                        if (!removed) {
+                            Gdx.app.error("GameScreen", "Failed to remove card from hand");
+                            return;
+                        }
 
-                    // Update game state
-                    gameManager.getGameState().addPlayerOnField(card);
+                        // Safely remove the source actor
+                        if (source != null && source.getActor() != null) {
+                            source.getActor().remove();
+                            handCardActors.remove(source.getActor());
+                        }
 
-                    // Remove the drag actor and clear the payload
-                    payload.setDragActor(null);
-                    source.getActor().remove();
-                    handCardActors.remove(source.getActor());
+                        // Create new card actor for battlefield
+                        CardActor battleCard = new CardActor(card, null); // No dragAndDrop for battlefield cards
+                        battleCard.setSize(150, 200);
+                        battleCard.setPosition(clampedX, clampedY);
 
-                    // Resort hand cards
-                    sortHandCards(gameManager.getPlayer1());
-                } else {
-                    // Return card to hand if position is occupied
-                    source.getActor().setPosition(
-                        source.getActor().getX(),
-                        source.getActor().getY()
-                    );
+                        // Add to battlefield and bring to front
+                        battleField.addActor(battleCard);
+                        battleCard.toFront();
+
+                        // Update game state
+                        gameManager.getGameState().addPlayerOnField(card);
+
+                        // Resort hand cards
+                        sortHandCards(gameManager.getPlayer1());
+                    } else {
+                        // Return card to hand if position is occupied
+                        if (source != null && source.getActor() != null) {
+                            source.getActor().setPosition(
+                                source.getActor().getX(),
+                                source.getActor().getY()
+                            );
+                        }
+                    }
+                } catch (Exception e) {
+                    Gdx.app.error("GameScreen", "Error in drop method", e);
                 }
             }
         });
@@ -145,6 +189,20 @@ public class GameScreen implements Screen {
             cardActor.setPosition(Gdx.graphics.getWidth() / 4.0f + (i * 50), 50);
             stage.addActor(cardActor);
             handCardActors.add(cardActor);
+            // Only add drag and drop to hand cards
+            dragAndDrop.addSource(new DragAndDrop.Source(cardActor) {
+                @Override
+                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                    return null;
+                }
+
+                public DragAndDrop.Payload dragStart(DragAndDrop drag, float x, float y, int pointer) {
+                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                    payload.setObject(cardActor.getCard());
+                    payload.setDragActor(cardActor);
+                    return payload;
+                }
+            });
         }
     }
 
