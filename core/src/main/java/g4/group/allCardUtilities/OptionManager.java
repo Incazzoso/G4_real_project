@@ -6,6 +6,7 @@ public class OptionManager {
     private File data;
     private float vm;
     private float ve;
+    private String soundPath;
 
     public OptionManager() {
         data = new File("core/src/main/java/g4/group/Data/opt.csv");
@@ -22,11 +23,37 @@ public class OptionManager {
     public void setVe(float ve) {
         this.ve = ve;
     }
+    public String getSoundPath() {
+        return soundPath;
+    }
+    public void setSoundPath(String soundPath) {
+        switch (soundPath){
+            case "in the name of those who fallen":
+                this.soundPath="assets/music/inNameOfThoseWhoFallen.mp3";
+                break;
+            case "grace for the lost":
+                this.soundPath="assets/music/Grace-for-the-lost.mp3";
+                break;
+            case "pinocchio's last lies":
+                this.soundPath="assets/music/Pinocchio's-last-lies.mp3";
+                break;
+            case "che sia vita o morte":
+                this.soundPath="assets/music/Che-Sia-Vita-O-Morte.mp3";
+                break;
+            default:
+                System.out.println("non funzeca");
+                break;
+        }
+    }
+    public void setSoundPath2(String soundPath) {
+        this.soundPath=soundPath;
+    }
+
     public void saveOpt(float vm, float ve) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(data))) {
             System.out.println("Salvataggio in corso...");
-            writer.write("volumeMusica;volumeEffeti\n"); // Intestazione CSV
-            writer.write(vm + ";" + ve + "\n");
+            writer.write("volumeMusica;volumeEffeti;musicPath\n"); // Intestazione CSV
+            writer.write(vm + ";" + ve + ";" + this.getSoundPath() + "\n");
         } catch (IOException e) {
             System.err.println("Errore nel salvataggio deI DATI!");
         }
@@ -46,6 +73,7 @@ public class OptionManager {
                 String[] token = line.split(";");
                 setVm(Float.parseFloat(token[0]));
                 setVe(Float.parseFloat(token[1]));
+                setSoundPath2(token[2]);
             }
             reader.close();
         } catch (IOException e) {

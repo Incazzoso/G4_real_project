@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -19,6 +21,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import g4.group.allCardUtilities.OptionManager;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 public class SettingMenu implements Screen {
     private Game game;
@@ -68,41 +74,50 @@ public class SettingMenu implements Screen {
         texture = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
 
         //MUSIC
-        volMname = new Label("Music Volume: " + opt.getVm(), texture);
-        volMSlider = new Slider(0, 1, 0.05f, false, texture);
+        volMname = new Label("Music Volume: " + (int)opt.getVm()*100, texture);
+        volMSlider = new Slider(0, 1, 0.1f, false, texture);
         volMSlider.setValue(opt.getVm());
 
         table.add(volMname).pad(10).row();
         table.add(volMSlider).pad(10).row();
 
-        volMSlider.addListener(new ClickListener(){
+        volMSlider.addListener(new ChangeListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 volMusic = volMSlider.getValue();
-                volMname.setText("Music Volume: " + volMusic);
+                DecimalFormat df = new DecimalFormat("#.#");
+                volMname.setText("Effect Volume: " + df.format(volMusic*100));
             }
         });
 
-        mus =new Label("musica usata durante fasi di gioco:",texture)
+        mus =new Label("musica usata durante fasi di gioco:",texture);
         SelectBox<String> selectBox=new SelectBox<String>(texture);
         selectBox.setItems("in the name of those who fallen","grace for the lost","pinocchio's last lies","che sia vita o morte");
+        selectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                String selectedItem = selectBox.getSelected(); // Ottieni l'elemento selezionato
+                if (selectedItem != null) {
+                    opt.setSoundPath(selectedItem); // Salva il valore selezionato
+                }
+            }
+        });
         table.add(selectBox).pad(10).row();
 
         //EFFECT
-        volEname = new Label("Effect Volume: " + opt.getVe(), texture);
-        volESlider = new Slider(0, 1, 0.05f, false, texture);
+        volEname = new Label("Effect Volume: " + (int)opt.getVe()*100, texture);
+        volESlider = new Slider(0, 1, 0.1f, false, texture);
         volESlider.setValue(opt.getVe());
 
         table.add(volEname).pad(10).row();
         table.add(volESlider).pad(10).row();
 
-        volESlider.addListener(new ClickListener(){
+        volESlider.addListener(new ChangeListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 volEffect = volESlider.getValue();
-                volEname.setText("Effect Volume: " + volEffect);
+                DecimalFormat df = new DecimalFormat("#.#");
+                volEname.setText("Effect Volume: " + df.format(volEffect*100));
             }
         });
 
@@ -122,6 +137,7 @@ public class SettingMenu implements Screen {
                 volESlider.setValue(0.75f);
                 volMname.setText("Music Volume: " + 0.75f);
                 volEname.setText("Effect Volume: " + 0.75f);
+                selectBox.setSelected("in the name of those who fallen");
             }
         });
         button1.addListener(new ClickListener() {
