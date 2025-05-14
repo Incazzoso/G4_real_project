@@ -9,6 +9,7 @@ public class Unit extends Card {
     private String path;
     private Image image;
 
+    private Image back;
     //costruttori:
 
     //costruttore normal
@@ -17,6 +18,7 @@ public class Unit extends Card {
         this.effect = effect;
         this.path=imgPath;
         this.image=new Image(new Texture(imgPath));
+        back=new Image(new Texture("assets/sprite/card.png"));
     }
 
     //costruttore esteso
@@ -25,6 +27,7 @@ public class Unit extends Card {
         this.effect = effect;
         this.path=imgPath;
         this.image=new Image(new Texture(imgPath));
+        back=new Image(new Texture("assets/sprite/card.png"));
     }
 
     //costruttore compresso
@@ -32,6 +35,7 @@ public class Unit extends Card {
         super(card.getName(), card.getHealth(), card.getDamage(), card.getCost(), card.getDescription());
         this.effect = effect;
         this.path=imgPath;
+        back=new Image(new Texture("assets/sprite/card.png"));
         try {
             this.image = new Image(new Texture(Gdx.files.internal(imgPath)));
         } catch (Exception e) {
@@ -64,12 +68,25 @@ public class Unit extends Card {
         this.effect = effect;
     }
 
+    public Image getBack() {
+        return back;
+    }
+
+    public void showBack(){
+        if(image.isVisible() && !back.isVisible()){
+            back.setVisible(true);
+            image.setVisible(false);
+        }else if(!image.isVisible() && back.isVisible()){
+            back.setVisible(false);
+            image.setVisible(true);
+        }
+    }
 
     //procura danno all'unità e restituisce la vita rimanente dell'unità danneggiata
     public int attack(Unit enemy){
 
         //controllo effetti primari
-        if(effect.canPiercing()==false){
+        if(!effect.canPiercing()){
             enemy.setHealth(enemy.getHealth() - this.getDamage());
         }else {
             enemy.setHealth(enemy.getHealth() - this.getDamage() * 2);

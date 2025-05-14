@@ -1,16 +1,7 @@
 package g4.group.gameMechanics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import g4.group.allCardUtilities.ArtificialIntelligence.IAControl;
-import g4.group.allCardUtilities.Hand;
 import g4.group.allCardUtilities.MyProfile;
 import g4.group.allCardUtilities.Player;
 
