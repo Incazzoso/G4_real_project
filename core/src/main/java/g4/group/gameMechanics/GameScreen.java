@@ -123,7 +123,6 @@ public class GameScreen implements Screen {
             cardActor.setPosition((float) Gdx.graphics.getWidth() /4 + (i*50), yPosition);
             stage.addActor(cardActor);
 
-<<<<<<< HEAD
             if (isPlayer1) { // Only enable drag for player 1
                 dragAndDrop.addSource(new DragAndDrop.Source(cardActor) {
                     @Override
@@ -132,17 +131,6 @@ public class GameScreen implements Screen {
                         payload.setObject(cardActor.getCard());
                         return payload;
                     }
-=======
-            // Configura il drag source per ogni carta
-            dragAndDrop.addSource(new DragAndDrop.Source(cardActor) {
-                @Override
-                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
-                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
-                    payload.setObject(cardActor.getCard()); // Passa l'oggetto Unit
-                    cardActor.setPosition(event.getStageX() - cardActor.getWidth() / 15, event.getStageY() - cardActor.getHeight() / 15);
-                    return payload;
-                }
->>>>>>> 087f4dbb279e36e0555431aaec9a00c8c8702880
 
                     public void dragStop(InputEvent event, float x, float y, int pointer) {
                         // Only remove if dropped successfully (would need additional logic)
