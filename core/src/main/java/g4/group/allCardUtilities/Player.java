@@ -39,6 +39,16 @@ public class Player {
         this.energy = energy;
     }
 
+    // Metodo per spendere energia
+    public void spendEnergy(int amount) {
+        if (energy >= amount) {
+            energy -= amount;
+        } else {
+            //TODO: gestire il caso in cui non c'è abbastanza energia (es., lanciare un'eccezione, restituire false, ecc.)
+            System.out.println("Energia insufficiente!");
+        }
+    }
+
     //inizia il turno rimmetendo l'energia e aggiungendo +1 al massimo
     public void startTurn(){
         MAX_energy++;

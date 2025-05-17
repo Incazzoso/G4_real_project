@@ -163,11 +163,11 @@ public class IAControl {
 
     //ATTACCA
     public void battlePhase() {
-        List<Unit> aiUnits = gameState.getEnemyField();
+        List<Unit> aiUnits = gameState.getEnemyUnitsOnField(); // Corretto qui!
         List<Unit> playerUnits = gameState.getPlayerUnitsOnField();
 
         if (aiUnits.isEmpty()){
-         return;
+            return;
         };
 
         randomAttack(aiUnits, playerUnits);

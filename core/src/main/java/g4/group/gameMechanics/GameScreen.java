@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
@@ -18,6 +19,7 @@ import g4.group.allCardUtilities.Player;
 import g4.group.allCardUtilities.Unit;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameScreen implements Screen {
 
@@ -26,8 +28,14 @@ public class GameScreen implements Screen {
     private Stage stage;
     private GameManager gameManager;
     private DragAndDrop dragAndDrop;
-    private Group battleField;
+    private List<Group> battleFieldSlots = new ArrayList<>(); // Lista per gli slot
     private OptionManager opt = new OptionManager();
+    private final float CARD_WIDTH = 150;
+    private final float CARD_HEIGHT = 200;
+    private final float SLOT_WIDTH = 160; // Leggermente più grande della carta
+    private final float SLOT_HEIGHT = 210;
+    private final int NUM_SLOTS = 5; // Numero di slot
+    private final float SLOT_SPACING = 10; // Spazio tra gli slot
 
     @Override
     public void show() {
@@ -46,41 +54,57 @@ public class GameScreen implements Screen {
 
         for (int i = 0; i < handCards.size(); i++) {
             CardActor cardActor = new CardActor(handCards.get(i), dragAndDrop);
-            cardActor.setSize(150,200);
-            cardActor.setPosition(Gdx.graphics.getWidth() / 4.0f + (i * 50), 50); // Posiziona le carte in fila
+            cardActor.setSize(CARD_WIDTH, CARD_HEIGHT);
+            cardActor.setPosition(Gdx.graphics.getWidth()/4 + (i*50), 50); // Posiziona le carte in fila
             stage.addActor(cardActor);
+
+            // Configura il drag source per ogni carta
+            dragAndDrop.addSource(new DragAndDrop.Source(cardActor) {
+                @Override
+                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                    payload.setObject(cardActor.getCard()); // Passa l'oggetto Unit
+                    return payload;
+                }
+
+                public void dragStop(InputEvent event, float x, float y, int pointer) {
+                    cardActor.remove(); // Rimuovi la carta dalla mano dopo il drag
+                }
+            });
         }
 
-        //TODO: SISTEMARE IL METTERE LE CARTE del secondo giocatore
-
-
-        // Creazione campo di battaglia
-        battleField = new Group();
-        battleField.setSize(150,200);
+        // Creazione e posizionamento degli slot del campo di battaglia
         Texture borderTexture = new Texture("assets/sprite/simple_border.png");
-        Image borderImage = new Image(borderTexture);
+        for (int i = 0; i < NUM_SLOTS; i++) {
+            Group slot = new Group();
+            slot.setSize(SLOT_WIDTH, SLOT_HEIGHT);
+            Image borderImage = new Image(borderTexture);
+            borderImage.setSize(SLOT_WIDTH, SLOT_HEIGHT);
+            slot.addActor(borderImage);
+            slot.setPosition(100 + (i * (SLOT_WIDTH + SLOT_SPACING)), Gdx.graphics.getHeight() / 4.0f); // Posiziona gli slot in fila
+            stage.addActor(slot);
+            battleFieldSlots.add(slot);
 
-        borderImage.setSize(battleField.getWidth(), battleField.getHeight());
-        battleField.addActor(borderImage);
+            // Configura il drag target per ogni slot
+            final int slotIndex = i;
+            dragAndDrop.addTarget(new DragAndDrop.Target(slot) {
+                @Override
+                public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                    // Accetta il drop solo se lo slot è vuoto
+                    return gameManager.isSlotEmpty(slotIndex);
+                }
 
-        battleField.setPosition(Gdx.graphics.getWidth() / 4.0f, Gdx.graphics.getHeight() / 4.0f); // Posizione sopra la mano
-        stage.addActor(battleField);
-
-        // Configura drag and drop
-        dragAndDrop.addTarget(new DragAndDrop.Target(battleField) {
-            @Override
-            public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                return true; // Conferma che la carta può essere rilasciata qui
-            }
-
-            @Override
-            public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                Unit card = (Unit) payload.getObject();
-                CardActor battleCard = new CardActor(card, dragAndDrop);
-                battleCard.setPosition(x, y);
-                battleField.addActor(battleCard);
-            }
-        });
+                @Override
+                public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                    Unit card = (Unit) payload.getObject();
+                    CardActor battleCard = new CardActor(card, dragAndDrop);
+                    battleCard.setSize(CARD_WIDTH, CARD_HEIGHT);
+                    battleCard.setPosition((slot.getWidth() - battleCard.getWidth()) / 2, (slot.getHeight() - battleCard.getHeight()) / 2); // Centra la carta nello slot
+                    slot.addActor(battleCard);
+                    gameManager.placeCardInSlot(card, slotIndex); // Comunica al GameManager
+                }
+            });
+        }
     }
 
     @Override
