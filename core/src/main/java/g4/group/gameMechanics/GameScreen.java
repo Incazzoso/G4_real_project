@@ -123,6 +123,7 @@ public class GameScreen implements Screen {
                 public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
                     DragAndDrop.Payload payload = new DragAndDrop.Payload();
                     payload.setObject(cardActor.getCard()); // Passa l'oggetto Unit
+                    cardActor.setPosition(event.getStageX() - cardActor.getWidth() / 15, event.getStageY() - cardActor.getHeight() / 15);
                     return payload;
                 }
 
