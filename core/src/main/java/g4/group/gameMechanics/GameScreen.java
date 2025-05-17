@@ -28,6 +28,8 @@ public class GameScreen implements Screen {
     private Stage stage;
     private GameManager gameManager;
     private DragAndDrop dragAndDrop;
+    private Texture man1 = new Texture("assets/sprite/exagon.png");;
+    private Texture man2 = new Texture("assets/sprite/ancor.png");;
     private List<Group> battleFieldSlots = new ArrayList<>(); // Lista per gli slot
     private OptionManager opt = new OptionManager();
     private final float CARD_WIDTH = 150;

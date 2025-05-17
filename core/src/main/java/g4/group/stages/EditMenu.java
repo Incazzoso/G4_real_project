@@ -26,15 +26,18 @@ public class EditMenu implements Screen {
     private DatabaseCard dbcard;
     private Batch batch;
     private Texture imageExt;
-    private Texture deckimg;
+    private Image deckimg;
     private Stage stage;
     private Skin texture;
-    private Table mainTable;
+    private Table mainTable,subtable;
     private TextButton button;
     private ArrayList<Unit> dad = new ArrayList<Unit>();
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/in-the-soul-of-night.mp3"));
     private Music eff = Gdx.audio.newMusic(Gdx.files.internal("assets/music/effect/click-effect.mp3"));
     private OptionManager opt = new OptionManager();
+    private boolean scrollVisible = false;
+    private ScrollPane scroll;
+
 
     public EditMenu(Game game) {
         this.game = game;
@@ -52,7 +55,7 @@ public class EditMenu implements Screen {
         dbcard = new DatabaseCard();
         batch = new SpriteBatch();
         imageExt = new Texture("assets/sprite/tavolo_build_deck2.png");
-        deckimg = new Texture("assets/sprite/card.png");
+        deckimg = new Image(new Texture("assets/sprite/card.png"));
 
         // Setup stage & skin
         stage = new Stage(new FitViewport(1024, 980));
@@ -60,7 +63,28 @@ public class EditMenu implements Screen {
         texture = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
         Label lab= new Label("number of cards in the deck:",texture);
         lab.setPosition(650,840);
+        deckimg.setPosition(450, 752);
+        stage.addActor(deckimg);
         stage.addActor(lab);
+
+
+        Table scrtable = new Table();
+
+        scroll = new ScrollPane(scrtable);
+        scroll.setScrollingDisabled(true, false); // Abilita solo lo scrolling verticale
+        scroll.setVisible(scrollVisible); // Imposta la visibilità iniziale
+        scroll.layout();
+
+        deckimg.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                scrollVisible = !scrollVisible; // Cambia lo stato della visibilità
+                for (Unit I : dad) {
+                    scrtable.add(I.getImage()).size(50, 50).pad(10);
+                }
+                scroll.setVisible(scrollVisible); // Aggiorna la visibilità della scrollbar
+            }
+        });
 
         // Create a scrollable table
         Table scrollableTable = new Table();
@@ -93,10 +117,14 @@ public class EditMenu implements Screen {
         scrollPane.setScrollingDisabled(true, false); // Enable both horizontal & vertical scrolling
 
         // Main layout
+        subtable = new Table();
+        subtable.setFillParent(true);
         mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.add(scrollPane).expand().fill(); // Make the scrollable area fill the available space
         mainTable.setPosition(55,-270);
+        subtable.add(scroll);// Make the scrollable area fill the available space
+        subtable.setPosition(55,0);
         // Return button
         button = new TextButton("Return", texture);
         button.addListener(new ClickListener() {
@@ -118,7 +146,7 @@ public class EditMenu implements Screen {
         ScreenUtils.clear(Color.BLACK);
         batch.begin();
         batch.draw(imageExt, 0, 0);
-        batch.draw(deckimg, 450, 752);
+        //batch.draw(deckimg, 450, 752);
         batch.end();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         stage.getViewport().apply();
@@ -144,7 +172,6 @@ public class EditMenu implements Screen {
     public void dispose() {
         batch.dispose();
         imageExt.dispose();
-        deckimg.dispose();
         stage.dispose();
         music.dispose();
     }
