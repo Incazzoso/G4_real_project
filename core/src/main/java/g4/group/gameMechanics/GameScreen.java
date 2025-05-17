@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -28,6 +30,7 @@ public class GameScreen implements Screen {
     private Stage stage;
     private GameManager gameManager;
     private DragAndDrop dragAndDrop;
+    private Label man;
     private Texture man1 = new Texture("assets/sprite/exagon.png");;
     private Texture man2 = new Texture("assets/sprite/ancor.png");;
     private List<Group> battleFieldSlots = new ArrayList<>(); // Lista per gli slot
@@ -46,6 +49,12 @@ public class GameScreen implements Screen {
         image = new Texture("assets/sprite/mogano_bg.png");
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+
+        Skin skins = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
+        man =new Label("4",skins);
+        man.setPosition(90,118);
+        man.setFontScale(3);
+        stage.addActor(man);
 
         // Inizializza GameManager
         gameManager = new GameManager(stage);
@@ -115,7 +124,10 @@ public class GameScreen implements Screen {
 
         batch.begin();
         batch.draw(image, 0, 0);
+        batch.draw(man1, 15, 40, Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/5);
+        batch.draw(man2, 65, 87, Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
         batch.end();
+
 
         stage.act(delta);
         stage.draw();
