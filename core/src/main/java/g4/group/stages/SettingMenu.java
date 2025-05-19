@@ -50,7 +50,7 @@ public class SettingMenu implements Screen {
     private  Slider volESlider;
     private Label volEname;
     private Label mus;
-    private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/a-link-to-the-earth.mp3"));
+    private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/a-cross-for-those-who-died.mp3"));
     private Music eff = Gdx.audio.newMusic(Gdx.files.internal("assets/music/effect/click-effect.mp3"));
     OptionManager opt= new OptionManager();
 
