@@ -38,6 +38,7 @@ public class GameScreen implements Screen {
     private Label hp;
     private Label hp1;
     private Texture hp2 = new Texture("assets/sprite/heart.png");
+    private Image nextTurn = new Image(new Texture("assets/sprite/next-turn.png"));
     private List<Group> battleFieldSlots = new ArrayList<>(); // Lista per gli slot
     private OptionManager opt = new OptionManager();
     private final float CARD_WIDTH = 150;
@@ -76,6 +77,8 @@ public class GameScreen implements Screen {
         hp1.setPosition(825,848);
         hp1.setFontScale(3);
         stage.addActor(hp1);
+        nextTurn.setPosition(820,50);
+        stage.addActor(nextTurn);
 
         // Inizializza GameManager
         gameManager = new GameManager(stage);
