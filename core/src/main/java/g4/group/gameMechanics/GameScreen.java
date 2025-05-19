@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import g4.group.allCardUtilities.CardActor;
 import g4.group.allCardUtilities.OptionManager;
@@ -32,8 +33,11 @@ public class GameScreen implements Screen {
     private GameManager gameManager;
     private DragAndDrop dragAndDrop;
     private Label man;
-    private Texture man1 = new Texture("assets/sprite/exagon.png");;
-    private Texture man2 = new Texture("assets/sprite/ancor.png");;
+    private Texture man1 = new Texture("assets/sprite/exagon.png");
+    private Texture man2 = new Texture("assets/sprite/ancor.png");
+    private Label hp;
+    private Label hp1;
+    private Texture hp2 = new Texture("assets/sprite/heart.png");
     private List<Group> battleFieldSlots = new ArrayList<>(); // Lista per gli slot
     private OptionManager opt = new OptionManager();
     private final float CARD_WIDTH = 150;
@@ -42,6 +46,9 @@ public class GameScreen implements Screen {
     private final float SLOT_HEIGHT = 210;
     private final int NUM_SLOTS = 5; // Numero di slot
     private final float SLOT_SPACING = 10; // Spazio tra gli slot
+    private final float DIM1 = Gdx.graphics.getWidth()/7;
+    private final float DIM2 = Gdx.graphics.getWidth()/15;
+    private final float DIM3 = Gdx.graphics.getWidth()/20;
     private Music music;
 
     @Override
@@ -53,14 +60,22 @@ public class GameScreen implements Screen {
         music.play();
         batch = new SpriteBatch();
         image = new Texture("assets/sprite/mogano_bg.png");
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new FitViewport(1024, 980));
         Gdx.input.setInputProcessor(stage);
 
         Skin skins = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
         man =new Label("4",skins);
-        man.setPosition(90,118);
+        man.setPosition(110,100);
         man.setFontScale(3);
         stage.addActor(man);
+        hp =new Label("20",skins);
+        hp.setPosition(100,205);
+        hp.setFontScale(3);
+        stage.addActor(hp);
+        hp1 =new Label("20",skins);
+        hp1.setPosition(825,848);
+        hp1.setFontScale(3);
+        stage.addActor(hp1);
 
         // Inizializza GameManager
         gameManager = new GameManager(stage);
@@ -83,11 +98,17 @@ public class GameScreen implements Screen {
 
         batch.begin();
         batch.draw(image, 0, 0);
-        batch.draw(man1, 15, 40, Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/5);
-        batch.draw(man2, 65, 87, Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
+        batch.draw(man1, 65, 150, DIM1, DIM1);
+        batch.draw(man1, 790, 790, DIM1, DIM1);
+        batch.draw(man1, 65, 45, DIM1, DIM1);
+        batch.draw(man2, 104, 82, DIM2, DIM2);
+        batch.draw(hp2, 110, 190, DIM3, DIM2);
+        batch.draw(hp2, 835, 830, DIM3, DIM2);
         batch.end();
 
 
+        Gdx.gl.glClearColor(0,0,0,1);
+        stage.getViewport().apply();
         stage.act(delta);
         stage.draw();
     }

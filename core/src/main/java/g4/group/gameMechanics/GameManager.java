@@ -27,20 +27,21 @@ public class GameManager {
     }
 
     private void initializeGameState() {
-        gameState.setPlayerHealth(30);
-        gameState.setPlayerEnergy(1);
+        gameState.setPlayerHealth(20);
+        gameState.setPlayerEnergy(2);
         gameState.setPlayerHand(player1.getHand());
-        gameState.setPlayerDeckSize(20);
+        gameState.setPlayerDeckSize(8);
 
-        gameState.setEnemyHealth(30);
-        gameState.setEnemyEnergy(1);
+        gameState.setEnemyHealth(20);
+        gameState.setEnemyEnergy(4);
         gameState.setEnemyHand(playerIA.getHand());
-        gameState.setEnemyDeckSize(20);
+        gameState.setEnemyDeckSize(8);
     }
 
     public void endTurn() {
         if (currentPlayer) {
             player1.startTurn();
+
         } else {
             playerIA.IATurn();
         }
