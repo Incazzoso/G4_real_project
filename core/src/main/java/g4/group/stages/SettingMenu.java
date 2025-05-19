@@ -93,7 +93,7 @@ public class SettingMenu implements Screen {
         mus =new Label("musica usata durante fasi di gioco:",texture);
         table.add(mus).pad(10).row();
         SelectBox<String> selectBox=new SelectBox<String>(texture);
-        selectBox.setItems("in the name of those who fallen","grace for the lost","pinocchio's last lies","che sia vita o morte");
+        selectBox.setItems("in the name of those who fallen","a march to thrive this war without reason","pinocchio's last lies","che sia vita o morte");
         selectBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {

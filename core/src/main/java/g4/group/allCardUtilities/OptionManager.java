@@ -31,8 +31,8 @@ public class OptionManager {
             case "in the name of those who fallen":
                 this.soundPath="assets/music/inNameOfThoseWhoFallen.mp3";
                 break;
-            case "grace for the lost":
-                this.soundPath="assets/music/Grace-for-the-lost.mp3";
+            case "a march to thrive this war without reason":
+                this.soundPath="assets/music/a-march-to-thrive-this-war-without-reason.mp3";
                 break;
             case "pinocchio's last lies":
                 this.soundPath="assets/music/Pinocchio's-last-lies.mp3";
