@@ -29,7 +29,7 @@ public class EditMenu implements Screen {
     private Image deckimg;
     private Stage stage;
     private Skin texture;
-    private Table mainTable,subtable;
+    private Table mainTable;
     private TextButton button;
     private ArrayList<Unit> dad = new ArrayList<Unit>();
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/in-the-soul-of-night.mp3"));
@@ -67,25 +67,6 @@ public class EditMenu implements Screen {
         stage.addActor(deckimg);
         stage.addActor(lab);
 
-
-        Table scrtable = new Table();
-
-        scroll = new ScrollPane(scrtable);
-        scroll.setScrollingDisabled(true, false); // Abilita solo lo scrolling verticale
-        scroll.setVisible(scrollVisible); // Imposta la visibilità iniziale
-        scroll.layout();
-
-        deckimg.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                scrollVisible = !scrollVisible; // Cambia lo stato della visibilità
-                for (Unit I : dad) {
-                    scrtable.add(I.getImage()).size(50, 50).pad(10);
-                }
-                scroll.setVisible(scrollVisible); // Aggiorna la visibilità della scrollbar
-            }
-        });
-
         // Create a scrollable table
         Table scrollableTable = new Table();
         scrollableTable.top().left(); // Align properly for scrolling
@@ -117,14 +98,11 @@ public class EditMenu implements Screen {
         scrollPane.setScrollingDisabled(true, false); // Enable both horizontal & vertical scrolling
 
         // Main layout
-        subtable = new Table();
-        subtable.setFillParent(true);
+
         mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.add(scrollPane).expand().fill(); // Make the scrollable area fill the available space
         mainTable.setPosition(55,-270);
-        subtable.add(scroll);// Make the scrollable area fill the available space
-        subtable.setPosition(55,0);
         // Return button
         button = new TextButton("Return", texture);
         button.addListener(new ClickListener() {

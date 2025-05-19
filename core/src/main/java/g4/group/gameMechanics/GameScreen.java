@@ -2,6 +2,7 @@ package g4.group.gameMechanics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -41,10 +42,15 @@ public class GameScreen implements Screen {
     private final float SLOT_HEIGHT = 210;
     private final int NUM_SLOTS = 5; // Numero di slot
     private final float SLOT_SPACING = 10; // Spazio tra gli slot
+    private Music music;
 
     @Override
     public void show() {
         opt.loadData();
+        music = Gdx.audio.newMusic(Gdx.files.internal(opt.getSoundPath()));
+        music.setVolume(opt.getVm());
+        music.setLooping(true);
+        music.play();
         batch = new SpriteBatch();
         image = new Texture("assets/sprite/mogano_bg.png");
         stage = new Stage(new ScreenViewport());
