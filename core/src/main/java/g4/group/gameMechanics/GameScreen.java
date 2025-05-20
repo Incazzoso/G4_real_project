@@ -26,7 +26,7 @@ import g4.group.allCardUtilities.Player;
 import g4.group.allCardUtilities.Unit;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List; // Ensure java.util.List is imported
 
 public class GameScreen implements Screen {
 
@@ -43,14 +43,14 @@ public class GameScreen implements Screen {
     private Texture hp2 = new Texture("assets/sprite/heart.png");
     private Label nxt;
     private Image nextTurn = new Image(new Texture("assets/sprite/next-turn.png"));
-    private List<Group> battleFieldSlots = new ArrayList<>(); // Lista per gli slot
+    private List<Group> battleFieldSlots = new ArrayList<>(); // List for slots
     private OptionManager opt = new OptionManager();
     private final float CARD_WIDTH = 150;
     private final float CARD_HEIGHT = 200;
-    private final float SLOT_WIDTH = 160; // Leggermente più grande della carta
+    private final float SLOT_WIDTH = 160; // Slightly larger than the card
     private final float SLOT_HEIGHT = 210;
-    private final int NUM_SLOTS = 5; // Numero di slot
-    private final float SLOT_SPACING = 10; // Spazio tra gli slot
+    private final int NUM_SLOTS = 5; // Number of slots
+    private final float SLOT_SPACING = 10; // Space between slots
     private final float DIM1 = Gdx.graphics.getWidth()/7;
     private final float DIM2 = Gdx.graphics.getWidth()/15;
     private final float DIM3 = Gdx.graphics.getWidth()/20;
@@ -108,6 +108,8 @@ public class GameScreen implements Screen {
                         backnxt.setVisible(false);
                         txt1.setVisible(false);
                         gameManager.endTurn();
+                        refreshPlayerBattlefield(); // Refresh player battlefield after player's turn
+                        refreshIABattlefield(); // Refresh AI battlefield
                     }
                 }, 1.5f);
             }
@@ -131,6 +133,8 @@ public class GameScreen implements Screen {
                         backnxt.setVisible(false);
                         txt1.setVisible(false);
                         gameManager.endTurn();
+                        refreshPlayerBattlefield(); // Refresh player battlefield after AI's turn
+                        refreshIABattlefield(); // Also refresh AI's battlefield
                     }
                 }, 1.5f);
             }
@@ -139,18 +143,18 @@ public class GameScreen implements Screen {
         nxt.setFontScale(1);
         stage.addActor(nxt);
 
-        // Inizializza GameManager
+        // Initialize GameManager
         gameManager = new GameManager(stage);
 
-        // Recupera le carte dalla mano del giocatore
+        // Retrieve cards from player's hand
         dragAndDrop = new DragAndDrop();
 
 
-        //inizzializzazione campo del player 1
+        // Initialize player 1's field
         initializeBattlefield(true, gameManager.getPlayer1().getHand().getCards());
 
 
-        //inizzializzazione campo del player IA
+        // Initialize IA player's field
         initializeIABattlefield(false, gameManager.getPlayerIA().getHand().getCards());
 
         if(gameManager.getPlayerHealth()<=3){
@@ -184,10 +188,12 @@ public class GameScreen implements Screen {
         hp1.setText(String.valueOf(gameManager.getEnemyHealth()));
         man.setText(String.valueOf(gameManager.getPlayerEnergy()));
 
-        // Refresh AI battlefield if it's not player's turn
-        if (!gameManager.getCurrentPlayer()) {
-            refreshIABattlefield();
-        }
+        // This conditional refresh in render is generally not ideal for performance.
+        // It's better to trigger refresh only when the game state actually changes (e.g., after an attack).
+        // For now, we'll keep it here, but prioritize explicit calls after state changes.
+        // if (!gameManager.getCurrentPlayer()) {
+        //     refreshIABattlefield();
+        // }
 
         Gdx.gl.glClearColor(0,0,0,1);
         stage.getViewport().apply();
@@ -227,7 +233,6 @@ public class GameScreen implements Screen {
         float yPosition = isPlayer1 ? 50 : Gdx.graphics.getHeight() - 210;
         float battlefieldY = isPlayer1 ? Gdx.graphics.getHeight() / 4.0f + 30 : Gdx.graphics.getHeight() / 2 + 50;
 
-        // Initialize hand cards
         for (int i = 0; i < handCards.size(); i++) {
             CardActor cardActor;
             if (isPlayer1) {
@@ -250,11 +255,17 @@ public class GameScreen implements Screen {
                     public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
                         DragAndDrop.Payload payload = new DragAndDrop.Payload();
                         payload.setObject(cardActor.getCard());
+                        Image img = new Image(cardActor.getDrawable()); // Use the actual drawable
+                        img.setSize(CARD_WIDTH, CARD_HEIGHT);
+                        payload.setDragActor(img);
+                        cardActor.setVisible(false); // Hide original while dragging
                         return payload;
                     }
 
-                    public void dragStop(InputEvent event, float x, float y, int pointer) {
-                        // Only remove if dropped successfully (would need additional logic)
+                    public void dragStop(InputEvent event, float x, float y, int pointer, DragAndDrop.Payload payload, DragAndDrop.Target target) {
+                        if (target == null) {
+                            cardActor.setVisible(true); // Bring back if not dropped
+                        }
                     }
                 });
             }
@@ -270,7 +281,7 @@ public class GameScreen implements Screen {
             slot.addActor(borderImage);
             slot.setPosition(100 + (i * (SLOT_WIDTH + SLOT_SPACING)), battlefieldY);
             stage.addActor(slot);
-            battleFieldSlots.add(slot);
+            battleFieldSlots.add(slot); // Add to the common battlefieldSlots list
 
             if (isPlayer1) { // Only enable drop for player 1 slots
                 final int slotIndex = i;
@@ -302,6 +313,7 @@ public class GameScreen implements Screen {
         float battlefieldY = isPlayer2 ? Gdx.graphics.getHeight() / 4.0f + 30 : Gdx.graphics.getHeight() - 460;
 
         // Initialize hand cards (hidden for the AI)
+        // Similar note as initializeBattlefield for hand card actor creation.
         for (int i = 0; i < handCards.size(); i++) {
             CardActor cardActor;
             Image hiddenCard = handCards.get(i).Hide();
@@ -322,7 +334,7 @@ public class GameScreen implements Screen {
             slot.addActor(borderImage);
             slot.setPosition(100 + (i * (SLOT_WIDTH + SLOT_SPACING)), battlefieldY);
             stage.addActor(slot);
-            battleFieldSlots.add(slot);
+            battleFieldSlots.add(slot); // Add to the common battlefieldSlots list
 
             // Check if there's already a card in this slot (from GameState)
             List<Unit> enemyUnits = gameManager.getGameState().getEnemyUnitsInSlot(i);
@@ -340,12 +352,43 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void refreshIABattlefield() {
-        float battlefieldY = Gdx.graphics.getHeight() - 460;
+    public void refreshPlayerBattlefield() {
+        // Clear existing cards from player battlefield slots (first NUM_SLOTS elements)
+        for (int i = 0; i < NUM_SLOTS; i++) {
+            Group slot = battleFieldSlots.get(i); // Player slots are 0 to NUM_SLOTS-1
+            slot.clearChildren(); // Remove all actors from the group
+            // Re-add the border image
+            Texture borderTexture = new Texture("assets/sprite/simple_border.png");
+            Image borderImage = new Image(borderTexture);
+            borderImage.setSize(SLOT_WIDTH, SLOT_HEIGHT);
+            slot.addActor(borderImage);
+        }
 
-        // Clear existing card actors from AI slots
-        for (Group slot : battleFieldSlots.subList(NUM_SLOTS, battleFieldSlots.size())) {
-            slot.clearChildren();
+        // Add current cards from game state to player battlefield slots
+        for (int i = 0; i < NUM_SLOTS; i++) {
+            Group slot = battleFieldSlots.get(i); // Player slots are 0 to NUM_SLOTS-1
+            List<Unit> playerUnits = gameManager.getGameState().getPlayerUnitsInSlot(i);
+
+            if (!playerUnits.isEmpty()) {
+                for (Unit card : playerUnits) {
+                    // Create a new CardActor for each unit still in the GameState
+                    CardActor battleCard = new CardActor(card, dragAndDrop);
+                    battleCard.setDrawable(card.getImage().getDrawable());
+                    battleCard.setSize(CARD_WIDTH, CARD_HEIGHT);
+                    battleCard.setPosition((slot.getWidth() - battleCard.getWidth()) / 2,
+                        (slot.getHeight() - battleCard.getHeight()) / 2);
+                    slot.addActor(battleCard);
+                }
+            }
+        }
+    }
+
+
+    private void refreshIABattlefield() {
+        // Clear existing card actors from AI slots (from NUM_SLOTS to the end of the list)
+        for (int i = 0; i < NUM_SLOTS; i++) {
+            Group slot = battleFieldSlots.get(NUM_SLOTS + i); // Enemy slots are NUM_SLOTS to 2*NUM_SLOTS-1
+            slot.clearChildren(); // Remove all actors from the group
 
             // Re-add the border
             Texture borderTexture = new Texture("assets/sprite/simple_border.png");
@@ -354,7 +397,7 @@ public class GameScreen implements Screen {
             slot.addActor(borderImage);
         }
 
-        // Add current cards from game state
+        // Add current cards from game state to AI battlefield slots
         for (int i = 0; i < NUM_SLOTS; i++) {
             Group slot = battleFieldSlots.get(NUM_SLOTS + i);
             List<Unit> enemyUnits = gameManager.getGameState().getEnemyUnitsInSlot(i);
@@ -372,79 +415,6 @@ public class GameScreen implements Screen {
         }
     }
 
-    /*PLAYER 2
-    private void initializePlayer2Battlefield(boolean isPlayer2, ArrayList<Unit> handCards){
-        float yPosition = isPlayer2 ? 50 : Gdx.graphics.getHeight() - 210;
-        float battlefieldY = isPlayer2 ? Gdx.graphics.getHeight() / 4.0f + 30 : Gdx.graphics.getHeight() / 2 + 50;
-
-        // Initialize hand cards
-        for (int i = 0; i < handCards.size(); i++) {
-            CardActor cardActor;
-            if (isPlayer2) {
-                // Player's cards are visible in hand
-                cardActor = new CardActor(handCards.get(i), dragAndDrop);
-            } else {
-                // Enemy's cards are hidden in hand
-                Image hiddenCard = handCards.get(i).Hide();
-                cardActor = new CardActor(handCards.get(i), dragAndDrop);
-                cardActor.setDrawable(hiddenCard.getDrawable());
-            }
-
-            cardActor.setSize(CARD_WIDTH, CARD_HEIGHT);
-            cardActor.setPosition((float) Gdx.graphics.getWidth() /4 + (i*50), yPosition);
-            stage.addActor(cardActor);
-
-            if (isPlayer2) { // Only enable drag for player 2
-                dragAndDrop.addSource(new DragAndDrop.Source(cardActor) {
-                    @Override
-                    public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
-                        DragAndDrop.Payload payload = new DragAndDrop.Payload();
-                        payload.setObject(cardActor.getCard());
-                        return payload;
-                    }
-
-                    public void dragStop(InputEvent event, float x, float y, int pointer) {
-                        // Only remove if dropped successfully (would need additional logic)
-                    }
-                });
-            }
-        }
-
-        // Initialize battlefield slots
-        Texture borderTexture = new Texture("assets/sprite/simple_border.png");
-        for (int i = 0; i < NUM_SLOTS; i++) {
-            Group slot = new Group();
-            slot.setSize(SLOT_WIDTH, SLOT_HEIGHT);
-            Image borderImage = new Image(borderTexture);
-            borderImage.setSize(SLOT_WIDTH, SLOT_HEIGHT);
-            slot.addActor(borderImage);
-            slot.setPosition(100 + (i * (SLOT_WIDTH + SLOT_SPACING)), battlefieldY);
-            stage.addActor(slot);
-            battleFieldSlots.add(slot);
-
-            if (isPlayer2) { // Only enable drop for player 1 slots
-                final int slotIndex = i;
-                dragAndDrop.addTarget(new DragAndDrop.Target(slot) {
-                    @Override
-                    public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                        return gameManager.isSlotEmpty(slotIndex);
-                    }
-
-                    @Override
-                    public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                        Unit card = (Unit) payload.getObject();
-                        CardActor battleCard = new CardActor(card, dragAndDrop);
-                        battleCard.setSize(CARD_WIDTH, CARD_HEIGHT);
-                        battleCard.setPosition((slot.getWidth() - battleCard.getWidth()) / 2,
-                            (slot.getHeight() - battleCard.getHeight()) / 2);
-                        slot.addActor(battleCard);
-                        gameManager.placeCardInSlot(card, slotIndex);
-                        source.getActor().remove(); // Remove card from hand after successful drop
-                    }
-                });
-            }
-        }
-    }*/
     public void endTurnvisualizer(){
         if(gameManager.getCurrentPlayer()==false) {
             eff.play();
@@ -460,9 +430,10 @@ public class GameScreen implements Screen {
                     backnxt.setVisible(false);
                     txt1.setVisible(false);
                     gameManager.endTurn();
+                    refreshPlayerBattlefield(); // Call refresh after AI's turn is complete
+                    refreshIABattlefield(); // Also refresh AI's battlefield in case AI played/lost cards
                 }
             }, 1.5f);
         }
     }
 }
-

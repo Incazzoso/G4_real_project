@@ -166,30 +166,35 @@ public class IAControl {
 
     public void battlePhase() {
         List<Unit> aiUnits = gameState.getEnemyUnitsOnField();
-        List<Unit> playerUnits = gameState.getPlayerUnitsOnField(); // Correctly get a List<Unit> here
+        List<Unit> playerUnits = gameState.getPlayerUnitsOnField();
 
         if (aiUnits.isEmpty()){
             return;
         }
 
-        randomAttack(aiUnits, playerUnits); // Pass the List<Unit> to randomAttack
+        randomAttack(aiUnits, playerUnits);
     }
 
-    public void randomAttack(List<Unit> aiUnits, List<Unit> playerUnits){ // Parameter type changed to List<Unit>
-        for(Unit attacker : aiUnits){
-            if(playerUnits.isEmpty()){
+    public void randomAttack(List<Unit> aiUnits, List<Unit> playerUnits){
+        // Create a copy to avoid ConcurrentModificationException if removing from the original list
+        // and to allow safe iteration while modifying the original list.
+        List<Unit> currentEnemyUnits = new ArrayList<>(aiUnits);
+        List<Unit> currentPlayerUnits = new ArrayList<>(playerUnits);
+
+        for(Unit attacker : currentEnemyUnits){
+            if(currentPlayerUnits.isEmpty()){
+                // Direct attack player if no units on field
                 gameState.directAttackEnemy(attacker.getDamage());
             }else{
-                Unit target = playerUnits.get(rand.nextInt(playerUnits.size()));
-                attacker.attack(target);
-                // This removal logic might be problematic if the original list isn't directly modified
-                // It's better to update the GameState after an attack.
+                // Randomly select a player unit to attack
+                Unit target = currentPlayerUnits.get(rand.nextInt(currentPlayerUnits.size()));
+                attacker.attack(target); // This reduces the target's health
+
+                // Check if the target's health is 0 or less
                 if(target.getHealth() <= 0){
-                    // You need a mechanism to remove the unit from the player's battlefield in GameState
-                    // For example: gameState.removeUnitFromPlayerBattlefield(target);
-                    // This would require a new method in GameState.
-                    // For now, let's just assume the health update is sufficient,
-                    // and a separate cleanup phase will handle dead units.
+                    gameState.removePlayerUnitFromBattlefield(target); // Remove the unit from the battlefield in GameState
+                    currentPlayerUnits.remove(target); // Also remove from the temporary list for this turn
+                    System.out.println("Player unit " + target.getName() + " was defeated and removed from the battlefield.");
                 }
             }
         }

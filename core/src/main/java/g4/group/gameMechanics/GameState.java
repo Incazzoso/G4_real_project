@@ -227,6 +227,15 @@ public class GameState {
         enemyBattlefieldSlots[slotIndex].clear();
     }
 
+    public void removePlayerUnitFromBattlefield(Unit unitToRemove) {
+        for (int i = 0; i < NUM_SLOTS; i++) {
+            if (playerBattlefieldSlots[i].contains(unitToRemove)) {
+                playerBattlefieldSlots[i].remove(unitToRemove);
+                break;
+            }
+        }
+    }
+
     public int getNumSlots() {
         return NUM_SLOTS;
     }
