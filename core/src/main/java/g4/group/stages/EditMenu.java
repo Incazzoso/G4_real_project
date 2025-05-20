@@ -155,7 +155,7 @@ public class EditMenu implements Screen {
     }
 
     public void handleSelection() {
-        deck=new MyProfile(new Player("kilos",new Hand(dad)));
+        deck = new MyProfile(new Player("kilos", new ArrayList<>(dad)));
         music.dispose();
         game.setScreen(new StartMenu(game));
     }

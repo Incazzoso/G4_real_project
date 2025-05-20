@@ -16,7 +16,7 @@ public class MyProfile {
     }
 
     public MyProfile(){
-        myself = new Player("Default", new Hand(new ArrayList<Unit>()));
+        myself = new Player("Default", new ArrayList<Unit>());
         data = new File("core/src/main/java/g4/group/Data/MyProfileData.csv");
         loadProfile();
     }
@@ -31,7 +31,7 @@ public class MyProfile {
             System.out.println("Salvataggio in corso...");
             writer.write("name;health;damage;cost;description;canBurn;canPiercing;imagepath\n"); // Intestazione CSV
 
-            for (Unit card : myself.getHand().getCards()) {
+            for (Unit card : myself.getDeck()) {
                 writer.write(card.getName() + ";" +
                     card.getHealth() + ";" +
                     card.getDamage() + ";" +
@@ -73,7 +73,7 @@ public class MyProfile {
 
                     Effect effect = new Effect(canBurn, canPiercing);
                     Unit card = new Unit(name, health, damage, cost, effect, imgPath);
-                    myself.getHand().addCard(card); // Aggiunge la carta al deck del giocatore
+                    myself.getDeck().add(card); // Aggiunge la carta al deck del giocatore
                 } else {
                     System.err.println("Errore nel formato della linea CSV: " + line);
                 }
@@ -85,7 +85,7 @@ public class MyProfile {
         System.out.println("caricamento profilo fatto!");
     }
 
-    public Hand getMyDeck() {
+    public ArrayList<Unit> getMyDeck() {
         return myself.getHand();
     }
 }

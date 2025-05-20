@@ -1,21 +1,41 @@
 package g4.group.allCardUtilities;
 
-public class Player {
-    private String name;
-    private int MAX_energy;
-    private int energy;
-    private Hand hand;
-    //private Deck deck;
+import java.util.ArrayList;
 
-    public Player(String name, Hand hand){
+public class Player {
+    private final String name;
+    private int MAX_energy;
+    private int health;
+    private int energy;
+    private ArrayList<Unit> deck;
+    private ArrayList<Unit> hand;
+
+
+    public Player(String name, ArrayList<Unit> deck){
         this.name = name;
         MAX_energy = 1;
+        health = 20;
         energy = MAX_energy;
-        if(hand.getCards().size() < 10)
-            this.hand = hand;
+
+        if(deck.size() < 10){
+            this.deck = deck;
+        }
+        hand = deck;
     }
 
-    public Hand getHand() {
+    public int getHealth() {
+        return health;
+    }
+
+    public ArrayList<Unit> getDeck() {
+        return deck;
+    }
+
+    public void setDeck(ArrayList<Unit> deck) {
+        this.deck = deck;
+    }
+
+    public ArrayList<Unit> getHand() {
         return hand;
     }
 
@@ -33,6 +53,10 @@ public class Player {
 
     public void setMAX_energy(int MAX_energy) {
         this.MAX_energy = MAX_energy;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public void setEnergy(int energy) {
@@ -54,4 +78,5 @@ public class Player {
         MAX_energy++;
         energy = getMAX_energy();
     }
+
 }

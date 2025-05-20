@@ -1,8 +1,9 @@
 package g4.group.allCardUtilities.ArtificialIntelligence;
 
 import g4.group.allCardUtilities.Effect;
-import g4.group.allCardUtilities.Hand;
+import g4.group.allCardUtilities.Player;
 import g4.group.allCardUtilities.Unit;
+import g4.group.gameMechanics.GameManager;
 import g4.group.gameMechanics.GameState;
 
 import java.io.BufferedReader;
@@ -13,27 +14,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class IAControl {
-    private String name;
-    private Hand iaHand;
-    private int energy;
+public class IAControl extends Player{
     GameState gameState;
-    private Random rand;
+    GameManager gameManager;
+    private final Random rand;
 
-    public IAControl() {
-        name = "NavIgor";
+    public IAControl( GameState gameState) {
+        super("navigor", gameState.getPlayer().getHand());
+        this.gameState = gameState;
         rand = new Random();
-        this.energy = 3;
-        this.iaHand = loadIAProfile();
     }
 
-    public Hand loadIAProfile() {
-        Hand hand = new Hand(new ArrayList<>());
+    public void loadIAProfile() {
         try {
             File data = new File("core/src/main/java/g4/group/Data/IADeck.csv");
             if (!data.exists()) {
                 System.err.println("Profilo non trovato! Creane uno nuovo.");
-                return hand;
+                return;
             }
 
             BufferedReader reader = new BufferedReader(new FileReader(data));
@@ -53,7 +50,7 @@ public class IAControl {
 
                     Effect effect = new Effect(canBurn, canPiercing);
                     Unit card = new Unit(name, health, damage, cost, effect, imgPath);
-                    hand.addCard(card);
+                    gameState.getEnemy().getDeck().add(card);
                 } else {
                     System.err.println("Errore nel formato della linea CSV: " + line);
                 }
@@ -66,31 +63,6 @@ public class IAControl {
             System.err.println("Errore di formato numero nel CSV!");
             e.printStackTrace();
         }
-        return hand;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getEnergy() {
-        return energy;
-    }
-
-    public Hand getHand() {
-        return iaHand;
-    }
-
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
-
-    public void incrementEnergy(){
-        this.energy++;
-    }
-
-    public void spendEnergy(int amount) {
-        this.energy -= amount;
     }
 
     public void IATurn() {
@@ -98,7 +70,7 @@ public class IAControl {
             gameState.setCurrentPhase(phase);
             switch(phase) {
                 case 1: // DRAW
-                    drawCard();
+                    drawPhase();
                     break;
                 case 2: // MAIN
                     mainPhase();
@@ -114,92 +86,67 @@ public class IAControl {
         gameState.setCurrentPhase(1);
     }
 
-    public void drawCard() {
+    public void drawPhase() {
         if (gameState != null && gameState.getEnemyDeckSize() > 0) {
-            Unit drawnCard = gameState.drawEnemycard();
+            Unit drawnCard = gameManager.drawCard(false);
             if (drawnCard != null) {
-                iaHand.addCard(drawnCard);
+                gameState.getEnemy().getHand().add(drawnCard);
             }
         }
     }
 
     public void mainPhase() {
-        List<Unit> playableCard = getPlayableCard();
+        while (gameState.getEnemy().getHealth() > 0 && !gameState.getEnemy().getHand().isEmpty() && gameState.getEnemy().getEnergy() > 0){
+            for(int i = 0; i < gameState.getEnemy().getHand().size(); i++){
 
-        while (!playableCard.isEmpty() && energy > 0){
-            Unit card = selectCard(playableCard);
-            if(card != null && card.getCost() <= energy){
-                playCard(card);
-                playableCard.remove(card);
-            }else{
-                break;
             }
         }
     }
 
-    public List<Unit> getPlayableCard() {
-        List<Unit> playable = new ArrayList<>();
-        for(Unit unit : iaHand.getCards()){
-            if(unit.getCost() <= energy){
+    public void battlePhase() {
+
+
+        for(int i = 0; i < gameState.getMAX_SLOT(); i++){
+            if(gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) != null)
+                gameManager.attackUnit(gameState.getUnitToEnemyField(i), gameState.getUnitToPlayerField(i));
+                else
+                    gameManager.attackPlayer(gameState.getUnitToEnemyField(i),false);
+        }
+    }
+    public void endPhase(){
+
+    }
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    public Player getAI() {
+        return gameState.getEnemy();
+    }
+
+    private ArrayList<Unit> getPlayableCard() {
+        ArrayList<Unit> playable = new ArrayList<>();
+        for(Unit unit : gameState.getEnemy().getHand()){
+            if(unit.getCost() <= gameState.getEnemy().getEnergy()){
                 playable.add(unit);
             }
         }
         return playable;
     }
 
-    public Unit selectCard(List<Unit> playableCard){
+    private Unit selectCard(List<Unit> playableCard){
         return playableCard.get(rand.nextInt(playableCard.size()));
     }
 
-    public void playCard(Unit card) {
-        if(card != null && card.getCost() <= energy) {
-            spendEnergy(card.getCost());
-            iaHand.removeCard(card);
-            for (int i = 0; i < gameState.getNumSlots(); i++) {
-                if (gameState.isSlotEmpty(i, 2)) {
-                    gameState.addUnitToEnemyBattlefield(card, i);
+    private void playCard(Unit card) {
+        if(card != null && card.getCost() <= gameState.getEnemy().getEnergy()) {
+            gameState.getEnemy().setEnergy(gameState.getEnemy().getEnergy() - card.getCost());
+            for (int i = 0; i < gameState.getMAX_SLOT(); i++) {
+                if (gameState.isEmpty(i, false)) {
+                    gameState.addUnitToEnemyField(card,i);
                     break;
                 }
             }
         }
-    }
-
-    public void battlePhase() {
-        List<Unit> aiUnits = gameState.getEnemyUnitsOnField();
-        List<Unit> playerUnits = gameState.getPlayerUnitsOnField(); // Correctly get a List<Unit> here
-
-        if (aiUnits.isEmpty()){
-            return;
-        }
-
-        randomAttack(aiUnits, playerUnits); // Pass the List<Unit> to randomAttack
-    }
-
-    public void randomAttack(List<Unit> aiUnits, List<Unit> playerUnits){ // Parameter type changed to List<Unit>
-        for(Unit attacker : aiUnits){
-            if(playerUnits.isEmpty()){
-                gameState.directAttackEnemy(attacker.getDamage());
-            }else{
-                Unit target = playerUnits.get(rand.nextInt(playerUnits.size()));
-                attacker.attack(target);
-                // This removal logic might be problematic if the original list isn't directly modified
-                // It's better to update the GameState after an attack.
-                if(target.getHealth() <= 0){
-                    // You need a mechanism to remove the unit from the player's battlefield in GameState
-                    // For example: gameState.removeUnitFromPlayerBattlefield(target);
-                    // This would require a new method in GameState.
-                    // For now, let's just assume the health update is sufficient,
-                    // and a separate cleanup phase will handle dead units.
-                }
-            }
-        }
-    }
-
-    public void endPhase(){
-        incrementEnergy();
-    }
-
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
     }
 }

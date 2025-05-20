@@ -1,69 +1,42 @@
 package g4.group.gameMechanics;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
+import g4.group.allCardUtilities.*;
 import g4.group.allCardUtilities.ArtificialIntelligence.IAControl;
-import g4.group.allCardUtilities.Hand;
-import g4.group.allCardUtilities.MyProfile;
-import g4.group.allCardUtilities.Player;
-import g4.group.allCardUtilities.Unit;
+
+import java.util.List;
+import java.util.Random;
 
 public class GameManager {
 
-    private Player player1, player2;
     private Stage stage;
     private GameState gameState;
-    private IAControl playerIA;
     private boolean currentPlayer;
 
     public GameManager(Stage stage) {
         this.stage = stage;
-        this.gameState = new GameState(5); // Initialize first
-        player1 = new MyProfile().getMyself();
-        playerIA = new IAControl();
-        playerIA.setGameState(this.gameState); // Set the game state before initialization
-
-        currentPlayer = true;
         initializeGameState();
+        currentPlayer = new Random().nextBoolean();
     }
 
     private void initializeGameState() {
-        gameState.setPlayerHealth(20);
-        gameState.setPlayerEnergy(2);
-        gameState.setPlayerHand(player1.getHand());
+        this.gameState = new GameState(5); // Initialize first
         gameState.setPlayerDeckSize(8);
-
-        gameState.setEnemyHealth(20);
-        gameState.setEnemyEnergy(4);
-        gameState.setEnemyHand(playerIA.getHand());
         gameState.setEnemyDeckSize(8);
 
-        for (int i = 0; i < gameState.getNumSlots(); i++) {
-            gameState.clearEnemySlot(i);
-        }
     }
 
     public void endTurn() {
         if (currentPlayer) {
-            player1.startTurn();
+            gameState.getPlayer().startTurn();
         } else {
-            playerIA.IATurn();
+
         }
         currentPlayer = !currentPlayer;
-        gameState.setIncrementTurn(gameState.getCurrentTurn());
 
         // Update game state after turn change
         if (!currentPlayer) { // If it's now AI's turn, start its turn immediately
-            playerIA.IATurn();
         }
-    }
-
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    public IAControl getPlayerIA() {
-        return playerIA;
     }
 
     public boolean getCurrentPlayer() {
@@ -76,47 +49,24 @@ public class GameManager {
 
     // Metodi aggiunti per la gestione del campo di battaglia
 
-    public boolean isSlotEmpty(int slotIndex) {
-        return gameState.isSlotEmpty(slotIndex, 1); // 1 indica il giocatore
-    }
-
-    public void placeCardInSlot(Unit card, int slotIndex) {
-        if (canPlayCard(player1, card) && gameState.isSlotEmpty(slotIndex, 1)) {
-            player1.spendEnergy(card.getCost());
-            gameState.addUnitToPlayerBattlefield(card, slotIndex);
-            System.out.println("carta posizionata");
-        } else {
-            System.out.println("non puoi posizionare la carta");
-            // Gestire il caso in cui non si può giocare la carta (es., energia insufficiente)
-        }
-    }
-
-    public void placeAIUnitInSlot(Unit card, int slotIndex) {
-        if (gameState.isSlotEmpty(slotIndex, 2)) { // 2 indicates enemy
-            playerIA.spendEnergy(card.getCost());
-            gameState.addUnitToEnemyBattlefield(card, slotIndex);
-            System.out.println("AI placed card in slot " + slotIndex);
-        }
+    public Unit drawCard(boolean player){
+        if(player)
+            return gameState.getEnemy().getDeck().get(new Random().nextInt(gameState.getEnemy().getDeck().size()));
+        else
+            return gameState.getPlayer().getDeck().get(new Random().nextInt(gameState.getPlayer().getDeck().size()));
     }
 
     public boolean canPlayCard(Player player, Unit card) {
         return player.getEnergy() >= card.getCost();
     }
 
-    public int getPlayerHealth() {
-        return gameState.getPlayerHealth();
+    public void attackUnit(Unit attacker, Unit target) {
+        attacker.attack(target);
     }
-
-    public int getEnemyHealth() {
-        return gameState.getEnemyHealth();
-    }
-
-    public int getPlayerEnergy() {
-        return gameState.getPlayerEnergy();
-    }
-
-    public int getEnemyEnergy() {
-        return gameState.getEnemyEnergy();
+    public void attackPlayer(Unit attacker, boolean player) {
+        if(player){
+            gameState.getPlayer().setHealth(gameState.getPlayer().getHealth() - attacker.getDamage());
+        }
     }
 
 }

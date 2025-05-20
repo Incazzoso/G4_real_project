@@ -1,9 +1,4 @@
 name;health;damage;cost;description;canBurn;canPiercing;imagepath
 Bismarck;8;4;6;the pride of a nation a beast made of steel, the flagship of hitler's navy itself, the terror of the seas. the Bismarck is in motion;false;false;assets/sprite/imgCardo/iloveimg-resized/Bismark.png
-tirpiz;6;4;4;the second of the two ship of the bismarck-class compared to is older sister it as less resistant armor but it as the same gun;true;true;assets/sprite/imgCardo/iloveimg-resized/tripiz.png
 Lützow;5;3;3;originaly named Deutschland it was the last heavy cruisers to be sink in battle in the april of 1945;false;false;assets/sprite/imgCardo/iloveimg-resized/Lützow.png
-U-30;1;5;3;U-Boot comandato da Günther Prien, noto per il suo affondamento della corazzata britannica HMS Royal Oak nel 1939;false;false;assets/sprite/imgCardo/iloveimg-resized/U-30.png
 Leipzig & Nürnberg;6;2;4;all of the Leipzig-class ship the leipzig have HE shell and the Nürnberg have AP shell;true;true;assets/sprite/imgCardo/iloveimg-resized/Leipzig & Nürnberg.png
-Prinz Eugen;3;3;4;the prinz eugen is the only heavy cruisers to have on board both HE an AP shell;true;true;assets/sprite/imgCardo/iloveimg-resized/Prinz Eugen.png
-wolfpack;3;4;4;a formidable formation of 5 U-boot capable of hunting and sinking all ship if it wasn't for turing;false;false;assets/sprite/imgCardo/iloveimg-resized/wolfpack.png
-Z-30;4;2;3;Destroyer of the 1936A class, participated in numerous battles in the North Sea.;true;true;assets/sprite/imgCardo/iloveimg-resized/Z-30.png
