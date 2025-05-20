@@ -85,25 +85,20 @@ public class GameScreen implements Screen {
         nextTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(gameManager.getCurrentPlayer()==true) {
-                    eff.play();
-                    eff.setVolume(opt.getVe());
-                    gameManager.endTurn();
-                }else{
-                }
+                eff.play();
+                eff.setVolume(opt.getVe());
+                gameManager.endTurn();
             }
         });
+
         stage.addActor(nextTurn);
         nxt =new Label("A\nV\nA\nN\nZ\nA",skins);
         nxt.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(gameManager.getCurrentPlayer()==true) {
-                    eff.play();
-                    eff.setVolume(opt.getVe());
-                    gameManager.endTurn();
-                }else{
-                }
+                eff.play();
+                eff.setVolume(opt.getVe());
+                gameManager.endTurn();
             }
         });
         nxt.setPosition(848,80);
@@ -151,6 +146,11 @@ public class GameScreen implements Screen {
         hp.setText(String.valueOf(gameManager.getPlayerHealth()));
         hp1.setText(String.valueOf(gameManager.getEnemyHealth()));
         man.setText(String.valueOf(gameManager.getPlayerEnergy()));
+
+        // Refresh AI battlefield if it's not player's turn
+        if (!gameManager.getCurrentPlayer()) {
+            refreshIABattlefield();
+        }
 
         Gdx.gl.glClearColor(0,0,0,1);
         stage.getViewport().apply();
@@ -300,6 +300,38 @@ public class GameScreen implements Screen {
                 }
             }
             // Removed drag and drop target for AI, as AI card placement is handled by IAControl.
+        }
+    }
+
+    private void refreshIABattlefield() {
+        float battlefieldY = Gdx.graphics.getHeight() - 460;
+
+        // Clear existing card actors from AI slots
+        for (Group slot : battleFieldSlots.subList(NUM_SLOTS, battleFieldSlots.size())) {
+            slot.clearChildren();
+
+            // Re-add the border
+            Texture borderTexture = new Texture("assets/sprite/simple_border.png");
+            Image borderImage = new Image(borderTexture);
+            borderImage.setSize(SLOT_WIDTH, SLOT_HEIGHT);
+            slot.addActor(borderImage);
+        }
+
+        // Add current cards from game state
+        for (int i = 0; i < NUM_SLOTS; i++) {
+            Group slot = battleFieldSlots.get(NUM_SLOTS + i);
+            List<Unit> enemyUnits = gameManager.getGameState().getEnemyUnitsInSlot(i);
+
+            if (!enemyUnits.isEmpty()) {
+                for (Unit card : enemyUnits) {
+                    CardActor battleCard = new CardActor(card, dragAndDrop);
+                    battleCard.setDrawable(card.getImage().getDrawable());
+                    battleCard.setSize(CARD_WIDTH, CARD_HEIGHT);
+                    battleCard.setPosition((slot.getWidth() - battleCard.getWidth()) / 2,
+                        (slot.getHeight() - battleCard.getHeight()) / 2);
+                    slot.addActor(battleCard);
+                }
+            }
         }
     }
 

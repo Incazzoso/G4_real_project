@@ -44,15 +44,18 @@ public class GameManager {
     }
 
     public void endTurn() {
-        System.out.println("lololololol");
         if (currentPlayer) {
             player1.startTurn();
-
         } else {
             playerIA.IATurn();
         }
         currentPlayer = !currentPlayer;
         gameState.setIncrementTurn(gameState.getCurrentTurn());
+
+        // Update game state after turn change
+        if (!currentPlayer) { // If it's now AI's turn, start its turn immediately
+            playerIA.IATurn();
+        }
     }
 
     public Player getPlayer1() {
@@ -85,6 +88,14 @@ public class GameManager {
         } else {
             System.out.println("non puoi posizionare la carta");
             // Gestire il caso in cui non si può giocare la carta (es., energia insufficiente)
+        }
+    }
+
+    public void placeAIUnitInSlot(Unit card, int slotIndex) {
+        if (gameState.isSlotEmpty(slotIndex, 2)) { // 2 indicates enemy
+            playerIA.spendEnergy(card.getCost());
+            gameState.addUnitToEnemyBattlefield(card, slotIndex);
+            System.out.println("AI placed card in slot " + slotIndex);
         }
     }
 
