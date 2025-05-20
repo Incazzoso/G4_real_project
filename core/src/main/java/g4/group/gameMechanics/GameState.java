@@ -174,7 +174,7 @@ public class GameState {
 
     //ENEMY ACTIONS
     public Unit drawEnemycard() {
-        if (enemyDeckSize > 0) {
+        if (enemyDeckSize > 0 && enemyHand != null) {
             enemyDeckSize--;
             return null;
         }
