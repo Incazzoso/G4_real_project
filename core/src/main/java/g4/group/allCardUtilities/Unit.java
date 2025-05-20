@@ -1,6 +1,8 @@
 package g4.group.allCardUtilities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -12,26 +14,26 @@ public class Unit extends Card {
     //costruttori:
 
     //costruttore normal
-    public Unit(String name, int health, int damage, int cost, Effect effect, String imgPath){
+    public Unit(String name, int health, int damage, int cost, Effect effect, String imgPath) {
         super(name, health, damage, cost);
         this.effect = effect;
-        this.path=imgPath;
-        this.image=new Image(new Texture(imgPath));
+        this.path = imgPath;
+        this.image = new Image(new Texture(imgPath));
     }
 
     //costruttore esteso
-    Unit(String name, int health, int damage, int cost, Effect effect, String description,String imgPath) {
+    Unit(String name, int health, int damage, int cost, Effect effect, String description, String imgPath) {
         super(name, health, damage, cost, description);
         this.effect = effect;
-        this.path=imgPath;
-        this.image=new Image(new Texture(imgPath));
+        this.path = imgPath;
+        this.image = new Image(new Texture(imgPath));
     }
 
     //costruttore compresso
-    Unit(Card card, Effect effect,String imgPath){
+    Unit(Card card, Effect effect, String imgPath) {
         super(card.getName(), card.getHealth(), card.getDamage(), card.getCost(), card.getDescription());
         this.effect = effect;
-        this.path=imgPath;
+        this.path = imgPath;
         try {
             this.image = new Image(new Texture(Gdx.files.internal(imgPath)));
         } catch (Exception e) {
@@ -64,6 +66,26 @@ public class Unit extends Card {
         this.effect = effect;
     }
 
+    public Image Hide() {
+        // Return a generic back-of-card image
+        try {
+            return new Image(new Texture(Gdx.files.internal("assets/sprite/card.png")));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public Image Show() {
+        // Return the actual card image
+        try {
+            return new Image(new Texture(path));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     //procura danno all'unità e restituisce la vita rimanente dell'unità danneggiata
     public int attack(Unit enemy){
