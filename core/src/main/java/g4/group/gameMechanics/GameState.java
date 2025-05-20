@@ -226,4 +226,18 @@ public class GameState {
     public void clearEnemySlot(int slotIndex) {
         enemyBattlefieldSlots[slotIndex].clear();
     }
+
+    public int getNumSlots() {
+        return NUM_SLOTS;
+    }
+
+    public int getOccupiedEnemySlotsCount() {
+        int count = 0;
+        for (List<Unit> slot : enemyBattlefieldSlots) {
+            if (!slot.isEmpty()) {
+                count++;
+            }
+        }
+        return count;
+    }
 }
