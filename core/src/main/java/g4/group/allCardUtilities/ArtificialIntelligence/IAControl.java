@@ -95,24 +95,28 @@ public class IAControl {
 
     //FASI DI GIOCO
     public void IATurn() {
-        switch(gameState.getCurrentPhase()){
-            //DRAW
-            case 1:
-                drawCard();
-                break;
-            //MAIN
-            case 2:
-                mainPhase();
-                break;
-            //BATTLE
-            case 3:
-                battlePhase();
-                break;
-            //END
-            case 4:
-                endPhase();
-                break;
+        for (int phase = 1; phase <= 4; phase++) {
+            gameState.setCurrentPhase(phase);
+            switch(phase) {
+                //DRAW
+                case 1:
+                    drawCard();
+                    break;
+                //MAIN
+                case 2:
+                    mainPhase();
+                    break;
+                //BATTLE
+                case 3:
+                    battlePhase();
+                    break;
+                //END
+                case 4:
+                    endPhase();
+                    break;
+            }
         }
+        gameState.setCurrentPhase(1);
     }
 
     //PESCA

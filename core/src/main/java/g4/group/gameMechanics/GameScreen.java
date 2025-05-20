@@ -122,8 +122,7 @@ public class GameScreen implements Screen {
 
 
         //inizzializzazione campo del player IA
-<<<<<<< HEAD
-        initializeIABattlefield(false, gameManager.getPlayer2().getHand().getCards());
+        initializeIABattlefield(false, gameManager.getPlayerIA().getHand().getCards());
 
         if(gameManager.getPlayerHealth()<=3){
             low.play();
@@ -132,9 +131,6 @@ public class GameScreen implements Screen {
         }else{
             low.stop();
         }
-=======
-        initializeIABattlefield(false, gameManager.getPlayerIA().getHand().getCards());
->>>>>>> 18dba50c3b740bba7a334b2de6e7b8b92c591dd0
     }
 
     @Override

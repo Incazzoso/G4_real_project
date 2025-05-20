@@ -18,12 +18,12 @@ public class GameManager {
 
     public GameManager(Stage stage) {
         this.stage = stage;
+        this.gameState = new GameState(5); // Initialize first
         player1 = new MyProfile().getMyself();
-        player2 = new MyProfile().getMyself(); // Temporaneamente, usa un altro profilo
-        playerIA = new IAControl(); // Pass the gameState to the AI
+        playerIA = new IAControl();
+        playerIA.setGameState(this.gameState); // Set the game state before initialization
+
         currentPlayer = true;
-        this.gameState = new GameState(5); // Inizializza GameState con il numero di slot
-        playerIA.setGameState(this.gameState);
         initializeGameState();
     }
 
@@ -37,6 +37,10 @@ public class GameManager {
         gameState.setEnemyEnergy(4);
         gameState.setEnemyHand(playerIA.getHand());
         gameState.setEnemyDeckSize(8);
+
+        for (int i = 0; i < gameState.getNumSlots(); i++) {
+            gameState.clearEnemySlot(i);
+        }
     }
 
     public void endTurn() {
@@ -53,10 +57,6 @@ public class GameManager {
 
     public Player getPlayer1() {
         return player1;
-    }
-
-    public Player getPlayer2() {
-        return player2;
     }
 
     public IAControl getPlayerIA() {
