@@ -54,6 +54,7 @@ public class GameScreen implements Screen {
     private final float DIM3 = Gdx.graphics.getWidth()/20;
     private Music music;
     private Music eff = Gdx.audio.newMusic(Gdx.files.internal("assets/music/effect/fire.mp3"));
+    private Music low = Gdx.audio.newMusic(Gdx.files.internal("assets/music/effect/low_Health_Music.mp3"));
 
     @Override
     public void show() {
@@ -122,6 +123,14 @@ public class GameScreen implements Screen {
 
         //inizzializzazione campo del player IA
         initializeIABattlefield(false, gameManager.getPlayer2().getHand().getCards());
+
+        if(gameManager.getPlayerHealth()<=3){
+            low.play();
+            low.setVolume(opt.getVe());
+            low.play();
+        }else{
+            low.stop();
+        }
     }
 
     @Override
@@ -167,6 +176,8 @@ public class GameScreen implements Screen {
         stage.dispose();
         man1.dispose();
         man2.dispose();
+        eff.dispose();
+        low.dispose();
         // Dispose any other textures you create
     }
 
