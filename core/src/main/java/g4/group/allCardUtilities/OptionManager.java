@@ -63,10 +63,10 @@ public class OptionManager {
         try {
             data = new File("core/src/main/java/g4/group/Data/opt.csv");
             if (!data.exists()) {
-                System.err.println("FILE non trovato!");
+                System.err.println("FILE musicali non trovato!");
                 return;
             }
-            System.out.println("caricamento FILE in corso...");
+            System.out.println("caricamento FILE musicali in corso...");
             BufferedReader reader = new BufferedReader(new FileReader(data));
             String line = reader.readLine(); // Salta l'intestazione
             while ((line = reader.readLine()) != null) {
@@ -77,8 +77,8 @@ public class OptionManager {
             }
             reader.close();
         } catch (IOException e) {
-            System.err.println("Errore nel caricamento del profilo!");
+            System.err.println("Errore nel caricamento degli effetti!");
         }
-        System.out.println("caricamento profilo fatto!");
+        System.out.println("caricamento effetti fatto!");
     }
 }

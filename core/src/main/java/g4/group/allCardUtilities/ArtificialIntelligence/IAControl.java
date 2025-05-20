@@ -19,9 +19,10 @@ public class IAControl extends Player{
     GameManager gameManager;
     private final Random rand;
 
-    public IAControl( GameState gameState) {
-        super("navigor", gameState.getPlayer().getHand());
+    public IAControl(GameState gameState) {
+        super("navigor", gameState.getPlayer().getDeck());
         this.gameState = gameState;
+
         rand = new Random();
     }
 
@@ -104,8 +105,6 @@ public class IAControl extends Player{
     }
 
     public void battlePhase() {
-
-
         for(int i = 0; i < gameState.getMAX_SLOT(); i++){
             if(gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) != null)
                 gameManager.attackUnit(gameState.getUnitToEnemyField(i), gameState.getUnitToPlayerField(i));
@@ -113,6 +112,7 @@ public class IAControl extends Player{
                     gameManager.attackPlayer(gameState.getUnitToEnemyField(i),false);
         }
     }
+
     public void endPhase(){
 
     }

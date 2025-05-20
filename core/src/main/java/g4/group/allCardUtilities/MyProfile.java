@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class MyProfile {
-    private Player myself;
+    private final Player myself;
     private BufferedReader reader;
     private File data;              //il luogo da dove vengono raccolte le carte
 

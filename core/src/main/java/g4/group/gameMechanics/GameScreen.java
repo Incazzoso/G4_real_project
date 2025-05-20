@@ -301,6 +301,7 @@ public class GameScreen implements Screen {
 
         // Initialize hand cards (hidden for the AI)
         for (int i = 0; i < handCards.size(); i++) {
+
             CardActor cardActor;
             Image hiddenCard = handCards.get(i).Hide();
             cardActor = new CardActor(handCards.get(i), dragAndDrop);
@@ -313,6 +314,7 @@ public class GameScreen implements Screen {
         // Initialize battlefield slots for the AI at the top
         Texture borderTexture = new Texture("assets/sprite/simple_border.png");
         for (int i = 0; i < NUM_SLOTS; i++) {
+
             Group slot = new Group();
             slot.setSize(SLOT_WIDTH, SLOT_HEIGHT);
             Image borderImage = new Image(borderTexture);
@@ -322,22 +324,18 @@ public class GameScreen implements Screen {
             stage.addActor(slot);
             battleFieldSlots.add(slot);
 
+
+
             // Check if there's already a card in this slot (from GameState)
 
-            if (gameManager.getGameState().getEnemyField() != null) {
-                for (Unit card : gameManager.getGameState().getEnemyField()) {
-                    CardActor battleCard = new CardActor(card, dragAndDrop);
-                    battleCard.setDrawable(card.getImage().getDrawable());
-                    battleCard.setSize(CARD_WIDTH, CARD_HEIGHT);
-                    battleCard.setPosition((slot.getWidth() - battleCard.getWidth()) / 2,
-                        (slot.getHeight() - battleCard.getHeight()) / 2);
-                    slot.addActor(battleCard);
-                }
-            }
+
             // Removed drag and drop target for AI, as AI card placement is handled by IAControl.
         }
     }
-
+    public void showwww(Unit i){
+        System.out.println("duce cuepdswd");
+        batch.draw(new Texture(i.getPath()),0,0);
+    }
     private void refreshIABattlefield() {
         float battlefieldY = Gdx.graphics.getHeight() - 460;
 
