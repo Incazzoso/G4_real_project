@@ -323,18 +323,7 @@ public class GameScreen implements Screen {
             slot.setPosition(100 + (i * (SLOT_WIDTH + SLOT_SPACING)), battlefieldY);
             stage.addActor(slot);
             battleFieldSlots.add(slot);
-
-
-
-            // Check if there's already a card in this slot (from GameState)
-
-
-            // Removed drag and drop target for AI, as AI card placement is handled by IAControl.
         }
-    }
-    public void showwww(Unit i){
-        System.out.println("duce cuepdswd");
-        batch.draw(new Texture(i.getPath()),0,0);
     }
     private void refreshIABattlefield() {
         float battlefieldY = Gdx.graphics.getHeight() - 460;

@@ -86,7 +86,7 @@ public class SettingMenu implements Screen {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 volMusic = volMSlider.getValue();
                 DecimalFormat df = new DecimalFormat("#.#");
-                volMname.setText("Effect Volume: " + df.format(volMusic*100));
+                volMname.setText("music Volume: " + df.format(volMusic*100));
             }
         });
 
@@ -136,8 +136,9 @@ public class SettingMenu implements Screen {
                 eff.setVolume(opt.getVe());
                 volMSlider.setValue(0.75f);
                 volESlider.setValue(0.75f);
-                volMname.setText("Music Volume: " + 0.75f);
-                volEname.setText("Effect Volume: " + 0.75f);
+                DecimalFormat df = new DecimalFormat("#.#");
+                volMname.setText("Music Volume: " + df.format(0.75f*100));
+                volEname.setText("Effect Volume: " + df.format(0.75f*100));
                 selectBox.setSelected("in the name of those who fallen");
             }
         });

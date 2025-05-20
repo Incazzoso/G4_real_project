@@ -68,5 +68,4 @@ public class GameManager {
             gameState.getPlayer().setHealth(gameState.getPlayer().getHealth() - attacker.getDamage());
         }
     }
-
 }
