@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import g4.group.allCardUtilities.CardActor;
@@ -52,6 +54,9 @@ public class GameScreen implements Screen {
     private final float DIM1 = Gdx.graphics.getWidth()/7;
     private final float DIM2 = Gdx.graphics.getWidth()/15;
     private final float DIM3 = Gdx.graphics.getWidth()/20;
+    private Image backnxt=new Image(new Texture("assets/sprite/border.png"));
+    private Image txt1=new Image(new Texture("assets/sprite/nxt1.png"));
+    private Image txt2=new Image(new Texture("assets/sprite/nxt2.png"));
     private Music music;
     private Music eff = Gdx.audio.newMusic(Gdx.files.internal("assets/music/effect/fire.mp3"));
     private Music low = Gdx.audio.newMusic(Gdx.files.internal("assets/music/effect/low_Health_Music.mp3"));
@@ -68,6 +73,9 @@ public class GameScreen implements Screen {
         stage = new Stage(new FitViewport(1024, 980));
         Gdx.input.setInputProcessor(stage);
 
+        backnxt.setVisible(false);
+        txt1.setVisible(false);
+        txt2.setVisible(false);
         Skin skins = new Skin(Gdx.files.internal("assets/MenuButtonsTexture/DefaultGDX/uiskin.json"));
         man =new Label("4",skins);
         man.setPosition(110,100);
@@ -81,13 +89,27 @@ public class GameScreen implements Screen {
         hp1.setPosition(825,848);
         hp1.setFontScale(3);
         stage.addActor(hp1);
+        backnxt.setPosition(0,450);
+        backnxt.setSize(1024,135);
         nextTurn.setPosition(820,50);
         nextTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 eff.play();
                 eff.setVolume(opt.getVe());
-                gameManager.endTurn();
+                backnxt.setPosition(0,450);
+                backnxt.setVisible(true);
+                txt1.setPosition(100,460);
+                txt1.setVisible(true);
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        System.out.println("vivviviviviviv");
+                        backnxt.setVisible(false);
+                        txt1.setVisible(false);
+                        gameManager.endTurn();
+                    }
+                }, 1.5f);
             }
         });
 
@@ -98,7 +120,19 @@ public class GameScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 eff.play();
                 eff.setVolume(opt.getVe());
-                gameManager.endTurn();
+                backnxt.setPosition(0, 450);
+                backnxt.setVisible(true);
+                txt1.setPosition(100, 460);
+                txt1.setVisible(true);
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        System.out.println("vivviviviviviv");
+                        backnxt.setVisible(false);
+                        txt1.setVisible(false);
+                        gameManager.endTurn();
+                    }
+                }, 1.5f);
             }
         });
         nxt.setPosition(848,80);
@@ -126,6 +160,9 @@ public class GameScreen implements Screen {
         }else{
             low.stop();
         }
+        stage.addActor(backnxt);
+        stage.addActor(txt1);
+        stage.addActor(txt2);
     }
 
     @Override
@@ -408,5 +445,24 @@ public class GameScreen implements Screen {
             }
         }
     }*/
+    public void endTurnvisualizer(){
+        if(gameManager.getCurrentPlayer()==false) {
+            eff.play();
+            eff.setVolume(opt.getVe());
+            backnxt.setPosition(0, 450);
+            backnxt.setVisible(true);
+            txt1.setPosition(100, 460);
+            txt1.setVisible(true);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    System.out.println("vivviviviviviv");
+                    backnxt.setVisible(false);
+                    txt1.setVisible(false);
+                    gameManager.endTurn();
+                }
+            }, 1.5f);
+        }
+    }
 }
 
