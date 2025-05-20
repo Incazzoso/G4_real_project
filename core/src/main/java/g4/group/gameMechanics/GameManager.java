@@ -39,6 +39,7 @@ public class GameManager {
     }
 
     public void endTurn() {
+        System.out.println("lololololol");
         if (currentPlayer) {
             player1.startTurn();
 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -38,6 +39,7 @@ public class GameScreen implements Screen {
     private Label hp;
     private Label hp1;
     private Texture hp2 = new Texture("assets/sprite/heart.png");
+    private Label nxt;
     private Image nextTurn = new Image(new Texture("assets/sprite/next-turn.png"));
     private List<Group> battleFieldSlots = new ArrayList<>(); // Lista per gli slot
     private OptionManager opt = new OptionManager();
@@ -51,6 +53,7 @@ public class GameScreen implements Screen {
     private final float DIM2 = Gdx.graphics.getWidth()/15;
     private final float DIM3 = Gdx.graphics.getWidth()/20;
     private Music music;
+    private Music eff = Gdx.audio.newMusic(Gdx.files.internal("assets/music/effect/fire.mp3"));
 
     @Override
     public void show() {
@@ -78,7 +81,33 @@ public class GameScreen implements Screen {
         hp1.setFontScale(3);
         stage.addActor(hp1);
         nextTurn.setPosition(820,50);
+        nextTurn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(gameManager.getCurrentPlayer()==true) {
+                    eff.play();
+                    eff.setVolume(opt.getVe());
+                    gameManager.endTurn();
+                }else{
+                }
+            }
+        });
         stage.addActor(nextTurn);
+        nxt =new Label("A\nV\nA\nN\nZ\nA",skins);
+        nxt.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(gameManager.getCurrentPlayer()==true) {
+                    eff.play();
+                    eff.setVolume(opt.getVe());
+                    gameManager.endTurn();
+                }else{
+                }
+            }
+        });
+        nxt.setPosition(848,80);
+        nxt.setFontScale(1);
+        stage.addActor(nxt);
 
         // Inizializza GameManager
         gameManager = new GameManager(stage);
