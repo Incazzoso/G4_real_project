@@ -145,7 +145,7 @@ public class StartMenu implements Screen {
             music.dispose();
             eff.play();
             eff.setVolume(opt.getVe());
-            game.setScreen(new GameScreen());
+            game.setScreen(new IntermedumMenu(game));
         }
 
 
