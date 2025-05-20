@@ -20,9 +20,10 @@ public class GameManager {
         this.stage = stage;
         player1 = new MyProfile().getMyself();
         player2 = new MyProfile().getMyself(); // Temporaneamente, usa un altro profilo
-        playerIA = new IAControl();
+        playerIA = new IAControl(); // Pass the gameState to the AI
         currentPlayer = true;
         this.gameState = new GameState(5); // Inizializza GameState con il numero di slot
+        playerIA.setGameState(this.gameState);
         initializeGameState();
     }
 

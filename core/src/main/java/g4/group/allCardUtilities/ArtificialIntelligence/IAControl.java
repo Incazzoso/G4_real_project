@@ -191,4 +191,8 @@ public class IAControl {
     public void endPhase(){
         incrementEnergy();
     }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
 }
