@@ -121,7 +121,7 @@ public class GameScreen implements Screen {
 
 
         //inizzializzazione campo del player IA
-        initializeIABattlefield(false, gameManager.getPlayer2().getHand().getCards());
+        initializeIABattlefield(false, gameManager.getPlayerIA().getHand().getCards());
     }
 
     @Override
@@ -138,6 +138,10 @@ public class GameScreen implements Screen {
         batch.draw(hp2, 835, 830, DIM3, DIM2);
         batch.end();
 
+        // Update UI elements
+        hp.setText(String.valueOf(gameManager.getPlayerHealth()));
+        hp1.setText(String.valueOf(gameManager.getEnemyHealth()));
+        man.setText(String.valueOf(gameManager.getPlayerEnergy()));
 
         Gdx.gl.glClearColor(0,0,0,1);
         stage.getViewport().apply();
@@ -247,7 +251,7 @@ public class GameScreen implements Screen {
 
     private void initializeIABattlefield(boolean isPlayer2, ArrayList<Unit> handCards) {
         float yPosition = isPlayer2 ? 50 : Gdx.graphics.getHeight() - 210;
-        float battlefieldY = isPlayer2 ? Gdx.graphics.getHeight() / 4.0f + 30 : Gdx.graphics.getHeight() / 2 + 50;
+        float battlefieldY = isPlayer2 ? Gdx.graphics.getHeight() / 4.0f + 30 : Gdx.graphics.getHeight() - 460;
 
         // Initialize hand cards (hidden for the AI)
         for (int i = 0; i < handCards.size(); i++) {
@@ -260,7 +264,7 @@ public class GameScreen implements Screen {
             stage.addActor(cardActor);
         }
 
-        // Initialize battlefield slots for the AI
+        // Initialize battlefield slots for the AI at the top
         Texture borderTexture = new Texture("assets/sprite/simple_border.png");
         for (int i = 0; i < NUM_SLOTS; i++) {
             Group slot = new Group();
@@ -271,14 +275,22 @@ public class GameScreen implements Screen {
             slot.setPosition(100 + (i * (SLOT_WIDTH + SLOT_SPACING)), battlefieldY);
             stage.addActor(slot);
             battleFieldSlots.add(slot);
-        }
 
-        // Start the game by triggering the AI's turn if it's the AI's turn
-        if (!gameManager.getCurrentPlayer()) {
-            gameManager.endTurn(); // This will trigger the AI's turn
+            // Check if there's already a card in this slot (from GameState)
+            List<Unit> enemyUnits = gameManager.getGameState().getEnemyUnitsInSlot(i);
+            if (!enemyUnits.isEmpty()) {
+                for (Unit card : enemyUnits) {
+                    CardActor battleCard = new CardActor(card, dragAndDrop);
+                    battleCard.setDrawable(card.getImage().getDrawable());
+                    battleCard.setSize(CARD_WIDTH, CARD_HEIGHT);
+                    battleCard.setPosition((slot.getWidth() - battleCard.getWidth()) / 2,
+                        (slot.getHeight() - battleCard.getHeight()) / 2);
+                    slot.addActor(battleCard);
+                }
+            }
+            // Removed drag and drop target for AI, as AI card placement is handled by IAControl.
         }
     }
-
 
     /*PLAYER 2
     private void initializePlayer2Battlefield(boolean isPlayer2, ArrayList<Unit> handCards){
