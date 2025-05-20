@@ -19,10 +19,10 @@ public class IAControl extends Player{
     GameManager gameManager;
     private final Random rand;
 
-    public IAControl(GameState gameState) {
+    public IAControl(GameState gameState, GameManager gameManager) {
         super("navigor", gameState.getPlayer().getDeck());
         this.gameState = gameState;
-
+        this.gameManager = gameManager;
         rand = new Random();
     }
 
@@ -71,7 +71,7 @@ public class IAControl extends Player{
             gameState.setCurrentPhase(phase);
             switch(phase) {
                 case 1: // DRAW
-                    drawPhase();
+                    startPhase();
                     break;
                 case 2: // MAIN
                     mainPhase();
@@ -87,35 +87,46 @@ public class IAControl extends Player{
         gameState.setCurrentPhase(1);
     }
 
-    public void drawPhase() {
-        if (gameState != null && gameState.getEnemyDeckSize() > 0) {
+    public void startPhase() {
+        if (gameState.getEnemyDeckSize() > 0) {
             Unit drawnCard = gameManager.drawCard(false);
             if (drawnCard != null) {
                 gameState.getEnemy().getHand().add(drawnCard);
             }
         }
+        gameState.getEnemy().setMAX_energy(gameState.getEnemy().getMAX_energy() + 1);
+        gameState.getEnemy().setEnergy(gameState.getEnemy().getMAX_energy());
     }
 
     public void mainPhase() {
-        while (gameState.getEnemy().getHealth() > 0 && !gameState.getEnemy().getHand().isEmpty() && gameState.getEnemy().getEnergy() > 0){
-            for(int i = 0; i < gameState.getEnemy().getHand().size(); i++){
-
+        while (gameState.getEnemy().getHealth() > 0 && !gameState.getEnemy().getHand().isEmpty() && gameState.getEnemy().getEnergy() > 0){  //se puoi fa il turno
+            for(int i = 0; i < gameState.getEnemy().getHand().size(); i++){                                                                 //controlla la mano
+                if(gameState.getEnemy().getHand().get(i).getCost() < gameState.getEnemy().getEnergy()){                                     //se trovi una carta poco costosa
+                    for(int j = 0; j < gameState.getMAX_SLOT(); j++){                                                                       //controlla se hai spazio
+                        if(gameState.isSlotEmpty(i,false)){                                                                          //e se hai spazio
+                            gameState.getEnemy().setEnergy(getEnergy()-gameState.getEnemy().getHand().get(i).getCost());                    //spendi energia
+                            gameState.addUnitToEnemyField(gameState.getEnemy().getHand().get(i),i);                                         //posizionala nello spazio
+                        }
+                    }
+                }
             }
         }
     }
 
     public void battlePhase() {
         for(int i = 0; i < gameState.getMAX_SLOT(); i++){
-            if(gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) != null)
+            if(gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) != null){
                 gameManager.attackUnit(gameState.getUnitToEnemyField(i), gameState.getUnitToPlayerField(i));
-                else
-                    gameManager.attackPlayer(gameState.getUnitToEnemyField(i),false);
+            }else if (gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) == null){
+                gameManager.attackPlayer(gameState.getUnitToEnemyField(i),false);
+            }
         }
     }
 
     public void endPhase(){
-
+        gameManager.endTurn();
     }
+
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
@@ -142,7 +153,7 @@ public class IAControl extends Player{
         if(card != null && card.getCost() <= gameState.getEnemy().getEnergy()) {
             gameState.getEnemy().setEnergy(gameState.getEnemy().getEnergy() - card.getCost());
             for (int i = 0; i < gameState.getMAX_SLOT(); i++) {
-                if (gameState.isEmpty(i, false)) {
+                if (gameState.isSlotEmpty(i, false)) {
                     gameState.addUnitToEnemyField(card,i);
                     break;
                 }

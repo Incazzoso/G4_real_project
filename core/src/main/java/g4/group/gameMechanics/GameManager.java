@@ -20,7 +20,7 @@ public class GameManager {
     }
 
     private void initializeGameState() {
-        this.gameState = new GameState(5); // Initialize first
+        this.gameState = new GameState(5, this); // Initialize first
         gameState.setPlayerDeckSize(8);
         gameState.setEnemyDeckSize(8);
 

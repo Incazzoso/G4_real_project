@@ -17,18 +17,19 @@ public class GameState {
     private int enemyDeckSize;
 
     //FASI GIOCO
+    private GameManager gameManager;
     private final int MAX_SLOT;
     private int currentPhase;
     private int currentTurn;
 
-    public GameState(int numSlots) {
+    public GameState(int numSlots, GameManager gameManager) {
+        this.gameManager = gameManager;
         player = new MyProfile().getMyself();
-        enemy = new IAControl(this);
+        enemy = new IAControl(this, gameManager);
         this.MAX_SLOT = numSlots;
     }
 
     //PLAYER METHODS
-
     public Player getPlayer() {
         return player;
     }
@@ -75,7 +76,12 @@ public class GameState {
     }
 
     // Metodi per la gestione degli slot
-    public boolean isEmpty(int slotIndex, boolean player) {
+
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
+    public boolean isSlotEmpty(int slotIndex, boolean player) {
         return player ? playerField[slotIndex] == null : enemyField[slotIndex] == null;
     }
 
