@@ -17,7 +17,7 @@ public class GameState {
     private int enemyDeckSize;
 
     //FASI GIOCO
-    private GameManager gameManager;
+    private final GameManager gameManager;
     private final int MAX_SLOT;
     private int currentPhase;
     private int currentTurn;

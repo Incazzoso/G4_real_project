@@ -92,7 +92,7 @@ public class GameScreen implements Screen {
         nextTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(gameManager.getCurrentPlayer()==true){
+                if(gameManager.getCurrentPlayer()){
                     eff.play();
                     eff.setVolume(opt.getVe());
                     backnxt.setPosition(0, 450);
@@ -109,6 +109,7 @@ public class GameScreen implements Screen {
                         }
                     }, 1.5f);
                 }else{
+                    gameManager.endTurn();
                 }
             }
         });
@@ -118,7 +119,7 @@ public class GameScreen implements Screen {
         nxt.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(gameManager.getCurrentPlayer()==true){
+                if(gameManager.getCurrentPlayer()){
                     eff.play();
                     eff.setVolume(opt.getVe());
                     backnxt.setPosition(0, 450);
@@ -135,6 +136,7 @@ public class GameScreen implements Screen {
                         }
                     }, 1.5f);
                 }else{
+                    gameManager.endTurn();
                 }
             }
         });
