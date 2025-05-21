@@ -13,7 +13,7 @@ public class Player {
 
     public Player(String name, ArrayList<Unit> deck){
         this.name = name;
-        MAX_energy = 1;
+        MAX_energy = 4;
         health = 20;
         energy = MAX_energy;
 

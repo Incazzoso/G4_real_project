@@ -25,6 +25,7 @@ public class GameState {
     public GameState(int numSlots, GameManager gameManager) {
         this.gameManager = gameManager;
         player = new MyProfile().getMyself();
+        playerField = new Unit[5];
         enemy = new IAControl(this, gameManager);
         this.MAX_SLOT = numSlots;
     }
