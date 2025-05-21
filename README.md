@@ -1,8 +1,12 @@
 # notSoBattleShip
 
+
+
+## basic libgdx information
+
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+This project was created with a libgdx starter gradle system including simple application launchers and an `ApplicationAdapter` + extension that draws Game logo.
 
 ## Platforms
 
