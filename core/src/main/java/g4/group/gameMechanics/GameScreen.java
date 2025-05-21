@@ -259,14 +259,14 @@ public class GameScreen implements Screen {
             slot.addActor(borderImage);
             slot.setPosition(100 + (i * (SLOT_WIDTH + SLOT_SPACING)), battlefieldY);
             stage.addActor(slot);
-            battleFieldSlots.add(slot);
+            battleFieldSlots.add(slot); // Add to the common battlefieldSlots list
 
-            // Only enable drop for player 1 slots
+             // Only enable drop for player 1 slots
             final int slotIndex = i;
             dragAndDrop.addTarget(new DragAndDrop.Target(slot) {
                 @Override
                 public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                    return gameManager.getGameState().getPlayerField() != null;
+                    return gameManager.getGameState().isSlotEmpty(slotIndex,true);
                 }
 
                 @Override
@@ -278,7 +278,7 @@ public class GameScreen implements Screen {
                     battleCard.setPosition((slot.getWidth() - battleCard.getWidth()) / 2,
                         (slot.getHeight() - battleCard.getHeight()) / 2);
                     slot.addActor(battleCard);
-                    gameManager.getGameState().addUnitToPlayerField(card,slotIndex);
+                    gameManager.getGameState().addUnitToPlayerField(card, slotIndex);
                     source.getActor().remove();
                 }
             });
@@ -291,7 +291,6 @@ public class GameScreen implements Screen {
 
         // Initialize hand cards (hidden for the AI)
         for (int i = 0; i < handCards.size(); i++) {
-
             CardActor cardActor;
             Image hiddenCard = handCards.get(i).Hide();
             cardActor = new CardActor(handCards.get(i), dragAndDrop);
