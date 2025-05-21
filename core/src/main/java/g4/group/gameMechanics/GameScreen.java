@@ -92,21 +92,24 @@ public class GameScreen implements Screen {
         nextTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                eff.play();
-                eff.setVolume(opt.getVe());
-                backnxt.setPosition(0,450);
-                backnxt.setVisible(true);
-                txt1.setPosition(100,460);
-                txt1.setVisible(true);
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        System.out.println("vivviviviviviv");
-                        backnxt.setVisible(false);
-                        txt1.setVisible(false);
-                        gameManager.endTurn();
-                    }
-                }, 1.5f);
+                if(gameManager.getCurrentPlayer()==true){
+                    eff.play();
+                    eff.setVolume(opt.getVe());
+                    backnxt.setPosition(0, 450);
+                    backnxt.setVisible(true);
+                    txt1.setPosition(100, 460);
+                    txt1.setVisible(true);
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            System.out.println("vivviviviviviv");
+                            backnxt.setVisible(false);
+                            txt1.setVisible(false);
+                            gameManager.endTurn();
+                        }
+                    }, 1.5f);
+                }else{
+                }
             }
         });
 
@@ -115,21 +118,24 @@ public class GameScreen implements Screen {
         nxt.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                eff.play();
-                eff.setVolume(opt.getVe());
-                backnxt.setPosition(0, 450);
-                backnxt.setVisible(true);
-                txt1.setPosition(100, 460);
-                txt1.setVisible(true);
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        System.out.println("vivviviviviviv");
-                        backnxt.setVisible(false);
-                        txt1.setVisible(false);
-                        gameManager.endTurn();
-                    }
-                }, 1.5f);
+                if(gameManager.getCurrentPlayer()==true){
+                    eff.play();
+                    eff.setVolume(opt.getVe());
+                    backnxt.setPosition(0, 450);
+                    backnxt.setVisible(true);
+                    txt1.setPosition(100, 460);
+                    txt1.setVisible(true);
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            System.out.println("vivviviviviviv");
+                            backnxt.setVisible(false);
+                            txt1.setVisible(false);
+                            gameManager.endTurn();
+                        }
+                    }, 1.5f);
+                }else{
+                }
             }
         });
         nxt.setPosition(848,80);
@@ -160,6 +166,7 @@ public class GameScreen implements Screen {
         stage.addActor(backnxt);
         stage.addActor(txt1);
         stage.addActor(txt2);
+        gameManager.getGameState().getPlayer().startTurn();
     }
 
     @Override

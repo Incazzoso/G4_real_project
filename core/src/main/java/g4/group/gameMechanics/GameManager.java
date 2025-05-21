@@ -16,7 +16,7 @@ public class GameManager {
     public GameManager(Stage stage) {
         this.stage = stage;
         initializeGameState();
-        currentPlayer = new Random().nextBoolean();
+        currentPlayer = true;
     }
 
     private void initializeGameState() {
@@ -30,14 +30,10 @@ public class GameManager {
         if (currentPlayer) {
             gameState.getPlayer().startTurn();
         } else {
-
+            gameState.getEnemy().startTurn();
         }
         currentPlayer = !currentPlayer;
 
-        // Update game state after turn change
-        if (!currentPlayer) { // If it's now AI's turn, start its turn immediately
-            
-        }
     }
 
     public boolean getCurrentPlayer() {
