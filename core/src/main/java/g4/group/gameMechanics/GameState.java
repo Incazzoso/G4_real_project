@@ -12,12 +12,12 @@ public class GameState {
     private int playerDeckSize;
 
     //ENEMY
-    private Player enemy;
+    private IAControl enemy;
     private Unit[] enemyField;
     private int enemyDeckSize;
 
     //FASI GIOCO
-    private final GameManager gameManager;
+    private GameManager gameManager;
     private final int MAX_SLOT;
     private int currentPhase;
     private int currentTurn;
@@ -25,9 +25,14 @@ public class GameState {
     public GameState(int numSlots, GameManager gameManager) {
         this.gameManager = gameManager;
         player = new MyProfile().getMyself();
-        playerField = new Unit[5];
+        playerField = new Unit[numSlots];
         enemy = new IAControl(this, gameManager);
+        enemyField = new Unit[numSlots];
         this.MAX_SLOT = numSlots;
+    }
+
+    public int getMAX_SLOT() {
+        return MAX_SLOT;
     }
 
     //PLAYER METHODS
@@ -45,17 +50,16 @@ public class GameState {
     public void setPlayerDeckSize(int playerDeckSize) { this.playerDeckSize = playerDeckSize; }
 
     //ENEMY METHODS
-
-    public Player getEnemy() {
+    public IAControl getEnemy() {
         return enemy;
     }
 
-    public void setEnemy(Player enemy) {
+    public void setEnemy(IAControl enemy) {
         this.enemy = enemy;
     }
 
     public Unit[] getEnemyField() { return enemyField; }
-    public void setEnemyField(Unit[] field) { this.enemyField = field; }
+    public void setEnemyField(Unit[] enemyField) { this.enemyField = enemyField; }
     public int getEnemyDeckSize() { return enemyDeckSize; }
     public void setEnemyDeckSize(int enemyDeckSize) { this.enemyDeckSize = enemyDeckSize; }
 
@@ -66,13 +70,13 @@ public class GameState {
     public void incrementTurn() { this.currentTurn++; }
 
     public void removePlayerUnit(int index){
-        if(index < 5){
-            playerField[index] = (Unit) null;
+        if(index < MAX_SLOT){
+            playerField[index] = null;
         }
     }
     public void removeEnemyUnit(int index){
-        if(index < 5){
-            enemyField[index] = (Unit) null;
+        if(index < MAX_SLOT){
+            enemyField[index] = null;
         }
     }
 
@@ -105,6 +109,4 @@ public class GameState {
     public Unit getUnitToEnemyField(int index) {
         return index < MAX_SLOT ? enemyField[index] : null;
     }
-
-    public int getMAX_SLOT() { return MAX_SLOT; }
 }

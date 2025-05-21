@@ -79,4 +79,11 @@ public class Player {
         energy = getMAX_energy();
     }
 
+    //ATTACCO PLAYER
+    //TODO: la carta del player attacca lo slot davanti a se
+    //TODO: Se davanti è vuoto attacco diretto se ce una carta fai danno alla carta se attacco maggiore di vita, la carta viene eliminate e il resto viene tolto dalla vita dell'avversario
+    public void playerAttack(){
+
+    }
+
 }

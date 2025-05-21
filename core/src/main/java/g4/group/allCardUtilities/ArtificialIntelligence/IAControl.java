@@ -80,7 +80,7 @@ public class IAControl extends Player{
                     battlePhase();
                     break;
                 case 4: // END
-                    endPhase();
+                    gameManager.endTurn();
                     break;
             }
         }
@@ -99,17 +99,11 @@ public class IAControl extends Player{
     }
 
     public void mainPhase() {
-        while (gameState.getEnemy().getHealth() > 0 && !gameState.getEnemy().getHand().isEmpty() && gameState.getEnemy().getEnergy() > 0){  //se puoi fa il turno
-            for(int i = 0; i < gameState.getEnemy().getHand().size(); i++){                                                                 //controlla la mano
-                if(gameState.getEnemy().getHand().get(i).getCost() < gameState.getEnemy().getEnergy()){                                     //se trovi una carta poco costosa
-                    for(int j = 0; j < gameState.getMAX_SLOT(); j++){                                                                       //controlla se hai spazio
-                        if(gameState.isSlotEmpty(i,false)){                                                                          //e se hai spazio
-                            gameState.getEnemy().setEnergy(getEnergy()-gameState.getEnemy().getHand().get(i).getCost());                    //spendi energia
-                            gameState.addUnitToEnemyField(gameState.getEnemy().getHand().get(i),i);                                         //posizionala nello spazio
-                        }
-                    }
-                }
-            }
+        ArrayList<Unit> playableCards = getPlayableCard();
+        while (gameState.getEnemy().getHealth() > 0 && !playableCards.isEmpty() && gameState.getEnemy().getEnergy() > 0){
+            Unit cardToPlay = selectCard(playableCards);
+            playCard(cardToPlay);
+            playableCards = getPlayableCard();
         }
     }
 
@@ -121,10 +115,6 @@ public class IAControl extends Player{
                 gameManager.attackPlayer(gameState.getUnitToEnemyField(i),false);
             }
         }
-    }
-
-    public void endPhase(){
-        gameManager.endTurn();
     }
 
     public void setGameState(GameState gameState) {
@@ -151,10 +141,11 @@ public class IAControl extends Player{
 
     private void playCard(Unit card) {
         if(card != null && card.getCost() <= gameState.getEnemy().getEnergy()) {
-            gameState.getEnemy().setEnergy(gameState.getEnemy().getEnergy() - card.getCost());
             for (int i = 0; i < gameState.getMAX_SLOT(); i++) {
                 if (gameState.isSlotEmpty(i, false)) {
+                    gameState.getEnemy().setEnergy(gameState.getEnemy().getEnergy() - card.getCost());
                     gameState.addUnitToEnemyField(card,i);
+                    gameState.getEnemy().getHand().remove(card);
                     break;
                 }
             }
