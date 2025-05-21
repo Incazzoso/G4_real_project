@@ -122,7 +122,7 @@ public class IAControl extends Player{
             if(gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) != null){
                 gameManager.attackUnit(gameState.getUnitToEnemyField(i), gameState.getUnitToPlayerField(i));
             }else if (gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) == null){
-                gameManager.attackPlayer(gameState.getUnitToEnemyField(i),false);
+                gameManager.attackPlayer(gameState.getUnitToEnemyField(i),true);
             }
         }
     }

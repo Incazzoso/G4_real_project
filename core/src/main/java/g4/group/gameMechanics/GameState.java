@@ -1,9 +1,12 @@
 package g4.group.gameMechanics;
 
 import g4.group.allCardUtilities.ArtificialIntelligence.IAControl;
+import g4.group.allCardUtilities.Effect;
 import g4.group.allCardUtilities.MyProfile;
 import g4.group.allCardUtilities.Player;
 import g4.group.allCardUtilities.Unit;
+
+import java.util.Objects;
 
 public class GameState {
     //PLAYER
@@ -17,7 +20,7 @@ public class GameState {
     private int enemyDeckSize;
 
     //FASI GIOCO
-    private GameManager gameManager;
+    private final GameManager gameManager;
     private final int MAX_SLOT;
     private int currentPhase;
     private int currentTurn;
@@ -29,6 +32,11 @@ public class GameState {
         enemy = new IAControl(this, gameManager);
         enemyField = new Unit[numSlots];
         this.MAX_SLOT = numSlots;
+
+        for(int i = 0; i<MAX_SLOT; i++){
+            playerField[i] = new Unit("",0,0,0,new Effect(false, false),"assets/sprite/simple_border.png");
+            enemyField[i] = new Unit("",0,0,0,new Effect(false, false),"assets/sprite/simple_border.png");
+        }
     }
 
     public int getMAX_SLOT() {
@@ -71,12 +79,12 @@ public class GameState {
 
     public void removePlayerUnit(int index){
         if(index < MAX_SLOT){
-            playerField[index] = null;
+            playerField[index] = new Unit("",0,0,0,new Effect(false, false),"assets/sprite/simple_border.png");
         }
     }
     public void removeEnemyUnit(int index){
         if(index < MAX_SLOT){
-            enemyField[index] = null;
+            enemyField[index] = new Unit("",0,0,0,new Effect(false, false),"assets/sprite/simple_border.png");
         }
     }
 
@@ -87,7 +95,7 @@ public class GameState {
     }
 
     public boolean isSlotEmpty(int slotIndex, boolean player) {
-        return player ? playerField[slotIndex] == null : enemyField[slotIndex] == null;
+        return player ? Objects.equals(playerField[slotIndex].getName(), "") : Objects.equals(enemyField[slotIndex].getName(), "");
     }
 
     public void addUnitToPlayerField(Unit unit, int index) {
@@ -108,5 +116,10 @@ public class GameState {
 
     public Unit getUnitToEnemyField(int index) {
         return index < MAX_SLOT ? enemyField[index] : null;
+    }
+
+    @Override
+    public String toString() {
+        return(getUnitToEnemyField(0).getName() + getUnitToEnemyField(1).getName() + getUnitToEnemyField(2).getName());
     }
 }

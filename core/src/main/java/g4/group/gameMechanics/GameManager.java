@@ -5,6 +5,7 @@ import g4.group.allCardUtilities.*;
 import g4.group.allCardUtilities.ArtificialIntelligence.IAControl;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class GameManager {
@@ -60,18 +61,25 @@ public class GameManager {
         attacker.attack(target);
     }
 
-    public void battlePhase() {
+    public void battlePlayerPhase() {
+
         for(int i = 0; i < gameState.getMAX_SLOT(); i++){
-            if(gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) != null){
-                attackUnit(gameState.getUnitToEnemyField(i), gameState.getUnitToPlayerField(i));
-            }else if (gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) == null){
-                attackPlayer(gameState.getUnitToEnemyField(i),false);
+            if(!Objects.equals(gameState.getUnitToPlayerField(i).getName(), "") && !Objects.equals(gameState.getUnitToEnemyField(i).getName(), "")){
+                System.out.println("attacco una carta");
+                attackUnit(gameState.getUnitToPlayerField(i), gameState.getUnitToEnemyField(i));
+            }else if (!Objects.equals(gameState.getUnitToPlayerField(i).getName(), "") && Objects.equals(gameState.getUnitToEnemyField(i).getName(), "")){
+                System.out.println("attacco il nemico");
+                attackPlayer(gameState.getUnitToPlayerField(i),false);
             }
         }
     }
     public void attackPlayer(Unit attacker, boolean player) {
         if(player){
             gameState.getPlayer().setHealth(gameState.getPlayer().getHealth() - attacker.getDamage());
+            System.out.println(gameState.getPlayer().getHealth());
+        }else{
+            gameState.getEnemy().setHealth(gameState.getEnemy().getHealth() - attacker.getDamage());
+            System.out.println(gameState.getEnemy().getHealth());
         }
     }
 }
