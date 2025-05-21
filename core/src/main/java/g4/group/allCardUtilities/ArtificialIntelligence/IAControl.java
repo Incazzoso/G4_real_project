@@ -72,15 +72,19 @@ public class IAControl extends Player{
             switch(phase) {
                 case 1: // DRAW
                     startPhase();
+                    System.out.println("fne draw azione");
                     break;
                 case 2: // MAIN
                     mainPhase();
+                    System.out.println("fne main azione");
                     break;
                 case 3: // BATTLE
                     battlePhase();
+                    System.out.println("fne battle azione");
                     break;
                 case 4: // END
                     endPhase();
+                    System.out.println("fne end azione");
                     break;
             }
         }

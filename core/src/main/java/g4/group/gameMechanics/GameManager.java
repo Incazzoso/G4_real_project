@@ -23,7 +23,6 @@ public class GameManager {
         this.gameState = new GameState(5, this); // Initialize first
         gameState.setPlayerDeckSize(8);
         gameState.setEnemyDeckSize(8);
-
     }
 
     public void endTurn() {
@@ -59,6 +58,16 @@ public class GameManager {
 
     public void attackUnit(Unit attacker, Unit target) {
         attacker.attack(target);
+    }
+
+    public void battlePhase() {
+        for(int i = 0; i < gameState.getMAX_SLOT(); i++){
+            if(gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) != null){
+                attackUnit(gameState.getUnitToEnemyField(i), gameState.getUnitToPlayerField(i));
+            }else if (gameState.getUnitToEnemyField(i) != null && gameState.getUnitToPlayerField(i) == null){
+                attackPlayer(gameState.getUnitToEnemyField(i),false);
+            }
+        }
     }
     public void attackPlayer(Unit attacker, boolean player) {
         if(player){

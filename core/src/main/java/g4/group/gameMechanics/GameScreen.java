@@ -109,6 +109,7 @@ public class GameScreen implements Screen {
                         }
                     }, 1.5f);
                 }else{
+                    gameManager.getGameState().getEnemy().startTurn();
                     gameManager.endTurn();
                 }
             }
@@ -132,10 +133,12 @@ public class GameScreen implements Screen {
                             System.out.println("vivviviviviviv");
                             backnxt.setVisible(false);
                             txt1.setVisible(false);
+                            gameManager.battlePhase(); // aggiunto solo questo anche nel gameManager per far attaccare il player
                             gameManager.endTurn();
                         }
                     }, 1.5f);
                 }else{
+                    gameManager.getGameState().getEnemy().startTurn();
                     gameManager.endTurn();
                 }
             }
