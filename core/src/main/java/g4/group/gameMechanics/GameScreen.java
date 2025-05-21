@@ -271,15 +271,20 @@ public class GameScreen implements Screen {
 
                 @Override
                 public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+
                     Unit card = (Unit) payload.getObject();
-                    CardActor battleCard = new CardActor(card, dragAndDrop);
-                    battleCard.setDrawable(card.getImage().getDrawable()); // Make sure to show the actual card
-                    battleCard.setSize(CARD_WIDTH, CARD_HEIGHT);
-                    battleCard.setPosition((slot.getWidth() - battleCard.getWidth()) / 2,
-                        (slot.getHeight() - battleCard.getHeight()) / 2);
-                    slot.addActor(battleCard);
-                    gameManager.getGameState().addUnitToPlayerField(card, slotIndex);
-                    source.getActor().remove();
+                    if(card.getCost()<=gameManager.getGameState().getPlayer().getEnergy()){
+                        CardActor battleCard = new CardActor(card, dragAndDrop);
+                        battleCard.setDrawable(card.getImage().getDrawable()); // Make sure to show the actual card
+                        battleCard.setSize(CARD_WIDTH, CARD_HEIGHT);
+                        battleCard.setPosition((slot.getWidth() - battleCard.getWidth()) / 2,
+                            (slot.getHeight() - battleCard.getHeight()) / 2);
+                        slot.addActor(battleCard);
+                        gameManager.getGameState().addUnitToPlayerField(card, slotIndex);
+                        gameManager.getGameState().getPlayer().setEnergy(gameManager.getGameState().getPlayer().getEnergy()-card.getCost());
+                        source.getActor().remove();
+                    }else{
+                    }
                 }
             });
         }

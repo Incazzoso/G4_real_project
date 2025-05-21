@@ -36,6 +36,7 @@ public class GameManager {
 
         // Update game state after turn change
         if (!currentPlayer) { // If it's now AI's turn, start its turn immediately
+            
         }
     }
 
